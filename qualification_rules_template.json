@@ -1,0 +1,19 @@
+{
+  "qualify_revenue_min": 10000000,
+  "qualify_employee_tiers": ["501-1000", "1000-5000", "5000-10000", "10000+"],
+  "disqualify_employee_tiers": ["1-10"],
+  "target_brands": [
+    "examplebrand1",
+    "examplebrand2"
+  ],
+  "target_verticals": [
+    "saas",
+    "software",
+    "technology",
+    "cloud"
+  ],
+  "disqualify_patterns": [
+    "\\\\bconsult(ancy|ing)\\\\b",
+    "\\\\bagencies?\\\\b"
+  ]
+}

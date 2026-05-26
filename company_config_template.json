@@ -1,0 +1,18 @@
+{
+  "company_name": "Your Company Name",
+  "product_name": "Your Product Name",
+  "product_url": "https://yourcompany.com",
+  "core_capabilities": [
+    "Capability 1",
+    "Capability 2"
+  ],
+  "target_audience": "Describe who you are selling to (e.g. B2B SaaS founders)",
+  "proof_points": [
+    "3x ROI",
+    "Loved by 100+ customers"
+  ],
+  "sender": {
+    "name": "Your Name",
+    "email": "you@yourcompany.com"
+  }
+}
