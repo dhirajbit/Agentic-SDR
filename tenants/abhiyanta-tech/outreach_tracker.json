@@ -1,0 +1,23 @@
+{
+  "tenant": "abhiyanta-tech",
+  "initialised_at": "2026-05-28",
+  "credit_snapshots": [
+    {
+      "at": "2026-05-28",
+      "lead_credit_left": 17622,
+      "direct_dial_credit_left": 0,
+      "export_credit_left": 0,
+      "cycle_start": "2026-05-03",
+      "cycle_end": "2026-06-03"
+    }
+  ],
+  "actions": [],
+  "aggregate_stats": {
+    "sends": 0,
+    "delivered": 0,
+    "bounced": 0,
+    "opens": 0,
+    "replies": 0,
+    "opt_outs": 0
+  }
+}

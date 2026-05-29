@@ -7,6 +7,10 @@ reference_*
 *.pem
 *.key
 
+# Tenant MCP configs (URLs embed session tokens — never commit) + active symlink at repo root
+tenants/*/.mcp.json
+/.mcp.json
+
 # WhatsApp bridge — session DB and messages (never commit)
 *.db
 whatsapp-mcp/whatsapp-bridge/whatsapp-bridge

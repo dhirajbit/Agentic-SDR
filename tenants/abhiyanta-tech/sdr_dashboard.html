@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Abhiyanta Tech — Agentic SDR</title>
+<style>
+:root {
+  --bg: #f6f8fb;
+  --panel: #ffffff;
+  --ink: #0f1b2d;
+  --muted: #5b6b80;
+  --line: #e2e8f0;
+  --brand: #1f3a5f;
+  --teal: #2c8a8a;
+  --accent: #c33a2e;
+  --good: #1f7a4a;
+  --warn: #b86a00;
+  --bad: #b3261e;
+}
+* { box-sizing: border-box; }
+html,body { margin:0; padding:0; background: var(--bg); color: var(--ink); font: 15px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 28px 24px 80px; }
+header { display:flex; align-items:center; gap:18px; padding-bottom:18px; border-bottom: 1px solid var(--line); margin-bottom: 22px; }
+.logo { width: 56px; height: 56px; border-radius: 8px; object-fit: contain; background: white; padding: 4px; box-shadow: 0 1px 2px rgba(15,27,45,0.06); }
+.hdr-title { font-size: 20px; font-weight: 700; color: var(--brand); letter-spacing: -0.01em; }
+.hdr-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.hdr-right { margin-left:auto; text-align:right; font-size:12px; color: var(--muted); }
+.status-pill { display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600; background: #eaf4ee; color: var(--good); border: 1px solid #c6e3d3; }
+.status-pill.warn { background: #fdf3e3; color: var(--warn); border-color: #f2d8a9; }
+.grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 0 0 26px 0; }
+.stat { background: var(--panel); border:1px solid var(--line); border-radius:10px; padding: 14px 16px; }
+.stat-num { font-size: 26px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+.stat-lbl { font-size: 12px; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
+.stat-sub { font-size: 12px; color: var(--teal); margin-top: 4px; font-weight: 600; }
+.panel { background: var(--panel); border:1px solid var(--line); border-radius:10px; padding: 18px 20px; margin-bottom: 18px; }
+.panel h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--brand); margin: 0 0 12px 0; }
+.panel h3 { font-size: 14px; margin: 18px 0 6px 0; color: var(--ink); }
+.panel p { margin: 0 0 10px 0; }
+.panel ul { margin: 6px 0 14px 18px; padding: 0; }
+.panel li { margin: 3px 0; }
+.row2 { display:grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.kv-row { display:flex; justify-content:space-between; padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: 14px; }
+.kv-row:last-child { border-bottom: 0; }
+.kv-lbl { color: var(--muted); }
+.kv-val { font-weight: 600; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+table { width:100%; border-collapse: collapse; font-size: 13px; }
+th,td { text-align:left; padding: 7px 10px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+td.num { text-align:right; font-variant-numeric: tabular-nums; }
+.tag { display:inline-block; font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+.tag.t1 { background: #e6f3ec; color: var(--good); }
+.tag.t2 { background: #fdf3e3; color: var(--warn); }
+.tag.t3 { background: #f0f0f0; color: var(--muted); }
+.tag.t4 { background: #fbe6e3; color: var(--bad); }
+.callout { border-left: 3px solid var(--teal); background: #f0f7f7; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
+.callout.warn { border-left-color: var(--accent); background: #fdf0ee; }
+footer { margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.6; }
+@media (max-width: 760px) { .grid { grid-template-columns: repeat(2,1fr); } .row2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <img src="data:image/jpeg;base64,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" alt="Abhiyanta" class="logo" />
+  <div>
+    <div class="hdr-title">Abhiyanta Tech — Agentic SDR</div>
+    <div class="hdr-sub">Outbound SDR program · Enrichment + send via Apollo · CRM via Zoho</div>
+  </div>
+  <div class="hdr-right">
+    <span class="status-pill warn">Pre-enrichment — no outreach started</span>
+    <div style="margin-top:6px">Generated 2026-05-29 00:40:23 local</div>
+  </div>
+</header>
+
+<div class="grid">
+  <div class="stat"><div class="stat-num">0</div><div class="stat-lbl">Sends</div><div class="stat-sub">0 delivered</div></div>
+  <div class="stat"><div class="stat-num">—</div><div class="stat-lbl">Open rate</div><div class="stat-sub">0 opens</div></div>
+  <div class="stat"><div class="stat-num">—</div><div class="stat-lbl">Reply rate</div><div class="stat-sub">0 replies / 0 pending</div></div>
+  <div class="stat"><div class="stat-num">17622</div><div class="stat-lbl">Apollo lead credits left</div><div class="stat-sub">snapshot 2026-05-28</div></div>
+</div>
+
+<div class="panel">
+  <h2>Apollo credit posture</h2>
+  <div class="row2">
+    <div>
+      <div class="kv-row"><div class="kv-lbl">Enrichment credits remaining</div><div class="kv-val mono">17622</div></div>
+      <div class="kv-row"><div class="kv-lbl">Direct-dial (phone) credits</div><div class="kv-val mono">0 — phone channel off this cycle</div></div>
+      <div class="kv-row"><div class="kv-lbl">Bulk export credits</div><div class="kv-val mono">0 — bulk export not in use</div></div>
+      <div class="kv-row"><div class="kv-lbl">Credit cycle ends</div><div class="kv-val mono">2026-06-03</div></div>
+    </div>
+    <div>
+      <table>
+        <thead><tr><th>When</th><th>Event</th><th class='num'>lead_left</th><th class='num'>dial_left</th></tr></thead>
+        <tbody><tr><td class='mono'>2026-05-28</td><td></td><td class='num'>17622</td><td class='num'>0</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Phase 0 — master file analysis (2026-05-29)</h2>
+  <p>Source: <span class="mono">Zoho_CRM_Import_Master_v1.xlsx</span>. 8 sheets, 195,445 unique Global Ultimate accounts, already scored (ICP Fit Score 0–100) and tiered. ETS-sanctioned 1,322 rows pre-extracted to sheet 03.</p>
+
+  <h3>Account distribution</h3>
+  <table>
+    <thead><tr><th>Tier</th><th>Definition</th><th class='num'># Accounts</th><th>Our stance</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag t1">T1</span></td><td>Mfg verticals × India + GCC + SEA</td><td class='num'>4,694</td><td>Starting point — Apollo replaces Lusha</td></tr>
+      <tr><td><span class="tag t2">T2-Warm-Cloud</span></td><td>SAP cloud trialists (Has Tenant, no Contract)</td><td class='num'>24,752</td><td>Deferred — heavy data-quality risk</td></tr>
+      <tr><td><span class="tag t2">T2-Mature-Mfg</span></td><td>12 verticals × US/UK/DE/CA etc.</td><td class='num'>31,748</td><td>Deferred until T1 traction</td></tr>
+      <tr><td><span class="tag t3">T3</span></td><td>Long tail</td><td class='num'>97,014</td><td>Hold</td></tr>
+      <tr><td><span class="tag t4">T4</span></td><td>Partners / Resellers / SAP Internal</td><td class='num'>37,236</td><td>DoNotMarket — never touch</td></tr>
+    </tbody>
+  </table>
+
+  <h3>T1 readiness</h3>
+  <div class="row2">
+    <div>
+      <div class="kv-row"><div class="kv-lbl">T1 total</div><div class="kv-val">4,694</div></div>
+      <div class="kv-row"><div class="kv-lbl">T1 — India</div><div class="kv-val">2,549 (54%)</div></div>
+      <div class="kv-row"><div class="kv-lbl">T1 — SEA</div><div class="kv-val">1,069 (23%)</div></div>
+      <div class="kv-row"><div class="kv-lbl">T1 — GCC</div><div class="kv-val">767 (16%)</div></div>
+      <div class="kv-row"><div class="kv-lbl">T1 with website (Apollo can match)</div><div class="kv-val">4,049 (86.3%)</div></div>
+    </div>
+    <div>
+      <div class="kv-row"><div class="kv-lbl">T1 with email pre-filled</div><div class="kv-val">789 (16.8%)</div></div>
+      <div class="kv-row"><div class="kv-lbl">T1 India with email</div><div class="kv-val">402 / 2,549 (15.8%)</div></div>
+      <div class="kv-row"><div class="kv-lbl">T1 Compliance Status = Flagged-Review</div><div class="kv-val">9 (skip until manual sign-off)</div></div>
+      <div class="kv-row"><div class="kv-lbl">Enrichment Plan = Lusha-Tier1-Now</div><div class="kv-val">3,569 — to remap → Apollo</div></div>
+      <div class="kv-row"><div class="kv-lbl">Enrichment Plan = Apollo-* already</div><div class="kv-val">458</div></div>
+    </div>
+  </div>
+
+  <h3>Credit budget against the 17,622 live balance</h3>
+  <table>
+    <thead><tr><th>Slice</th><th class='num'>Accounts</th><th>Contacts/acct</th><th class='num'>Worst-case credits</th><th>Fits?</th></tr></thead>
+    <tbody>
+      <tr><td>T1-India top 100 by ICP (recommended first slice)</td><td class='num'>100</td><td>3</td><td class='num'>300</td><td>✓ huge headroom</td></tr>
+      <tr><td>T1-India all</td><td class='num'>2,549</td><td>3</td><td class='num'>7,647</td><td>✓</td></tr>
+      <tr><td>Full T1 (India + GCC + SEA)</td><td class='num'>4,694</td><td>3</td><td class='num'>14,082</td><td>✓ — tight, leaves ~3K for T2 sampling</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Three risks flagged</h3>
+  <div class="callout warn"><b>ICP score is vertical + geo only.</b> "Lal Ji Steel Welding Works" scores 95 same as ArcelorMittal because both are Mill Products × India. Some T1-India top-100 will be tiny shops below SAP price point. Recommended: layer an Apollo firmographic gate (employees ≥ 100 OR revenue ≥ $10M) post-enrichment before paying credits to reveal contact emails.</div>
+  <div class="callout warn"><b>T2-Warm-Cloud India is full of garbage.</b> Top hits include "rwtyu", "Test", "Saffronart Mumbai", and literally <span class="mono">david.metser@sap.com</span> as an account name. Bulk-enriching all 24,752 will burn credits on junk. Skip T2-Warm-Cloud until a name-quality filter exists.</div>
+  <div class="callout warn"><b>Email-only this cycle.</b> Original plan presumed Lusha for India mobile coverage. Without Lusha and with no phone-reveal credits on the Apollo account, this cycle is email-only. Phone channel can be reopened with a separate Lusha contract.</div>
+</div>
+
+<div class="panel">
+  <h2>Sender mailbox</h2>
+  <div class="row2">
+    <div>
+      <div class="kv-row"><div class="kv-lbl">Mailbox</div><div class="kv-val">saurabh.barathe@abhiyantatech.info</div></div>
+      <div class="kv-row"><div class="kv-lbl">Provider</div><div class="kv-val">Microsoft 365</div></div>
+      <div class="kv-row"><div class="kv-lbl">Connected on</div><div class="kv-val">2026-05-27</div></div>
+      <div class="kv-row"><div class="kv-lbl">Daily send capacity</div><div class="kv-val">0 / 50</div></div>
+    </div>
+    <div>
+      <div class="kv-row"><div class="kv-lbl">Warmup status</div><div class="kv-val">not yet started</div></div>
+      <div class="kv-row"><div class="kv-lbl">Warmup score</div><div class="kv-val">0 / 100</div></div>
+      <div class="kv-row"><div class="kv-lbl">Projected first send</div><div class="kv-val">~2 weeks after warmup begins</div></div>
+    </div>
+  </div>
+  <div class="callout">
+    <b>Why we're not sending yet.</b> The sender mailbox was connected to Apollo on
+    2026-05-27 and is a brand-new domain (abhiyantatech.info).
+    Sending cold outreach from an unwarmed mailbox on a new domain will land in spam and damage the domain's
+    reputation for months. Apollo's built-in mailwarming service will simulate normal mailbox traffic for
+    ~14–21 days to build a sending reputation. We will not send a single outreach email until warmup
+    completes the open / reply / bounce thresholds.
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Rollout plan — awaiting your go-ahead</h2>
+  <table>
+    <thead><tr><th>Step</th><th>Action</th><th>Credit cost</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Confirm first slice — T1-India top 100 by ICP score, plus a firmographic size gate</td><td>0</td><td>Awaiting approval</td></tr>
+      <tr><td>2</td><td>Stand up Zoho CRM fields per Sheet 04 — Field Mapping</td><td>0</td><td>Awaiting approval</td></tr>
+      <tr><td>3</td><td>Import the 1,322 ETS-excluded accounts into Zoho as a suppression list (no outreach, ever)</td><td>0</td><td>Awaiting approval</td></tr>
+      <tr><td>4</td><td>Import the first slice (100 accounts) into Zoho as Leads — still no enrichment</td><td>0</td><td>Awaiting approval</td></tr>
+      <tr><td>5</td><td><b>Apollo enrichment</b> — organisation firmographics + size filter + decision-maker email reveals</td><td><b>≤ 300 enrichment credits, worst case</b></td><td><b>Requires explicit approval at runtime</b></td></tr>
+      <tr><td>6</td><td>Personalised outreach via the connected Apollo mailbox; activity logged back to Zoho</td><td>Per send</td><td>Holds until mailbox warmup completes</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="panel">
+  <h2>Live queue snapshot</h2>
+  <div class="row2">
+    <div>
+      <div class="kv-row"><div class="kv-lbl">Qualified queue depth</div><div class="kv-val">0</div></div>
+      <div class="kv-row"><div class="kv-lbl">Blocked / opted-out</div><div class="kv-val">0</div></div>
+      <div class="kv-row"><div class="kv-lbl">Urgent followups pending</div><div class="kv-val">0</div></div>
+    </div>
+    <div>
+      <div class="kv-row"><div class="kv-lbl">Actions logged</div><div class="kv-val">0</div></div>
+      <div class="kv-row"><div class="kv-lbl">Aggregate sends</div><div class="kv-val">0</div></div>
+      <div class="kv-row"><div class="kv-lbl">Aggregate replies</div><div class="kv-val">0</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Abhiyanta Tech — Agentic SDR program. Enrichment via Apollo · CRM via Zoho ·
+  Dashboard regenerates on every outreach and observer cycle. Hosted on Cloudflare, not search-indexed.
+</footer>
+
+</div>
+</body>
+</html>

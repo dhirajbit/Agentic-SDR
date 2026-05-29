@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Activate a tenant for the current shell + Claude Code session.
+#
+# Usage:
+#   bin/tenant <slug>     Activate tenants/<slug>/ — symlinks its .mcp.json
+#                         to repo-root .mcp.json and prints the env var to export.
+#   bin/tenant clear      Deactivate — removes the symlink.
+#   bin/tenant status     Print which tenant is currently active.
+#
+# After activating, RESTART Claude Code so it re-reads .mcp.json.
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT"
+
+cmd="${1:-status}"
+
+case "$cmd" in
+  clear)
+    if [[ -L .mcp.json ]]; then
+      rm .mcp.json
+      echo "✓ cleared .mcp.json symlink. Restart Claude Code to drop the tenant MCP servers."
+    elif [[ -e .mcp.json ]]; then
+      echo "WARN: .mcp.json exists but is not a symlink — leaving it alone." >&2
+      exit 1
+    else
+      echo "(nothing to clear)"
+    fi
+    ;;
+
+  status)
+    if [[ -L .mcp.json ]]; then
+      target="$(readlink .mcp.json)"
+      slug="$(basename "$(dirname "$target")")"
+      echo "Active tenant: $slug"
+      echo "  .mcp.json -> $target"
+    else
+      echo "No tenant is active (no .mcp.json symlink at repo root)."
+    fi
+    ;;
+
+  *)
+    slug="$cmd"
+    src="tenants/$slug/.mcp.json"
+    if [[ ! -d "tenants/$slug" ]]; then
+      echo "ERROR: tenants/$slug/ does not exist." >&2
+      exit 1
+    fi
+    if [[ ! -f "$src" ]]; then
+      echo "ERROR: $src not found. Tenant has no MCP config." >&2
+      exit 1
+    fi
+    if [[ -e .mcp.json && ! -L .mcp.json ]]; then
+      echo "ERROR: .mcp.json exists at repo root and is NOT a symlink." >&2
+      echo "       Refusing to overwrite. Move or delete it first." >&2
+      exit 1
+    fi
+    rm -f .mcp.json
+    ln -s "$src" .mcp.json
+    echo "✓ activated tenant: $slug"
+    echo "  .mcp.json -> $src"
+    echo ""
+    echo "Export the tenant slug for the SDR scripts:"
+    echo "  export AGENTIC_SDR_TENANT=$slug"
+    echo ""
+    echo "RESTART Claude Code to load the tenant MCP servers."
+    ;;
+esac

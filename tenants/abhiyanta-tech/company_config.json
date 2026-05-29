@@ -1,0 +1,25 @@
+{
+  "tenant_slug": "abhiyanta-tech",
+  "company_name": "Abhiyanta Tech",
+  "product_name": "Abhiyanta Tech SAP Services",
+  "product_url": "https://abhiyantatech.com/",
+  "core_capabilities": [
+    "End-to-end SAP implementation (S/4HANA, ECC, Business One, RISE with SAP)",
+    "SAP Application Management Services (AMS) — production support, enhancement, monitoring",
+    "SAP upgrades and migrations (ECC to S/4HANA, on-prem to cloud, brownfield/greenfield)",
+    "SAP rollouts, integrations, and custom ABAP/Fiori development"
+  ],
+  "target_audience": "Mid-market and enterprise companies that run SAP (or are evaluating SAP), specifically heads of IT / CIOs / SAP CoE leads / Digital Transformation leaders at manufacturing, pharma, FMCG, retail, automotive, chemicals, and distribution companies. Typical trigger events: ECC end-of-life pressure (2027 deadline), recent SAP go-live, struggling AMS vendor, M&A integration, S/4HANA migration in-flight.",
+  "proof_points": [
+    "SAP implementation and AMS partner across the full SAP stack (S/4HANA, ECC, BTP, SuccessFactors, Ariba)",
+    "Implementation partner experience across manufacturing, pharma, FMCG, automotive verticals",
+    "AMS coverage with defined SLAs for L1/L2/L3 production support"
+  ],
+  "sender": {
+    "name": "TBD — please confirm display name (Saurabh Barathe?)",
+    "email": "saurabh.barathe@abhiyantatech.info",
+    "apollo_email_account_id": "6a16c05b9f6fc600148986b4",
+    "mailbox_provider": "ms_exchange"
+  },
+  "_notes": "Mailbox connected 2026-05-27 but currently warmup_status=never_started. SDR must NOT send until Apollo mailwarming completes (estimate 14-21 days) and a new Apollo emailer_campaign is created and its id placed in .env APOLLO_CAMPAIGN_ID."
+}
