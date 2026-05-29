@@ -1,0 +1,5 @@
+name,lead_name,first_name,middle_name,last_name,email_id,mobile_no,phone,company_name,job_title,source,status,qualification_status,city,state,country,annual_revenue,no_of_employees,website,contact1_linkedin,company_linkedin,lead_owner,creation,modified
+# Account/lead source template for Best Roadways. Copy to leads.csv (or upload via the control panel) and keep this header row.
+# `name` = unique lead id (any stable string). `mobile_no` enables the WhatsApp 48h follow-up. `email_id` enables email.
+# `no_of_employees` accepts a tier like 201-500 / 501-1000 / 1001-5000 / 5001-10000 / 10001+ for qualification scoring.
+EXAMPLE-0001,Sample Buyer,Sample,,Buyer,buyer@examplefmcg.com,+91 90000 00000,,Example FMCG Pvt Ltd,Head of Logistics,Reference,Lead,Unqualified,Mumbai,Maharashtra,India,1000000000,1001-5000,https://example.com,,,sdr@bestroadways.com,2026-05-29,2026-05-29

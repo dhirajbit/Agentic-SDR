@@ -1,0 +1,32 @@
+{
+  "tenant_slug": "best-roadways",
+  "company_name": "Best Roadways Limited",
+  "product_name": "Best Roadways — PAN-India Road Freight & Logistics",
+  "product_url": "https://bestroadways.com/",
+  "tagline": "India's Most Trusted Freight Partner — since 1985",
+  "core_capabilities": [
+    "Full Truck Load (FTL) — including high-cube containerised vehicles for volumetric cargo",
+    "Part Truck Load (PTL) — daily consolidated services (e.g. Nhava Sheva <-> North India corridor)",
+    "Warehousing & Distribution — licensed bonded warehouse (75,000 sq ft at Kalamboli, Nhava Sheva)",
+    "Chemical & hazmat logistics — PESO-certified tankers and lined containers",
+    "Project & ODC (over-dimensional) cargo handling",
+    "CFS & container services at JNPT / Nhava Sheva (own warehouse, weighbridge, truck terminal)"
+  ],
+  "target_audience": "Logistics, supply-chain, procurement, plant/operations heads and CXOs at mid-market and enterprise shippers that move physical goods PAN-India — FMCG & consumer goods, chemical & petrochemical, pharmaceutical, automotive & engineering, steel, textiles, solar/energy, and e-commerce. Trigger events: unreliable incumbent transporter, new plant/warehouse, capacity crunch in peak season, hazmat/chemical movement needs, expansion into new regions, or a corridor (esp. Mumbai-Delhi) where consistent FTL/PTL transit matters.",
+  "proof_points": [
+    "40+ years in road freight (founded 1985)",
+    "800+ owned vehicles — all GPS-tracked and BS-VI compliant (owned fleet, not brokered)",
+    "65+ branches across India, serving 500+ cities with owned hubs and dedicated lanes",
+    "National recognition: Transport Ratna (2015) and Transport Samrat (2018) from AIMTC",
+    "Own port infrastructure at Nhava Sheva — bonded warehouse, weighbridge, truck terminal",
+    "PESO-certified chemical logistics; trusted by major chemical companies in the Gujarat belt",
+    "Dominant on the Mumbai-Delhi corridor (self-described largest cargo mover on that lane)"
+  ],
+  "sender": {
+    "name": "TBD — Best Roadways to confirm sender display name",
+    "email": "TBD — Best Roadways to confirm sending mailbox (must match Brevo verified sender)",
+    "channel": "brevo",
+    "_note": "sender.email MUST be a domain/sender verified in Brevo before any send. Set BREVO_SENDER_NAME / BREVO_SENDER_EMAIL in .env to match."
+  },
+  "_notes": "Preliminary profile auto-built from https://bestroadways.com/ on 2026-05-29. Best Roadways configures all API keys (Brevo, ERPNext, Gemini) and the leads list themselves. Email frameworks ported from the Bolti playbook; WhatsApp cadence ported from the kstars-sdr model. No Apollo in this tenant — leads come from ERPNext and/or leads.csv."
+}

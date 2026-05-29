@@ -1,0 +1,22 @@
+{
+  "tenant": "best-roadways",
+  "initialised_at": "2026-05-29",
+  "channels": ["brevo", "whatsapp"],
+  "actions": [],
+  "aggregate_stats": {
+    "sends": 0,
+    "delivered": 0,
+    "bounced": 0,
+    "opens": 0,
+    "clicks": 0,
+    "replies": 0,
+    "opt_outs": 0,
+    "whatsapp_sends": 0,
+    "whatsapp_replies": 0
+  },
+  "framework_performance": {
+    "Vanilla Ice Cream": {"sends": 0, "opens": 0, "replies": 0},
+    "Mouse Trap": {"sends": 0, "opens": 0, "replies": 0},
+    "Neutral Insight": {"sends": 0, "opens": 0, "replies": 0}
+  }
+}

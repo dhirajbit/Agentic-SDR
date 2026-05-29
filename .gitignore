@@ -17,6 +17,13 @@ whatsapp-mcp/whatsapp-bridge/whatsapp-bridge
 whatsapp-mcp/whatsapp.log
 whatsapp-mcp/claude_desktop_config.json
 
+# Best Roadways control-panel runtime + uploaded lead data (PII — never commit)
+tenants/best-roadways/cycle.log
+tenants/best-roadways/panel_settings.json
+tenants/best-roadways/leads.csv
+tenants/best-roadways/enriched_leads.json
+tenants/best-roadways/qualify_buckets.json
+
 # Python
 __pycache__/
 *.pyc
