@@ -1,0 +1,329 @@
+{
+  "Shilpa Steel and Power Limited": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "SHILPA STEEL and POWER LIMITED",
+      "master_global_ultimate_id": "24519736",
+      "sap_products_in_use": "S4HANA Public Cloud",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Transrail Lighting Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "MANAS Agro Industries & Infrastructure": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Blue Jet Healthcare Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Blue Jet Healthcare Limited",
+      "master_global_ultimate_id": "50327370",
+      "sap_products_in_use": "S4HANA Private Cloud",
+      "sap_industry": "Life Sciences",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Sirmaxo Chemicals Pvt Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Sirmaxo Chemicals",
+      "master_global_ultimate_id": "25715520",
+      "sap_products_in_use": null,
+      "sap_industry": null,
+      "sap_category": "Others",
+      "sap_market_segment": null,
+      "priority_tier": "T3-Long-Tail",
+      "icp_fit_score": 35,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Manual-Research"
+    },
+    "integration_suite_capable": "unknown"
+  },
+  "Benzo Chem Industries Pvt. Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Benzo Chem Industries Private Limited",
+      "master_global_ultimate_id": "24214963",
+      "sap_products_in_use": "S4HANA Private Cloud",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Galpha Laboratories Limited": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Galpha Laboratories Ltd",
+      "master_global_ultimate_id": "5351958",
+      "sap_products_in_use": "S4HANA Private Cloud",
+      "sap_industry": "Life Sciences",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Apar Industries Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Apar Industries Ltd",
+      "master_global_ultimate_id": "3305238",
+      "sap_products_in_use": "ERP,S4HANA oP",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "IVP Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "IVP Limited",
+      "master_global_ultimate_id": "22090743",
+      "sap_products_in_use": "S4HANA Public Cloud",
+      "sap_industry": "Wholesale Distribution",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Rebel Foods Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "VVF Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Neogen Chemicals Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Neogen Chemicals Limited",
+      "master_global_ultimate_id": "50031813",
+      "sap_products_in_use": "S4HANA Private Cloud",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Brilliant Polymers": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Brilliant Polymers Pvt. Ltd.",
+      "master_global_ultimate_id": "50363426",
+      "sap_products_in_use": "S4HANA Private Cloud",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Renewsys India Private Limited": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Renewsys India Private Limited",
+      "master_global_ultimate_id": "20421108",
+      "sap_products_in_use": null,
+      "sap_industry": null,
+      "sap_category": "Others",
+      "sap_market_segment": null,
+      "priority_tier": "T3-Long-Tail",
+      "icp_fit_score": 35,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Manual-Research"
+    },
+    "integration_suite_capable": "unknown"
+  },
+  "Sudeep Pharma Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Eka Mobility": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Paras Spices Pvt Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Mehta Group": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Supreme Petrochem Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "DCW Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "DCW Limited",
+      "master_global_ultimate_id": "1145315",
+      "sap_products_in_use": "ERP,S4HANA Private Cloud",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Dayal Fertilizers Pvt Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Dayal Fertilizers Private Limited",
+      "master_global_ultimate_id": "50485200",
+      "sap_products_in_use": "S4HANA Public Cloud",
+      "sap_industry": "Chemicals",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 80,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Beta Drugs Ltd": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  },
+  "Akums Drugs and Pharmaceuticals Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Akums Drugs & Pharmaceuticals Limited",
+      "master_global_ultimate_id": "5349508",
+      "sap_products_in_use": "ERP,S4HANA Private Cloud",
+      "sap_industry": "Life Sciences",
+      "sap_category": "External",
+      "sap_market_segment": "LE",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 85,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "yes"
+  },
+  "Metalman Auto Limited": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Metalman Auto Private Limited",
+      "master_global_ultimate_id": "24918733",
+      "sap_products_in_use": null,
+      "sap_industry": null,
+      "sap_category": "Others",
+      "sap_market_segment": null,
+      "priority_tier": "T3-Long-Tail",
+      "icp_fit_score": 35,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Manual-Research"
+    },
+    "integration_suite_capable": "unknown"
+  },
+  "Sarla Performance Fibers Ltd": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Sarla Performance Fibers Limited",
+      "master_global_ultimate_id": "3313217",
+      "sap_products_in_use": null,
+      "sap_industry": null,
+      "sap_category": "Others",
+      "sap_market_segment": null,
+      "priority_tier": "T3-Long-Tail",
+      "icp_fit_score": 35,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Apollo-Org-Only"
+    },
+    "integration_suite_capable": "unknown"
+  },
+  "Transformers & Rectifiers (India) Limited": {
+    "matched": true,
+    "master_data": {
+      "master_account_name": "Transformers & Rectifiers India ltd",
+      "master_global_ultimate_id": "3563837",
+      "sap_products_in_use": null,
+      "sap_industry": "Industrial Manufacturing",
+      "sap_category": "External",
+      "sap_market_segment": "ME",
+      "priority_tier": "T1-Core-Field",
+      "icp_fit_score": 70,
+      "compliance_status": "Cleared",
+      "billing_country": "India",
+      "enrichment_plan_in_master": "Lusha-Tier1-Now"
+    },
+    "integration_suite_capable": "unknown"
+  },
+  "Danish Power Limited": {
+    "matched": false,
+    "master_data": null,
+    "integration_suite_capable": "unknown"
+  }
+}

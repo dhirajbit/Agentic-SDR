@@ -24,6 +24,7 @@ TRACKER = TENANT_DIR / "outreach_tracker.json"
 QUEUE = TENANT_DIR / "qualified_leads.json"
 BLOCKED = TENANT_DIR / "blocked_leads.json"
 URGENT = TENANT_DIR / "urgent_followups.json"
+DRAFTS = TENANT_DIR / "email_drafts.json"
 OUTPUT = TENANT_DIR / "sdr_dashboard.html"
 
 
@@ -73,12 +74,190 @@ def _mailbox_status() -> dict:
     }
 
 
+def _render_drafts_tab() -> str:
+    """Email previews tab. Reads email_drafts.json and renders each draft as a
+    review card. No buttons that mutate state — the dashboard is read-only."""
+    pkg = _load_json(DRAFTS, {})
+    drafts = pkg.get("drafts", [])
+    sender = pkg.get("sender", {})
+    if not drafts:
+        return '<div class="panel"><h2>Email previews</h2><p>No drafts yet.</p></div>'
+
+    ready = [d for d in drafts if d.get("status") == "draft_awaiting_review"]
+    pending = [d for d in drafts if d.get("status") == "pending_enrichment"]
+    seg_counts = {"IT": 0, "Finance": 0}
+    for d in ready:
+        seg = d.get("segment")
+        if seg in seg_counts:
+            seg_counts[seg] += 1
+
+    rules_html = "".join(f"<li>{html.escape(r)}</li>" for r in pkg.get("rules", []))
+    fw_a = html.escape(pkg.get("framework_library", {}).get("A", ""))
+    fw_b = html.escape(pkg.get("framework_library", {}).get("B", ""))
+
+    cards = []
+    for d in drafts:
+        is_pending = d.get("status") == "pending_enrichment"
+        seg = d.get("segment") or "—"
+        fw = d.get("framework") or "—"
+        badge_class = "tag t1" if seg == "IT" else ("tag t2" if seg == "Finance" else "tag t3")
+        status_class = "status-pill warn" if is_pending else "status-pill"
+        status_label = "Pending enrichment" if is_pending else "Awaiting your review"
+        first = html.escape(d.get("first_name") or "")
+        contact = html.escape(d.get("contact_name") or "")
+        company = html.escape(d.get("company") or "")
+        location = html.escape(d.get("location") or "")
+        title = html.escape(d.get("title") or "—")
+        industry = html.escape(d.get("industry") or "—")
+        email = html.escape(d.get("email") or "—")
+        linkedin = d.get("linkedin") or ""
+        op_note = d.get("operator_note")
+        fit = d.get("fit_data", {})
+        plevel = d.get("personalization_level", "templated")
+        hook_src = d.get("hook_source")
+        wrong_stack = d.get("wrong_stack_flagged", False)
+
+        # Personalization badge
+        if plevel == "verified_hook":
+            plevel_html = '<span class="tag verified">Verified hook ✓</span>'
+        elif plevel == "pending":
+            plevel_html = '<span class="tag pending-tag">Pending</span>'
+        else:
+            plevel_html = '<span class="tag templated">Templated</span>'
+
+        # Fit signal line
+        fit_parts = []
+        if fit.get("integration_suite_capable") == "yes":
+            fit_parts.append(f'<span class="fit-good">SAP {fit.get("master_sap_products","")} confirmed</span>')
+        elif fit.get("integration_suite_capable") == "maybe":
+            fit_parts.append(f'<span class="fit-mid">SAP {fit.get("master_sap_products","")} (no S/4 yet)</span>')
+        elif fit.get("master_file_match"):
+            fit_parts.append('<span class="fit-mid">In master file, product unknown</span>')
+        else:
+            fit_parts.append('<span class="fit-warn">Not in master file</span>')
+        if fit.get("apollo_employees"):
+            emp = fit["apollo_employees"]
+            rev = f' · {fit["apollo_revenue_printed"]} revenue' if fit.get("apollo_revenue_printed") else ""
+            fit_parts.append(f'<span>{emp:,} employees{rev}</span>')
+        fit_line = ' · '.join(fit_parts)
+
+        # Apollo-match findings for pending leads
+        pending_apollo = d.get("apollo_match_result")
+
+        if is_pending:
+            note_text = op_note or "Awaiting enrichment before drafting."
+            pending_html = ''
+            if pending_apollo:
+                stale = pending_apollo.get('stale_lead')
+                stale_class = ' stale' if stale else ''
+                pending_html = (
+                    f'<div class="apollo-match{stale_class}">'
+                    f'<b>Apollo match:</b> {html.escape(pending_apollo.get("current_title",""))} '
+                    f'at {html.escape(pending_apollo.get("current_org",""))} · '
+                    f'email revealed: {"yes" if pending_apollo.get("email_revealed") else "no"}'
+                    f'{" · <b>⚠ Lead is stale — person moved companies</b>" if stale else ""}'
+                    f'</div>'
+                )
+            body_html = pending_html + (
+                '<div class="draft-body pending">'
+                + html.escape(note_text)
+                + "</div>"
+            )
+            subj_html = '<div class="draft-subj pending">— subject pending —</div>'
+        else:
+            wc = len(d.get("body", "").split())
+            subj_html = (
+                f'<div class="draft-subj-row">'
+                f'<span class="draft-meta-lbl">Subject</span>'
+                f'<span class="draft-subj">{html.escape(d.get("subject",""))}</span>'
+                f'<span class="draft-wc">{wc} words</span>'
+                f'</div>'
+            )
+            body_html = (
+                f'<pre class="draft-body">{html.escape(d.get("body",""))}</pre>'
+            )
+            if hook_src:
+                body_html += f'<div class="hook-src"><b>Hook source:</b> {html.escape(hook_src)}</div>'
+            if wrong_stack:
+                body_html += '<div class="callout warn" style="margin-top:8px"><b>⚠ Wrong-stack flag:</b> Per web research, this company runs Google Cloud + in-house tech, not SAP. The Multi-Tenant Integration Suite pitch may not be the right opener. Draft acknowledges this — consider dropping or repositioning before send.</div>'
+            if op_note:
+                body_html += f'<div class="draft-opnote">Note: {html.escape(op_note)}</div>'
+
+        li_html = (
+            f'<a href="{html.escape(linkedin)}" target="_blank" rel="noopener">LinkedIn</a>'
+            if linkedin else "—"
+        )
+
+        cards.append(f"""
+<div class="draft-card" data-segment="{seg}" data-plevel="{plevel}">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">{contact}</div>
+      <div class="draft-sub">{title} · {company} · {location}</div>
+    </div>
+    <div class="draft-tags">
+      <span class="{badge_class}">{seg}</span>
+      <span class="tag fw">Framework {fw}</span>
+      {plevel_html}
+      <span class="{status_class}">{status_label}</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> {first} &lt;{email}&gt;</span>
+    <span><b>Profile:</b> {li_html}</span>
+  </div>
+  <div class="draft-fit">{fit_line}</div>
+  {subj_html}
+  {body_html}
+</div>""")
+
+    filter_bar = f"""
+<div class="filter-bar">
+  <div class="filter-stats">
+    <b>{len(ready)}</b> ready for review · <b>{pending and len(pending) or 0}</b> pending enrichment ·
+    <span class="tag t1">IT {seg_counts['IT']}</span>
+    <span class="tag t2">Finance {seg_counts['Finance']}</span>
+  </div>
+  <div class="filter-buttons">
+    <button class="fbtn active" data-filter="all">All</button>
+    <button class="fbtn" data-filter="IT">IT only</button>
+    <button class="fbtn" data-filter="Finance">Finance only</button>
+  </div>
+</div>"""
+
+    sender_block = ""
+    if sender:
+        sender_block = (
+            f'<div class="callout"><b>Sender:</b> {html.escape(sender.get("name",""))} '
+            f'&lt;{html.escape(sender.get("email",""))}&gt;. Single follow-up max (+5 business days) '
+            f'if no reply. Multi-tenant advisory PDF is not attached on the first touch — offered on reply.</div>'
+        )
+
+    return f"""
+<div class="panel">
+  <h2>Email previews — Multi-Tenant SAP Integration Suite (v1 campaign)</h2>
+  {sender_block}
+  <div class="row2">
+    <div><b>Framework A — Mouse Trap (IT audience).</b> <span style="color:var(--muted)">{fw_a}</span></div>
+    <div><b>Framework B — Finance Angle (CFO audience).</b> <span style="color:var(--muted)">{fw_b}</span></div>
+  </div>
+  <h3>Rules in force for this batch</h3>
+  <ul>{rules_html}</ul>
+</div>
+<div class="panel">
+  {filter_bar}
+  <div id="draft-list">{''.join(cards)}</div>
+</div>
+"""
+
+
 def render() -> str:
     tracker = _load_json(TRACKER, {})
     queue = _load_json(QUEUE, [])
     blocked = _load_json(BLOCKED, [])
     urgent = _load_json(URGENT, [])
     mailbox = _mailbox_status()
+    drafts_tab_html = _render_drafts_tab()
 
     agg = tracker.get("aggregate_stats", {})
     snaps = tracker.get("credit_snapshots", [])
@@ -174,6 +353,43 @@ td.num {{ text-align:right; font-variant-numeric: tabular-nums; }}
 .callout {{ border-left: 3px solid var(--teal); background: #f0f7f7; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }}
 .callout.warn {{ border-left-color: var(--accent); background: #fdf0ee; }}
 footer {{ margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.6; }}
+.tabnav {{ display:flex; gap:4px; margin: 0 0 20px 0; border-bottom: 1px solid var(--line); }}
+.tabnav button {{ background: transparent; border:0; padding: 10px 18px; font: inherit; color: var(--muted); cursor: pointer; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; }}
+.tabnav button.active {{ color: var(--brand); border-bottom-color: var(--brand); }}
+.tabpane {{ display: none; }}
+.tabpane.active {{ display: block; }}
+.tag.fw {{ background: #eef2f8; color: var(--brand); }}
+.filter-bar {{ display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom: 18px; flex-wrap: wrap; }}
+.filter-stats {{ font-size: 13px; color: var(--muted); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }}
+.filter-buttons {{ display:flex; gap:6px; }}
+.fbtn {{ background: white; border:1px solid var(--line); padding: 6px 12px; border-radius: 6px; font: inherit; font-size: 12px; cursor: pointer; color: var(--muted); font-weight: 600; }}
+.fbtn.active {{ background: var(--brand); color: white; border-color: var(--brand); }}
+.draft-card {{ background: var(--panel); border:1px solid var(--line); border-radius:10px; padding: 16px 18px; margin-bottom: 14px; }}
+.draft-card[data-hidden="1"] {{ display: none; }}
+.draft-head {{ display:flex; justify-content:space-between; align-items:flex-start; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }}
+.draft-name {{ font-weight: 700; font-size: 15px; color: var(--ink); }}
+.draft-sub {{ font-size: 13px; color: var(--muted); margin-top: 2px; }}
+.draft-tags {{ display:flex; gap: 6px; flex-wrap: wrap; }}
+.draft-meta {{ font-size: 12px; color: var(--muted); display:flex; gap: 16px; flex-wrap: wrap; padding: 8px 0; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin-bottom: 10px; }}
+.draft-meta a {{ color: var(--teal); }}
+.draft-subj-row {{ display:flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }}
+.draft-meta-lbl {{ font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }}
+.draft-subj {{ font-weight: 700; color: var(--brand); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }}
+.draft-subj.pending {{ color: var(--muted); font-style: italic; font-weight: 500; }}
+.draft-wc {{ font-size: 11px; color: var(--muted); margin-left: auto; }}
+.draft-body {{ background: #fafbfd; border:1px solid var(--line); border-radius: 6px; padding: 12px 14px; font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--ink); white-space: pre-wrap; margin: 0; overflow-x: auto; }}
+.draft-body.pending {{ background: #fdf3e3; color: var(--warn); border-color: #f2d8a9; font-style: italic; }}
+.draft-opnote {{ font-size: 12px; color: var(--muted); margin-top: 8px; font-style: italic; }}
+.draft-fit {{ font-size: 12px; color: var(--muted); padding: 6px 0; margin-bottom: 10px; display:flex; gap: 12px; flex-wrap: wrap; }}
+.fit-good {{ color: var(--good); font-weight: 600; }}
+.fit-mid {{ color: var(--warn); font-weight: 600; }}
+.fit-warn {{ color: var(--muted); }}
+.tag.verified {{ background: #e6f3ec; color: var(--good); }}
+.tag.templated {{ background: #eef2f8; color: var(--muted); }}
+.tag.pending-tag {{ background: #fdf3e3; color: var(--warn); }}
+.hook-src {{ font-size: 12px; color: var(--teal); background: #f0f7f7; padding: 8px 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid var(--teal); }}
+.apollo-match {{ font-size: 12px; color: var(--ink); background: #eef2f8; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; }}
+.apollo-match.stale {{ background: #fdf0ee; color: var(--bad); border-left: 3px solid var(--accent); }}
 @media (max-width: 760px) {{ .grid {{ grid-template-columns: repeat(2,1fr); }} .row2 {{ grid-template-columns: 1fr; }} }}
 </style>
 </head>
@@ -191,6 +407,13 @@ footer {{ margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line)
     <div style="margin-top:6px">Generated {html.escape(generated_at)} local</div>
   </div>
 </header>
+
+<nav class="tabnav">
+  <button data-tab="tab-status" class="active">Status</button>
+  <button data-tab="tab-previews">Email previews</button>
+</nav>
+
+<div id="tab-status" class="tabpane active">
 
 <div class="grid">
   {_stat('Sends', str(sends), f'{delivered} delivered')}
@@ -293,18 +516,50 @@ footer {{ margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line)
 </div>
 
 <div class="panel">
-  <h2>Rollout plan — awaiting your go-ahead</h2>
+  <h2>CRM pipeline — T1-India top 100 (v1 campaign)</h2>
+  <p>Enrichment and Zoho CRM push completed on <b>2026-06-01</b>. All 120 records owned by <b>Saurabh B</b>.</p>
+  <div class="grid" style="grid-template-columns: repeat(4, 1fr); margin: 0 0 18px 0;">
+    {_stat('In Zoho CRM', '120', 'Owner: Saurabh B')}
+    {_stat('Decision-maker emails', '120', 'Apollo-verified')}
+    {_stat('Office phone populated', '117', '97% of T1 leads')}
+    {_stat('Apollo credits used', '407', 'of 17,622 cycle balance')}
+  </div>
   <table>
     <thead><tr><th>Step</th><th>Action</th><th>Credit cost</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>Confirm first slice — T1-India top 100 by ICP score, plus a firmographic size gate</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>2</td><td>Stand up Zoho CRM fields per Sheet 04 — Field Mapping</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>3</td><td>Import the 1,322 ETS-excluded accounts into Zoho as a suppression list (no outreach, ever)</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>4</td><td>Import the first slice (100 accounts) into Zoho as Leads — still no enrichment</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>5</td><td><b>Apollo enrichment</b> — organisation firmographics + size filter + decision-maker email reveals</td><td><b>≤ 300 enrichment credits, worst case</b></td><td><b>Requires explicit approval at runtime</b></td></tr>
-      <tr><td>6</td><td>Personalised outreach via the connected Apollo mailbox; activity logged back to Zoho</td><td>Per send</td><td>Holds until mailbox warmup completes</td></tr>
+      <tr><td>1</td><td>Confirm first slice — T1-India top 100 by ICP score, plus a firmographic size gate</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>2</td><td>Apollo organisation enrichment for 100 accounts → 87 firmographic hits</td><td>87</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>3</td><td>Firmographic gate (employees ≥ 100 OR revenue ≥ $10M) → 82 passed, 5 too small, 13 no data</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>4</td><td>Decision-maker search at the 82 qualified accounts → 188 candidates</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>5</td><td>Apollo email reveals via /people/match → <b>120 personal emails</b> across 58 accounts</td><td>320</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>6</td><td>Push to Zoho CRM as Leads → <b>119 created</b> (1 dropped: missing last name)</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>7</td><td>Update Owner = Saurabh B + Phone (office switchboard) across all leads</td><td>0</td><td><span class="tag verified">Done</span> · 117/119 phones populated</td></tr>
+      <tr><td>8</td><td>Personalised outreach via connected Apollo mailbox; activity logged back to Zoho</td><td>Per send</td><td><span class="tag pending-tag">Holds — mailbox warmup pending</span></td></tr>
     </tbody>
   </table>
+  <div class="row2" style="margin-top: 18px;">
+    <div>
+      <h3 style="margin-top: 0;">What's now in each Zoho Lead</h3>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+        <li>Verified personal email (Apollo /people/match)</li>
+        <li>Designation, Company, Industry, City/State/Country</li>
+        <li>Employee count + revenue (Apollo firmographics)</li>
+        <li>LinkedIn URL</li>
+        <li>Office switchboard phone (where Apollo had it)</li>
+        <li>SAP master-file fit: Priority Tier, ICP Score, SAP Products in use</li>
+        <li>Source = "SAP Leads", Status = "Not Contacted", Owner = Saurabh B</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-top: 0;">Notes</h3>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+        <li>Personal mobile numbers are not in scope this cycle — Apollo direct-dial credits are 0 on this account. Office switchboards filled where available.</li>
+        <li>2 records flagged in earlier analysis (Eka Mobility, Danish Power) skipped — Eka's contact moved companies; Danish Power's email not in Apollo.</li>
+        <li>Sumit Duttagupta (Haldia CIO) needs phone added manually in Zoho — workflow timing blocked one update.</li>
+        <li>3 leads are at competitor SAP-services firms (Wipro / HCLTech / Tata Group). Review before outreach.</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="panel">
@@ -323,10 +578,52 @@ footer {{ margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line)
   </div>
 </div>
 
+</div><!-- /tab-status -->
+
+<div id="tab-previews" class="tabpane">
+{drafts_tab_html}
+</div><!-- /tab-previews -->
+
 <footer>
   Abhiyanta Tech — Agentic SDR program. Enrichment via Apollo · CRM via Zoho ·
   Dashboard regenerates on every outreach and observer cycle. Hosted on Cloudflare, not search-indexed.
 </footer>
+
+<script>
+(function() {{
+  // Tab switching
+  document.querySelectorAll('.tabnav button').forEach(function(b) {{
+    b.addEventListener('click', function() {{
+      var target = b.getAttribute('data-tab');
+      document.querySelectorAll('.tabnav button').forEach(function(x) {{ x.classList.remove('active'); }});
+      document.querySelectorAll('.tabpane').forEach(function(p) {{ p.classList.remove('active'); }});
+      b.classList.add('active');
+      var pane = document.getElementById(target);
+      if (pane) pane.classList.add('active');
+      // Update hash for deep-linking
+      try {{ history.replaceState(null, '', '#' + target); }} catch (e) {{}}
+    }});
+  }});
+  // Honor hash on load
+  if (location.hash) {{
+    var btn = document.querySelector('.tabnav button[data-tab="' + location.hash.slice(1) + '"]');
+    if (btn) btn.click();
+  }}
+  // Filter
+  document.querySelectorAll('.fbtn').forEach(function(b) {{
+    b.addEventListener('click', function() {{
+      var f = b.getAttribute('data-filter');
+      document.querySelectorAll('.fbtn').forEach(function(x) {{ x.classList.remove('active'); }});
+      b.classList.add('active');
+      document.querySelectorAll('.draft-card').forEach(function(card) {{
+        var seg = card.getAttribute('data-segment') || '';
+        if (f === 'all' || seg === f) {{ card.removeAttribute('data-hidden'); }}
+        else {{ card.setAttribute('data-hidden', '1'); }}
+      }});
+    }});
+  }});
+}})();
+</script>
 
 </div>
 </body>

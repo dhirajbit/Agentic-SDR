@@ -58,6 +58,43 @@ td.num { text-align:right; font-variant-numeric: tabular-nums; }
 .callout { border-left: 3px solid var(--teal); background: #f0f7f7; padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 10px 0; }
 .callout.warn { border-left-color: var(--accent); background: #fdf0ee; }
 footer { margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.6; }
+.tabnav { display:flex; gap:4px; margin: 0 0 20px 0; border-bottom: 1px solid var(--line); }
+.tabnav button { background: transparent; border:0; padding: 10px 18px; font: inherit; color: var(--muted); cursor: pointer; font-weight: 600; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tabnav button.active { color: var(--brand); border-bottom-color: var(--brand); }
+.tabpane { display: none; }
+.tabpane.active { display: block; }
+.tag.fw { background: #eef2f8; color: var(--brand); }
+.filter-bar { display:flex; justify-content:space-between; align-items:center; gap:14px; margin-bottom: 18px; flex-wrap: wrap; }
+.filter-stats { font-size: 13px; color: var(--muted); display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.filter-buttons { display:flex; gap:6px; }
+.fbtn { background: white; border:1px solid var(--line); padding: 6px 12px; border-radius: 6px; font: inherit; font-size: 12px; cursor: pointer; color: var(--muted); font-weight: 600; }
+.fbtn.active { background: var(--brand); color: white; border-color: var(--brand); }
+.draft-card { background: var(--panel); border:1px solid var(--line); border-radius:10px; padding: 16px 18px; margin-bottom: 14px; }
+.draft-card[data-hidden="1"] { display: none; }
+.draft-head { display:flex; justify-content:space-between; align-items:flex-start; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+.draft-name { font-weight: 700; font-size: 15px; color: var(--ink); }
+.draft-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.draft-tags { display:flex; gap: 6px; flex-wrap: wrap; }
+.draft-meta { font-size: 12px; color: var(--muted); display:flex; gap: 16px; flex-wrap: wrap; padding: 8px 0; border-top: 1px dashed var(--line); border-bottom: 1px dashed var(--line); margin-bottom: 10px; }
+.draft-meta a { color: var(--teal); }
+.draft-subj-row { display:flex; gap: 10px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+.draft-meta-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+.draft-subj { font-weight: 700; color: var(--brand); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+.draft-subj.pending { color: var(--muted); font-style: italic; font-weight: 500; }
+.draft-wc { font-size: 11px; color: var(--muted); margin-left: auto; }
+.draft-body { background: #fafbfd; border:1px solid var(--line); border-radius: 6px; padding: 12px 14px; font: 13px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; color: var(--ink); white-space: pre-wrap; margin: 0; overflow-x: auto; }
+.draft-body.pending { background: #fdf3e3; color: var(--warn); border-color: #f2d8a9; font-style: italic; }
+.draft-opnote { font-size: 12px; color: var(--muted); margin-top: 8px; font-style: italic; }
+.draft-fit { font-size: 12px; color: var(--muted); padding: 6px 0; margin-bottom: 10px; display:flex; gap: 12px; flex-wrap: wrap; }
+.fit-good { color: var(--good); font-weight: 600; }
+.fit-mid { color: var(--warn); font-weight: 600; }
+.fit-warn { color: var(--muted); }
+.tag.verified { background: #e6f3ec; color: var(--good); }
+.tag.templated { background: #eef2f8; color: var(--muted); }
+.tag.pending-tag { background: #fdf3e3; color: var(--warn); }
+.hook-src { font-size: 12px; color: var(--teal); background: #f0f7f7; padding: 8px 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid var(--teal); }
+.apollo-match { font-size: 12px; color: var(--ink); background: #eef2f8; padding: 8px 12px; border-radius: 6px; margin-bottom: 8px; }
+.apollo-match.stale { background: #fdf0ee; color: var(--bad); border-left: 3px solid var(--accent); }
 @media (max-width: 760px) { .grid { grid-template-columns: repeat(2,1fr); } .row2 { grid-template-columns: 1fr; } }
 </style>
 </head>
@@ -71,31 +108,38 @@ footer { margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line);
     <div class="hdr-sub">Outbound SDR program · Enrichment + send via Apollo · CRM via Zoho</div>
   </div>
   <div class="hdr-right">
-    <span class="status-pill warn">Pre-enrichment — no outreach started</span>
-    <div style="margin-top:6px">Generated 2026-05-29 00:40:23 local</div>
+    <span class="status-pill ">Live — 1 sends logged</span>
+    <div style="margin-top:6px">Generated 2026-06-02 16:36:25 local</div>
   </div>
 </header>
 
+<nav class="tabnav">
+  <button data-tab="tab-status" class="active">Status</button>
+  <button data-tab="tab-previews">Email previews</button>
+</nav>
+
+<div id="tab-status" class="tabpane active">
+
 <div class="grid">
-  <div class="stat"><div class="stat-num">0</div><div class="stat-lbl">Sends</div><div class="stat-sub">0 delivered</div></div>
+  <div class="stat"><div class="stat-num">1</div><div class="stat-lbl">Sends</div><div class="stat-sub">0 delivered</div></div>
   <div class="stat"><div class="stat-num">—</div><div class="stat-lbl">Open rate</div><div class="stat-sub">0 opens</div></div>
   <div class="stat"><div class="stat-num">—</div><div class="stat-lbl">Reply rate</div><div class="stat-sub">0 replies / 0 pending</div></div>
-  <div class="stat"><div class="stat-num">17622</div><div class="stat-lbl">Apollo lead credits left</div><div class="stat-sub">snapshot 2026-05-28</div></div>
+  <div class="stat"><div class="stat-num">17390</div><div class="stat-lbl">Apollo lead credits left</div><div class="stat-sub">snapshot 2026-06-02 16:20</div></div>
 </div>
 
 <div class="panel">
   <h2>Apollo credit posture</h2>
   <div class="row2">
     <div>
-      <div class="kv-row"><div class="kv-lbl">Enrichment credits remaining</div><div class="kv-val mono">17622</div></div>
+      <div class="kv-row"><div class="kv-lbl">Enrichment credits remaining</div><div class="kv-val mono">17390</div></div>
       <div class="kv-row"><div class="kv-lbl">Direct-dial (phone) credits</div><div class="kv-val mono">0 — phone channel off this cycle</div></div>
       <div class="kv-row"><div class="kv-lbl">Bulk export credits</div><div class="kv-val mono">0 — bulk export not in use</div></div>
-      <div class="kv-row"><div class="kv-lbl">Credit cycle ends</div><div class="kv-val mono">2026-06-03</div></div>
+      <div class="kv-row"><div class="kv-lbl">Credit cycle ends</div><div class="kv-val mono">—</div></div>
     </div>
     <div>
       <table>
         <thead><tr><th>When</th><th>Event</th><th class='num'>lead_left</th><th class='num'>dial_left</th></tr></thead>
-        <tbody><tr><td class='mono'>2026-05-28</td><td></td><td class='num'>17622</td><td class='num'>0</td></tr></tbody>
+        <tbody><tr><td class='mono'>2026-05-28</td><td></td><td class='num'>17622</td><td class='num'>0</td></tr><tr><td class='mono'>2026-05-31 00:03:12</td><td>post-orgEnrich+peopleMatch (spent 28)</td><td class='num'>17558</td><td class='num'>0</td></tr><tr><td class='mono'>2026-06-01 16:18:47</td><td>T1-India top-100 org-enrich (spent 87)</td><td class='num'>17461</td><td class='num'>0</td></tr><tr><td class='mono'>2026-06-01 16:21:12</td><td>T1-India top-100 people search+match (spent 0)</td><td class='num'>17461</td><td class='num'>0</td></tr><tr><td class='mono'>2026-06-01 16:25:11</td><td>T1-India top-100 people search+match v2 (spent 188)</td><td class='num'>17273</td><td class='num'>0</td></tr><tr><td class='mono'>2026-06-01 16:28:53</td><td>T1-India top-100 people match v3 (by apollo_id, spent 131, revealed 120)</td><td class='num'>17141</td><td class='num'>0</td></tr><tr><td class='mono'>2026-06-01 16:42:05</td><td>T1-India top-100 push complete (119 leads in Zoho)</td><td class='num'>17141</td><td class='num'>0</td></tr><tr><td class='mono'>2026-06-02 16:20 IST</td><td>post T1-India outreach push (25 contacts created+sequenced)</td><td class='num'>17390</td><td class='num'>0</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -177,18 +221,50 @@ footer { margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line);
 </div>
 
 <div class="panel">
-  <h2>Rollout plan — awaiting your go-ahead</h2>
+  <h2>CRM pipeline — T1-India top 100 (v1 campaign)</h2>
+  <p>Enrichment and Zoho CRM push completed on <b>2026-06-01</b>. All 120 records owned by <b>Saurabh B</b>.</p>
+  <div class="grid" style="grid-template-columns: repeat(4, 1fr); margin: 0 0 18px 0;">
+    <div class="stat"><div class="stat-num">120</div><div class="stat-lbl">In Zoho CRM</div><div class="stat-sub">Owner: Saurabh B</div></div>
+    <div class="stat"><div class="stat-num">120</div><div class="stat-lbl">Decision-maker emails</div><div class="stat-sub">Apollo-verified</div></div>
+    <div class="stat"><div class="stat-num">117</div><div class="stat-lbl">Office phone populated</div><div class="stat-sub">97% of T1 leads</div></div>
+    <div class="stat"><div class="stat-num">407</div><div class="stat-lbl">Apollo credits used</div><div class="stat-sub">of 17,622 cycle balance</div></div>
+  </div>
   <table>
     <thead><tr><th>Step</th><th>Action</th><th>Credit cost</th><th>Status</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td>Confirm first slice — T1-India top 100 by ICP score, plus a firmographic size gate</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>2</td><td>Stand up Zoho CRM fields per Sheet 04 — Field Mapping</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>3</td><td>Import the 1,322 ETS-excluded accounts into Zoho as a suppression list (no outreach, ever)</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>4</td><td>Import the first slice (100 accounts) into Zoho as Leads — still no enrichment</td><td>0</td><td>Awaiting approval</td></tr>
-      <tr><td>5</td><td><b>Apollo enrichment</b> — organisation firmographics + size filter + decision-maker email reveals</td><td><b>≤ 300 enrichment credits, worst case</b></td><td><b>Requires explicit approval at runtime</b></td></tr>
-      <tr><td>6</td><td>Personalised outreach via the connected Apollo mailbox; activity logged back to Zoho</td><td>Per send</td><td>Holds until mailbox warmup completes</td></tr>
+      <tr><td>1</td><td>Confirm first slice — T1-India top 100 by ICP score, plus a firmographic size gate</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>2</td><td>Apollo organisation enrichment for 100 accounts → 87 firmographic hits</td><td>87</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>3</td><td>Firmographic gate (employees ≥ 100 OR revenue ≥ $10M) → 82 passed, 5 too small, 13 no data</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>4</td><td>Decision-maker search at the 82 qualified accounts → 188 candidates</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>5</td><td>Apollo email reveals via /people/match → <b>120 personal emails</b> across 58 accounts</td><td>320</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>6</td><td>Push to Zoho CRM as Leads → <b>119 created</b> (1 dropped: missing last name)</td><td>0</td><td><span class="tag verified">Done</span></td></tr>
+      <tr><td>7</td><td>Update Owner = Saurabh B + Phone (office switchboard) across all leads</td><td>0</td><td><span class="tag verified">Done</span> · 117/119 phones populated</td></tr>
+      <tr><td>8</td><td>Personalised outreach via connected Apollo mailbox; activity logged back to Zoho</td><td>Per send</td><td><span class="tag pending-tag">Holds — mailbox warmup pending</span></td></tr>
     </tbody>
   </table>
+  <div class="row2" style="margin-top: 18px;">
+    <div>
+      <h3 style="margin-top: 0;">What's now in each Zoho Lead</h3>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+        <li>Verified personal email (Apollo /people/match)</li>
+        <li>Designation, Company, Industry, City/State/Country</li>
+        <li>Employee count + revenue (Apollo firmographics)</li>
+        <li>LinkedIn URL</li>
+        <li>Office switchboard phone (where Apollo had it)</li>
+        <li>SAP master-file fit: Priority Tier, ICP Score, SAP Products in use</li>
+        <li>Source = "SAP Leads", Status = "Not Contacted", Owner = Saurabh B</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="margin-top: 0;">Notes</h3>
+      <ul style="margin: 6px 0; padding-left: 18px;">
+        <li>Personal mobile numbers are not in scope this cycle — Apollo direct-dial credits are 0 on this account. Office switchboards filled where available.</li>
+        <li>2 records flagged in earlier analysis (Eka Mobility, Danish Power) skipped — Eka's contact moved companies; Danish Power's email not in Apollo.</li>
+        <li>Sumit Duttagupta (Haldia CIO) needs phone added manually in Zoho — workflow timing blocked one update.</li>
+        <li>3 leads are at competitor SAP-services firms (Wipro / HCLTech / Tata Group). Review before outreach.</li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <div class="panel">
@@ -200,17 +276,803 @@ footer { margin-top: 30px; padding-top: 14px; border-top: 1px solid var(--line);
       <div class="kv-row"><div class="kv-lbl">Urgent followups pending</div><div class="kv-val">0</div></div>
     </div>
     <div>
-      <div class="kv-row"><div class="kv-lbl">Actions logged</div><div class="kv-val">0</div></div>
-      <div class="kv-row"><div class="kv-lbl">Aggregate sends</div><div class="kv-val">0</div></div>
+      <div class="kv-row"><div class="kv-lbl">Actions logged</div><div class="kv-val">25</div></div>
+      <div class="kv-row"><div class="kv-lbl">Aggregate sends</div><div class="kv-val">1</div></div>
       <div class="kv-row"><div class="kv-lbl">Aggregate replies</div><div class="kv-val">0</div></div>
     </div>
   </div>
 </div>
 
+</div><!-- /tab-status -->
+
+<div id="tab-previews" class="tabpane">
+
+<div class="panel">
+  <h2>Email previews — Multi-Tenant SAP Integration Suite (v1 campaign)</h2>
+  <div class="callout"><b>Sender:</b> Saurabh Barathe &lt;saurabh.barathe@abhiyantatech.info&gt;. Single follow-up max (+5 business days) if no reply. Multi-tenant advisory PDF is not attached on the first touch — offered on reply.</div>
+  <div class="row2">
+    <div><b>Framework A — Mouse Trap (IT audience).</b> <span style="color:var(--muted)">Mouse Trap (IT/CTO/SAP audience) — 45-55 word body. Anchor: SAP Oct 2025 Blueprints guidance treats single-tenant as suitable only for simpler scenarios. CTA: reply.</span></div>
+    <div><b>Framework B — Finance Angle (CFO audience).</b> <span style="color:var(--muted)">Finance Angle (CFO/Finance audience) — 45-55 word body. Anchor: most Integration Suite incidents hit Finance via audit findings + outage cost; SAP guidance treats single-tenant as not suitable for complex estates. CTA: reply.</span></div>
+  </div>
+  <h3>Rules in force for this batch</h3>
+  <ul><li>First touch only. Single follow-up max (+5 business days) if no reply.</li><li>PDF advisory NOT attached on first touch — offered on reply.</li><li>Subject 4-7 words, sentence case, includes company name.</li><li>Body 45-55 words. Casual + unsure tone. No competitor names. No &#x27;I hope this email finds you well&#x27;.</li><li>No booking link. CTA is a one-line reply.</li><li>Anchor phrasing softened to match SAP&#x27;s actual source wording.</li></ul>
+</div>
+<div class="panel">
+  
+<div class="filter-bar">
+  <div class="filter-stats">
+    <b>25</b> ready for review · <b>2</b> pending enrichment ·
+    <span class="tag t1">IT 19</span>
+    <span class="tag t2">Finance 6</span>
+  </div>
+  <div class="filter-buttons">
+    <button class="fbtn active" data-filter="all">All</button>
+    <button class="fbtn" data-filter="IT">IT only</button>
+    <button class="fbtn" data-filter="Finance">Finance only</button>
+  </div>
+</div>
+  <div id="draft-list">
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Vijay Supare</div>
+      <div class="draft-sub">IT Sr. Manager · Shilpa Steel and Power Limited · Nagpur</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Vijay &lt;vijay.supare@shilpatl.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/vijay-supare-1ab03012/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Public Cloud confirmed</span> · <span>300 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP integration tenants at Shilpa Steel</span><span class="draft-wc">64 words</span></div>
+  <pre class="draft-body">Hi Vijay,
+
+Not sure if this is on your radar — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, not enterprise estates. Given Shilpa&#x27;s integrated steel + power ops, curious if Dev/Test/Prod posture has come up in the last audit cycle.
+
+Wrote a 6-page advisory on the recommended landscape if useful. Worth a quick reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Yogendra Tete</div>
+      <div class="draft-sub">Deputy General Manager Information Technology · Transrail Lighting Ltd · Nagpur</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Yogendra &lt;yogendra.tete@transraillighting.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/yogendra-tete-58a73746/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>2,300 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape posture at Transrail</span><span class="draft-wc">56 words</span></div>
+  <pre class="draft-body">Hi Yogendra,
+
+Curious how Transrail&#x27;s SAP Integration Suite landscape looks today — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant setups as suitable only for simpler scenarios, and project-cycle EPC estates tend to hit the audit issue first.
+
+Wrote a 6-page advisory on the Dev → Test → Prod move if useful. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Sunil Pahune</div>
+      <div class="draft-sub">Head of Department IT · MANAS Agro Industries &amp; Infrastructure · Nagpur</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Sunil &lt;sunil.pahune@manasindustry.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/sunil-pahune/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>1,500 employees · 107M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP tenant strategy at MANAS Agro</span><span class="draft-wc">55 words</span></div>
+  <pre class="draft-body">Hi Sunil,
+
+Quick one — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, not enterprise estates, and multi-plant agri-processing estates usually feel the audit pressure on segregation of duties first.
+
+Happy to share our 6-page advisory on the Dev/Test/Prod move if it helps. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Durga Prasad</div>
+      <div class="draft-sub">Head of Information Technology · Blue Jet Healthcare Ltd · Navi Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Durga &lt;durga.prasad@bluejethealthcare.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/durga-prasad/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Private Cloud confirmed</span> · <span>450 employees · 120.6M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">GxP + SAP tenant question for Blue Jet</span><span class="draft-wc">46 words</span></div>
+  <pre class="draft-body">Hi Durga,
+
+Saw Blue Jet&#x27;s ₹1,300 cr capex roadmap — Vizag greenfield plus the Hyderabad R&amp;D centre for GLP-1s. With that scale of capacity coming online, curious how the integration tenant landscape is sized.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> ₹1,300 cr capex Vizag greenfield + Hyderabad R&amp;D (GLP-1/peptides) per Multibagg Q3 FY26</div>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Vaibhav Ghadge</div>
+      <div class="draft-sub">Manager - IT · Sirmaxo Chemicals Pvt Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Vaibhav &lt;vaibhav.ghadge@sirmaxochem.in&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/vaibhav-ghadge/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-mid">In master file, product unknown</span> · <span>300 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP integration tenants at Sirmaxo</span><span class="draft-wc">56 words</span></div>
+  <pre class="draft-body">Hi Vaibhav,
+
+Curious how Sirmaxo&#x27;s SAP Integration Suite landscape is set up today — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant as suitable only for simpler scenarios, and chemicals estates usually hit segregation-of-duties findings first.
+
+We&#x27;ve put together a 6-page advisory on the Dev → Test → Prod move. Worth a reply if useful?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Gaurav Mohatta</div>
+      <div class="draft-sub">Director · Benzo Chem Industries Pvt. Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Gaurav &lt;gaurav@benzochem.co.in&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/gaurav-mohatta/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Private Cloud confirmed</span> · <span>9 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape risk at Benzo Chem</span><span class="draft-wc">54 words</span></div>
+  <pre class="draft-body">Hi Gaurav,
+
+Quick one — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, and chemicals estates tend to feel the audit-finding cost first (lost shipments, compliance gaps).
+
+Put together a 6-page risk advisory on the Dev/Test/Prod move. Worth a reply if it&#x27;s on the roadmap?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Ram Gowda</div>
+      <div class="draft-sub">SVP - HR, Admin &amp; IT · Galpha Laboratories Limited · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Ram &lt;gowda@galpha.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/ram-gowda/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Private Cloud confirmed</span> · <span>380 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP tenant move at Galpha Labs</span><span class="draft-wc">50 words</span></div>
+  <pre class="draft-body">Hi Ram,
+
+Saw Galpha&#x27;s Baddi facility cleared EU GMP — congrats. With EU markets opening up, the GxP/audit pressure on integration tenants ramps. SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant as not suitable for complex pharma estates.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> Galpha Baddi facility recently cleared EU GMP approval</div>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">G R Karandikar</div>
+      <div class="draft-sub">Vice President - Systems · Apar Industries Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> GR &lt;gr.karandikar@apar.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/gr-karandikar/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP ERP,S4HANA oP confirmed</span> · <span>2,100 employees · 2.2B revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP integration tenants at Apar</span><span class="draft-wc">49 words</span></div>
+  <pre class="draft-body">Hi GR,
+
+At APAR&#x27;s scale — $2.2B across cables, conductors, transformers — and already on S/4HANA, the multi-tenant integration question shows up sooner. SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant as suitable only for simpler estates.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> $2.2B revenue across cables/conductors/transformers (Apollo + master file); S/4HANA oP + ERP per master</div>
+</div>
+<div class="draft-card" data-segment="Finance" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Rakesh Joshi</div>
+      <div class="draft-sub">CFO · IVP Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t2">Finance</span>
+      <span class="tag fw">Framework B</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Rakesh &lt;rjoshi@ivpindia.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/rakesh-joshi/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Public Cloud confirmed</span> · <span>210 employees · 63.1M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP audit risk at IVP</span><span class="draft-wc">62 words</span></div>
+  <pre class="draft-body">Hi Rakesh,
+
+Quick one — most SAP Integration Suite outages in 2025-26 hit Finance, not IT (lost shipments, customer credits, audit findings). SAP&#x27;s Oct 2025 guidance now treats single-tenant as not suitable for complex estates because of this exact pattern.
+
+Wrote a 6-page risk advisory; happy to share if IVP&#x27;s landscape has come up in the audit conversation. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Amit Kumar Gupta</div>
+      <div class="draft-sub">CTO · Rebel Foods Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Amit &lt;amit.gupta@rebelfoods.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/amit-kumar-gupta/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>6,500 employees · 189M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP layer at Rebel Foods</span><span class="draft-wc">54 words</span></div>
+  <pre class="draft-body">Hi Amit,
+
+Saw Rebel runs on Rebel OS + GCP — curious where SAP sits for finance/procurement at 6,500-employee scale. If you&#x27;re on SAP Integration Suite at all, the Oct 2025 Blueprints guidance has a relevant view on tenant posture for ops your size.
+
+Wrote a 6-page advisory if useful. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> WRONG-STACK WARNING: Rebel runs on Google Cloud + in-house Rebel OS, not SAP. Pitch fit unclear — opener acknowledges this.</div><div class="callout warn" style="margin-top:8px"><b>⚠ Wrong-stack flag:</b> Per web research, this company runs Google Cloud + in-house tech, not SAP. The Multi-Tenant Integration Suite pitch may not be the right opener. Draft acknowledges this — consider dropping or repositioning before send.</div>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Manoj Mhatre</div>
+      <div class="draft-sub">DGM - IT · VVF Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Manoj &lt;manoj.mhatre@vvfltd.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/manoj-mhatre/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-mid">SAP ERP (no S/4 yet)</span> · <span>2,000 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP integration posture at VVF</span><span class="draft-wc">52 words</span></div>
+  <pre class="draft-body">Hi Manoj,
+
+Not sure if it&#x27;s on your radar — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, and oleochemicals estates are usually first to feel the segregation-of-duties audit pressure.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply if useful?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Sandip Sonar</div>
+      <div class="draft-sub">Head of Information Technology · Neogen Chemicals Ltd · Thane</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Sandip &lt;sandip.sonar@neogenchem.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/sandip-sonar/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Private Cloud confirmed</span> · <span>590 employees · 91M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP tenants at Neogen Chemicals</span><span class="draft-wc">48 words</span></div>
+  <pre class="draft-body">Hi Sandip,
+
+With Neogen Ionics&#x27; Morita JV and the Dahej PCPIR facility coming online, the integration footprint just got more complex. SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant as suitable only for simpler estates.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a quick reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> Neogen Ionics + Morita JV for Li-ion battery materials; Dahej PCPIR facility</div><div class="draft-opnote">Note: Source row had two names — Rajendra Yeola / Sandip Sonar. Using Sandip (email matches).</div>
+</div>
+<div class="draft-card" data-segment="Finance" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Sameer Mogal</div>
+      <div class="draft-sub">Finance Manager · Brilliant Polymers · Ambernath</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t2">Finance</span>
+      <span class="tag fw">Framework B</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Sameer &lt;sameer.mogal@brilliantpolymers.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/sameer-mogal/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Private Cloud confirmed</span> · <span>230 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape cost at Brilliant Polymers</span><span class="draft-wc">53 words</span></div>
+  <pre class="draft-body">Hi Sameer,
+
+Quick note — most SAP Integration Suite outages in 2025-26 hit Finance first (missed shipments, customer credits, audit findings). SAP&#x27;s own Oct 2025 guidance now treats single-tenant as not suitable for complex estates.
+
+Happy to share our 6-page risk advisory if it&#x27;s relevant for the audit cycle. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Nilesh Bhandari</div>
+      <div class="draft-sub">Senior Associate Vice President · Renewsys India Private Limited · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Nilesh &lt;nilesh.bhandari@renewsysindia.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/nilesh-bhandari/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-mid">In master file, product unknown</span> · <span>770 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape question for Renewsys</span><span class="draft-wc">51 words</span></div>
+  <pre class="draft-body">Hi Nilesh,
+
+Saw the 3GW Khopoli inauguration in March — congrats. With encapsulant scaling to 30GW and the new TOPCon cell line targeted for FY27, curious how SAP integration is set up across the module + cell + encapsulant business units.
+
+Wrote a 6-page advisory if useful. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> 3GW Khopoli solar module facility inaugurated March 2026; encapsulant scaling to 30GW</div><div class="draft-opnote">Note: Source row had two names — Tejas Ziradkar / Nilesh Bhandari. Using Nilesh (email matches).</div>
+</div>
+<div class="draft-card" data-segment="Finance" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Ketan Vyas</div>
+      <div class="draft-sub">Group CFO · Sudeep Pharma Ltd · Baroda</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t2">Finance</span>
+      <span class="tag fw">Framework B</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Ketan &lt;ketan.vyas@sudeepgroup.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/ketan-vyas/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>330 employees · 60M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP audit + pharma compliance cost at Sudeep</span><span class="draft-wc">56 words</span></div>
+  <pre class="draft-body">Hi Ketan,
+
+Quick one — in pharma, most SAP Integration Suite incidents land as Finance/audit findings (GxP gaps, lost batches, customer credits). SAP&#x27;s Oct 2025 guidance now treats single-tenant as not suitable for complex estates for this reason.
+
+Wrote a 6-page risk advisory; happy to share if relevant for the next audit. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="—" data-plevel="pending">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Vinayak Namjoshi</div>
+      <div class="draft-sub">— · Eka Mobility · Pune</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t3">—</span>
+      <span class="tag fw">Framework —</span>
+      <span class="tag pending-tag">Pending</span>
+      <span class="status-pill warn">Pending enrichment</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Vinayak &lt;—&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/vinayak-namjoshi-80493815/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>990 employees · 25M revenue</span></div>
+  <div class="draft-subj pending">— subject pending —</div>
+  <div class="apollo-match stale"><b>Apollo match:</b> Vice President - Enterprise Applications at PRIMUS Techsystems Private Limited · email revealed: no · <b>⚠ Lead is stale — person moved companies</b></div><div class="draft-body pending">Apollo enrichment via LinkedIn returned: Vinayak is currently VP - Enterprise Applications at PRIMUS Techsystems (not Eka Mobility). Lead is stale. Recommend dropping this row OR finding the right contact at Eka Mobility.</div>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Rakesh Dadhwal</div>
+      <div class="draft-sub">Deputy General Manager | Digital Transformation Leader · Paras Spices Pvt Ltd · Gurgaon</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Rakesh &lt;rakesh.dadhwal@parasspices.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/rakesh-dadhwal/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>1,200 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP tenant strategy at Paras Spices</span><span class="draft-wc">55 words</span></div>
+  <pre class="draft-body">Hi Rakesh,
+
+Not sure if this is on your transformation roadmap — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, not enterprise estates, and FMCG estates with multi-region distribution feel it most in upgrade windows.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Sameer Chawnekar</div>
+      <div class="draft-sub">Vice President Information Technology · Mehta Group · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Sameer &lt;sameer.chawnekar@mehtagroup.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/sameer-chawnekar/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>360 employees · 92.2M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape posture at Mehta Group</span><span class="draft-wc">48 words</span></div>
+  <pre class="draft-body">Hi Sameer,
+
+With Mehta&#x27;s multi-vertical estate — cement, sugar, packaging, cables — and the Equities/Plus500 transaction last year, segregating integration tenants across BUs becomes a real question. SAP&#x27;s Oct 2025 Blueprints guidance pushes against single-tenant for setups like this.
+
+Put together a 6-page advisory. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> Mehta Equities acquired by Plus500 March 2025 ($20M); multi-vertical conglomerate (cement, sugar, packaging, cables)</div>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Hemant Pandit</div>
+      <div class="draft-sub">Head IT · Supreme Petrochem Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Hemant &lt;hb_pandit@spl.co.in&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/hemant-pandit/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>370 employees · 629.7M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP integration tenants at Supreme Petrochem</span><span class="draft-wc">48 words</span></div>
+  <pre class="draft-body">Hi Hemant,
+
+Saw SPL commissioned the EPS Phase II and the Mass ABS project is underway — and you&#x27;re already on S/4HANA. Curious how the Integration Suite tenant posture is set up for the Amdoshi expansion.
+
+Wrote a 6-page advisory on the Dev/Test/Prod landscape. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> IBM case study — SPL already on S/4HANA; EPS Phase II commissioned Apr 2026; Mass ABS underway</div>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Bhagwat Patil</div>
+      <div class="draft-sub">CTO · DCW Ltd · Mumbai</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Bhagwat &lt;bhagwat.patil@dcwltd.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/bhagwat-patil/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP ERP,S4HANA Private Cloud confirmed</span> · <span>1,800 employees · 234.2M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP integration tenants at DCW</span><span class="draft-wc">53 words</span></div>
+  <pre class="draft-body">Hi Bhagwat,
+
+Saw DCW is already on S/4HANA — quick one on the integration tenant side. SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant setups as suitable only for simpler scenarios, not enterprise estates like DCW&#x27;s commodity + specialty chemicals mix.
+
+Wrote a 6-page advisory on the Dev/Test/Prod landscape. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> Investor update via multibagg.ai — DCW running SAP S/4HANA</div>
+</div>
+<div class="draft-card" data-segment="Finance" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Himanshu Gupta</div>
+      <div class="draft-sub">GM - Accounts · Dayal Fertilizers Pvt Ltd · Meerut</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t2">Finance</span>
+      <span class="tag fw">Framework B</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Himanshu &lt;himanshu.gupta@dayalgroup.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/himanshu-gupta/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP S4HANA Public Cloud confirmed</span> · <span>1,900 employees</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape cost at Dayal</span><span class="draft-wc">54 words</span></div>
+  <pre class="draft-body">Hi Himanshu,
+
+Quick note — most SAP Integration Suite outages in 2025-26 land as Finance/audit issues (lost shipments, regulatory findings). SAP&#x27;s Oct 2025 guidance now treats single-tenant as not suitable for complex estates because of this.
+
+Wrote a 6-page risk advisory; happy to share if it helps the audit conversation. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="Finance" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Nipun Arora</div>
+      <div class="draft-sub">Chief Financial Officer · Beta Drugs Ltd · Haryana</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t2">Finance</span>
+      <span class="tag fw">Framework B</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Nipun &lt;nipun@betadrugslimited.com&gt;</span>
+    <span><b>Profile:</b> <a href="http://linkedin.com/in/nipun-arora/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span> · <span>250 employees · 43M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP audit cost at Beta Drugs</span><span class="draft-wc">58 words</span></div>
+  <pre class="draft-body">Hi Nipun,
+
+Quick one — in pharma, SAP Integration Suite incidents tend to surface as Finance findings (GxP gaps, batch rework, customer credits). SAP&#x27;s Oct 2025 guidance now treats single-tenant as not suitable for complex estates for this exact reason.
+
+Wrote a 6-page risk advisory; happy to share if it fits the audit cycle. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="verified_hook">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Manoj Gupta</div>
+      <div class="draft-sub">GM-IT / Head · Akums Drugs and Pharmaceuticals Ltd · Haridwar</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag verified">Verified hook ✓</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Manoj &lt;manoj.gupta@akums.in&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/manoj-gupta/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-good">SAP ERP,S4HANA Private Cloud confirmed</span> · <span>320 employees · 492.0M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">GxP + SAP tenant question for Akums</span><span class="draft-wc">50 words</span></div>
+  <pre class="draft-body">Hi Manoj,
+
+With Akums adding 2 new CDMO production units post-IPO, GxP-validated integration tenants get harder to defer. SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant as suitable only for simpler estates — pharma CDMO usually doesn&#x27;t qualify.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply?
+
+Saurabh</pre><div class="hook-src"><b>Hook source:</b> Akums IPO Aug 2024; 2 new CDMO units commissioning FY25</div>
+</div>
+<div class="draft-card" data-segment="Finance" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Ajay Dubey</div>
+      <div class="draft-sub">Chief Financial Officer · Metalman Auto Limited · Walunj</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t2">Finance</span>
+      <span class="tag fw">Framework B</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Ajay &lt;adubey@metalmanauto.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/ajay-dubey/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-mid">In master file, product unknown</span> · <span>5,000 employees · 136M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape risk at Metalman</span><span class="draft-wc">52 words</span></div>
+  <pre class="draft-body">Hi Ajay,
+
+Quick note — most SAP Integration Suite outages in 2025-26 hit Finance through line-stoppage cost and audit findings (JIT delivery slips, customer chargebacks). SAP&#x27;s Oct 2025 update now classifies single-tenant as not suitable for complex enterprise estates.
+
+Happy to share our 6-page risk advisory if relevant. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Premal Barot</div>
+      <div class="draft-sub">Deputy Manager SAP · Sarla Performance Fibers Ltd · Silvassa</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Premal &lt;premal@sarlafibers.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/premal-barot/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-mid">In master file, product unknown</span> · <span>400 employees · 42.7M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP landscape at Sarla Fibers</span><span class="draft-wc">54 words</span></div>
+  <pre class="draft-body">Hi Premal,
+
+Quick one for the SAP team — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, not enterprise estates, and process-mfg estates with export operations usually hit transport-promotion issues first.
+
+Put together a 6-page advisory on the Dev/Test/Prod move. Worth a reply if useful?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="templated">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Vishal Adheda</div>
+      <div class="draft-sub">Manager - IT · Transformers &amp; Rectifiers (India) Limited · Ahmedabad</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework A</span>
+      <span class="tag templated">Templated</span>
+      <span class="status-pill">Awaiting your review</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Vishal &lt;vishal@transformerindia.com&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/vishal-adheda/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-mid">In master file, product unknown</span> · <span>530 employees · 155.3M revenue</span></div>
+  <div class="draft-subj-row"><span class="draft-meta-lbl">Subject</span><span class="draft-subj">SAP tenants at Transformers India</span><span class="draft-wc">48 words</span></div>
+  <pre class="draft-body">Hi Vishal,
+
+Not sure if it&#x27;s on your roadmap — SAP&#x27;s Oct 2025 Blueprints guidance now treats single-tenant Integration Suite as suitable only for simpler scenarios, and electrical/engineering estates tend to hit the upgrade-validation window first.
+
+Wrote a 6-page advisory on the Dev/Test/Prod move. Worth a reply?
+
+Saurabh</pre>
+</div>
+<div class="draft-card" data-segment="IT" data-plevel="pending">
+  <div class="draft-head">
+    <div>
+      <div class="draft-name">Sourabh Singh Shekhawat</div>
+      <div class="draft-sub">Project Manager SAP Implementation · Danish Power Limited · Jaipur</div>
+    </div>
+    <div class="draft-tags">
+      <span class="tag t1">IT</span>
+      <span class="tag fw">Framework —</span>
+      <span class="tag pending-tag">Pending</span>
+      <span class="status-pill warn">Pending enrichment</span>
+    </div>
+  </div>
+  <div class="draft-meta">
+    <span><b>To:</b> Sourabh &lt;—&gt;</span>
+    <span><b>Profile:</b> <a href="https://www.linkedin.com/in/sourabh-singh-shekhawat-40b18923/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+  <div class="draft-fit"><span class="fit-warn">Not in master file</span></div>
+  <div class="draft-subj pending">— subject pending —</div>
+  <div class="apollo-match"><b>Apollo match:</b> Project Manager Sap Implementation at Danish Power Limited · email revealed: no</div><div class="draft-body pending">Apollo confirmed Sourabh IS at Danish Power Limited as Project Manager SAP Implementation, but personal email was not revealed. Strong fit (active SAP implementation) but no contact channel. Recommend manual outreach via LinkedIn InMail.</div>
+</div></div>
+</div>
+
+</div><!-- /tab-previews -->
+
 <footer>
   Abhiyanta Tech — Agentic SDR program. Enrichment via Apollo · CRM via Zoho ·
   Dashboard regenerates on every outreach and observer cycle. Hosted on Cloudflare, not search-indexed.
 </footer>
+
+<script>
+(function() {
+  // Tab switching
+  document.querySelectorAll('.tabnav button').forEach(function(b) {
+    b.addEventListener('click', function() {
+      var target = b.getAttribute('data-tab');
+      document.querySelectorAll('.tabnav button').forEach(function(x) { x.classList.remove('active'); });
+      document.querySelectorAll('.tabpane').forEach(function(p) { p.classList.remove('active'); });
+      b.classList.add('active');
+      var pane = document.getElementById(target);
+      if (pane) pane.classList.add('active');
+      // Update hash for deep-linking
+      try { history.replaceState(null, '', '#' + target); } catch (e) {}
+    });
+  });
+  // Honor hash on load
+  if (location.hash) {
+    var btn = document.querySelector('.tabnav button[data-tab="' + location.hash.slice(1) + '"]');
+    if (btn) btn.click();
+  }
+  // Filter
+  document.querySelectorAll('.fbtn').forEach(function(b) {
+    b.addEventListener('click', function() {
+      var f = b.getAttribute('data-filter');
+      document.querySelectorAll('.fbtn').forEach(function(x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      document.querySelectorAll('.draft-card').forEach(function(card) {
+        var seg = card.getAttribute('data-segment') || '';
+        if (f === 'all' || seg === f) { card.removeAttribute('data-hidden'); }
+        else { card.setAttribute('data-hidden', '1'); }
+      });
+    });
+  });
+})();
+</script>
 
 </div>
 </body>

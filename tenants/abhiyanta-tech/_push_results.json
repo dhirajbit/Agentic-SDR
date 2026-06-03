@@ -1,0 +1,242 @@
+[
+  {
+    "row_id": 2,
+    "company": "Transrail Lighting Ltd",
+    "contact": "Yogendra Tete",
+    "email": "yogendra.tete@transraillighting.com",
+    "apollo_contact_id": "6a1eb620f087430017cf53c0",
+    "subject": "SAP landscape posture at Transrail",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 4,
+    "company": "MANAS Agro Industries & Infrastructure",
+    "contact": "Sunil Pahune",
+    "email": "sunil.pahune@manasindustry.com",
+    "apollo_contact_id": "6a1eb620f087430017cf53cc",
+    "subject": "SAP tenant strategy at MANAS Agro",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 6,
+    "company": "Blue Jet Healthcare Ltd",
+    "contact": "Durga Prasad",
+    "email": "durga.prasad@bluejethealthcare.com",
+    "apollo_contact_id": "6a1eb6215bfa3800164af800",
+    "subject": "GxP + SAP tenant question for Blue Jet",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 7,
+    "company": "Sirmaxo Chemicals Pvt Ltd",
+    "contact": "Vaibhav Ghadge",
+    "email": "vaibhav.ghadge@sirmaxochem.in",
+    "apollo_contact_id": "6a1eb6222bf3db000cf83e7c",
+    "subject": "SAP integration tenants at Sirmaxo",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 8,
+    "company": "Benzo Chem Industries Pvt. Ltd",
+    "contact": "Gaurav Mohatta",
+    "email": "gaurav@benzochem.co.in",
+    "apollo_contact_id": "6a1eb622e2f744001000f375",
+    "subject": "SAP landscape risk at Benzo Chem",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 9,
+    "company": "Galpha Laboratories Limited",
+    "contact": "Ram Gowda",
+    "email": "gowda@galpha.com",
+    "apollo_contact_id": "6a1eb6235bfa3800164af80c",
+    "subject": "SAP tenant move at Galpha Labs",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 10,
+    "company": "Apar Industries Ltd",
+    "contact": "GR R Karandikar",
+    "email": "gr.karandikar@apar.com",
+    "apollo_contact_id": "6a1eb6255bfa3800164af822",
+    "subject": "SAP integration tenants at Apar",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 11,
+    "company": "IVP Ltd",
+    "contact": "Rakesh Joshi",
+    "email": "rjoshi@ivpindia.com",
+    "apollo_contact_id": "6a1eb626e2f744001000f391",
+    "subject": "SAP audit risk at IVP",
+    "framework": "B",
+    "cf_ok": true
+  },
+  {
+    "row_id": 12,
+    "company": "Rebel Foods Ltd",
+    "contact": "Amit Kumar Gupta",
+    "email": "amit.gupta@rebelfoods.com",
+    "apollo_contact_id": "6a1eb626e2f744001000f39d",
+    "subject": "SAP layer at Rebel Foods",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 13,
+    "company": "VVF Ltd",
+    "contact": "Manoj Mhatre",
+    "email": "manoj.mhatre@vvfltd.com",
+    "apollo_contact_id": "6a1eb6272bf3db000cf83e9d",
+    "subject": "SAP integration posture at VVF",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 14,
+    "company": "Neogen Chemicals Ltd",
+    "contact": "Sandip Sonar",
+    "email": "sandip.sonar@neogenchem.com",
+    "apollo_contact_id": "6a1eb629e2f744001000f3be",
+    "subject": "SAP tenants at Neogen Chemicals",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 16,
+    "company": "Brilliant Polymers",
+    "contact": "Sameer Mogal",
+    "email": "sameer.mogal@brilliantpolymers.com",
+    "apollo_contact_id": "6a1eb62a5bfa3800164af850",
+    "subject": "SAP landscape cost at Brilliant Polymers",
+    "framework": "B",
+    "cf_ok": true
+  },
+  {
+    "row_id": 17,
+    "company": "Renewsys India Private Limited",
+    "contact": "Nilesh Bhandari",
+    "email": "nilesh.bhandari@renewsysindia.com",
+    "apollo_contact_id": "6a1eb62a98529a00148438aa",
+    "subject": "SAP landscape question for Renewsys",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 18,
+    "company": "Sudeep Pharma Ltd",
+    "contact": "Ketan Vyas",
+    "email": "ketan.vyas@sudeepgroup.com",
+    "apollo_contact_id": "6a1eb62b5bfa3800164af85b",
+    "subject": "SAP audit + pharma compliance cost at Sudeep",
+    "framework": "B",
+    "cf_ok": true
+  },
+  {
+    "row_id": 20,
+    "company": "Paras Spices Pvt Ltd",
+    "contact": "Rakesh Dadhwal",
+    "email": "rakesh.dadhwal@parasspices.com",
+    "apollo_contact_id": "6a1eb62c5bfa3800164af86c",
+    "subject": "SAP tenant strategy at Paras Spices",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 22,
+    "company": "Mehta Group",
+    "contact": "Sameer Chawnekar",
+    "email": "sameer.chawnekar@mehtagroup.com",
+    "apollo_contact_id": "6a1eb62ce2f744001000f3d6",
+    "subject": "SAP landscape posture at Mehta Group",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 24,
+    "company": "Supreme Petrochem Ltd",
+    "contact": "Hemant Pandit",
+    "email": "hb_pandit@spl.co.in",
+    "apollo_contact_id": "6a1eb62d5cd72a001833eaec",
+    "subject": "SAP integration tenants at Supreme Petrochem",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 25,
+    "company": "DCW Ltd",
+    "contact": "Bhagwat Patil",
+    "email": "bhagwat.patil@dcwltd.com",
+    "apollo_contact_id": "6a1eb62e2bf3db000cf83ec4",
+    "subject": "SAP integration tenants at DCW",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 26,
+    "company": "Dayal Fertilizers Pvt Ltd",
+    "contact": "Himanshu Gupta",
+    "email": "himanshu.gupta@dayalgroup.com",
+    "apollo_contact_id": "6a1eb62e5cd72a001833eb0a",
+    "subject": "SAP landscape cost at Dayal",
+    "framework": "B",
+    "cf_ok": true
+  },
+  {
+    "row_id": 27,
+    "company": "Beta Drugs Ltd",
+    "contact": "Nipun Arora",
+    "email": "nipun@betadrugslimited.com",
+    "apollo_contact_id": "6a1eb62f5bfa3800164af884",
+    "subject": "SAP audit cost at Beta Drugs",
+    "framework": "B",
+    "cf_ok": true
+  },
+  {
+    "row_id": 29,
+    "company": "Akums Drugs and Pharmaceuticals Ltd",
+    "contact": "Manoj Gupta",
+    "email": "manoj.gupta@akums.in",
+    "apollo_contact_id": "6a1eb62f5bfa3800164af890",
+    "subject": "GxP + SAP tenant question for Akums",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 30,
+    "company": "Metalman Auto Limited",
+    "contact": "Ajay Dubey",
+    "email": "adubey@metalmanauto.com",
+    "apollo_contact_id": "6a1eb6302bf3db000cf83ed6",
+    "subject": "SAP landscape risk at Metalman",
+    "framework": "B",
+    "cf_ok": true
+  },
+  {
+    "row_id": 32,
+    "company": "Sarla Performance Fibers Ltd",
+    "contact": "Premal Barot",
+    "email": "premal@sarlafibers.com",
+    "apollo_contact_id": "6a1eb6305798fc000c2a6814",
+    "subject": "SAP landscape at Sarla Fibers",
+    "framework": "A",
+    "cf_ok": true
+  },
+  {
+    "row_id": 33,
+    "company": "Transformers & Rectifiers (India) Limited",
+    "contact": "Vishal Adheda",
+    "email": "vishal@transformerindia.com",
+    "apollo_contact_id": "6a1eb6315bfa3800164af89d",
+    "subject": "SAP tenants at Transformers India",
+    "framework": "A",
+    "cf_ok": true
+  }
+]

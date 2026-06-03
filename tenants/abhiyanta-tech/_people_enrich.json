@@ -1,0 +1,1581 @@
+{
+  "Eka Mobility": {
+    "id": "54a5b4fd7468692abf19c0a1",
+    "first_name": "Vinayak",
+    "last_name": "Namjoshi",
+    "name": "Vinayak Namjoshi",
+    "linkedin_url": "http://www.linkedin.com/in/vinayak-namjoshi-80493815",
+    "title": "Vice President - Enterprise Applications",
+    "photo_url": "https://media.licdn.com/dms/image/v2/C4D03AQHRmaMPvnndgg/profile-displayphoto-shrink_200_200/profile-displayphoto-shrink_200_200/0/1516571991958?e=2147483647&v=beta&t=dfwYucwt7z9vomRLHO5LWorEffrmufyRbnlXKwGs4UI",
+    "twitter_url": null,
+    "github_url": null,
+    "facebook_url": null,
+    "extrapolated_email_confidence": null,
+    "headline": "Employability Skills, ERP, IoT,OEE CCTV Video Analytics on Security,Safety,Surveillance,Plant efficiency,Quality",
+    "organization_id": "54a23dbc7468692e71685419",
+    "employment_history": [
+      {
+        "_id": "6a12cc67e0ed0d0001b79dca",
+        "created_at": null,
+        "current": true,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": null,
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": null,
+        "organization_name": "Self-employed",
+        "raw_address": null,
+        "start_date": "2018-08-01",
+        "title": "Owner, Mentor,Coach for Employability Skill Development",
+        "updated_at": null,
+        "id": "6a12cc67e0ed0d0001b79dca",
+        "key": "6a12cc67e0ed0d0001b79dca"
+      },
+      {
+        "_id": "6a12cc67e0ed0d0001b79dcb",
+        "created_at": null,
+        "current": true,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": null,
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": true,
+        "organization_id": "54a23dbc7468692e71685419",
+        "organization_name": "PRIMUS Techsystems Private Limited",
+        "raw_address": null,
+        "start_date": "2014-04-01",
+        "title": "Vice President - Enterprise Applications",
+        "updated_at": null,
+        "id": "6a12cc67e0ed0d0001b79dcb",
+        "key": "6a12cc67e0ed0d0001b79dcb"
+      },
+      {
+        "_id": "6a12cc67e0ed0d0001b79dcc",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2014-01-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": null,
+        "organization_name": "Suzlon Energy Limited,India",
+        "raw_address": null,
+        "start_date": "2011-04-01",
+        "title": "General Manager IT Systems",
+        "updated_at": null,
+        "id": "6a12cc67e0ed0d0001b79dcc",
+        "key": "6a12cc67e0ed0d0001b79dcc"
+      },
+      {
+        "_id": "6a12cc67e0ed0d0001b79dcd",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2011-04-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": null,
+        "organization_name": "Suzlon Energy Limited",
+        "raw_address": null,
+        "start_date": "2010-01-01",
+        "title": "Program Manager ERP",
+        "updated_at": null,
+        "id": "6a12cc67e0ed0d0001b79dcd",
+        "key": "6a12cc67e0ed0d0001b79dcd"
+      },
+      {
+        "_id": "6a12cc67e0ed0d0001b79dce",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2009-12-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": "5da3776d6b39a70001498052",
+        "organization_name": "Suzlon Energy Limited",
+        "raw_address": null,
+        "start_date": "2004-02-01",
+        "title": "Project Manager SAP",
+        "updated_at": null,
+        "id": "6a12cc67e0ed0d0001b79dce",
+        "key": "6a12cc67e0ed0d0001b79dce"
+      },
+      {
+        "_id": "6a12cc67e0ed0d0001b79dcf",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "1993-01-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": true,
+        "organization_id": "5f415e1156af8800011dff54",
+        "organization_name": "Kirloskar Brothers Limited",
+        "raw_address": null,
+        "start_date": "1990-01-01",
+        "title": "Project Manager",
+        "updated_at": null,
+        "id": "6a12cc67e0ed0d0001b79dcf",
+        "key": "6a12cc67e0ed0d0001b79dcf"
+      }
+    ],
+    "street_address": "",
+    "city": "Baramati",
+    "state": "Maharashtra",
+    "country": "India",
+    "postal_code": null,
+    "formatted_address": null,
+    "time_zone": "Asia/Kolkata",
+    "email": null,
+    "email_status": "unavailable",
+    "contact_id": "6a156b01500044001841d0b6",
+    "contact": {
+      "contact_roles": [],
+      "id": "6a156b01500044001841d0b6",
+      "first_name": "Vinayak",
+      "last_name": "Namjoshi",
+      "name": "Vinayak Namjoshi",
+      "linkedin_url": "http://www.linkedin.com/in/vinayak-namjoshi-80493815",
+      "title": "Vice President - Enterprise Applications",
+      "contact_stage_id": "693fa69a7ee03800195ec8a1",
+      "owner_id": "69b8e6f7032ee9001103fdb5",
+      "creator_id": "69b8e6f7032ee9001103fdb5",
+      "person_id": "54a5b4fd7468692abf19c0a1",
+      "email_needs_tickling": false,
+      "organization_name": "PRIMUS Techsystems Private Limited",
+      "source": "chrome_extension_linkedin",
+      "original_source": "chrome_extension_linkedin",
+      "organization_id": "54a23dbc7468692e71685419",
+      "headline": "Employability Skills, ERP, IoT,OEE CCTV Video Analytics on Security,Safety,Surveillance,Plant efficiency,Quality",
+      "photo_url": null,
+      "present_raw_address": "Pune Division, Maharashtra, India",
+      "linkedin_uid": "53078404",
+      "extrapolated_email_confidence": null,
+      "salesforce_id": null,
+      "salesforce_lead_id": null,
+      "salesforce_contact_id": null,
+      "salesforce_account_id": null,
+      "crm_owner_id": null,
+      "created_at": "2026-05-26T09:42:25.913Z",
+      "emailer_campaign_ids": [],
+      "direct_dial_status": null,
+      "direct_dial_enrichment_failed_at": null,
+      "email_status": "unavailable",
+      "email_source": null,
+      "account_id": "69d5d75b05ec7900011c657f",
+      "last_activity_date": "2026-05-26T09:42:25.000+00:00",
+      "hubspot_vid": null,
+      "hubspot_company_id": null,
+      "crm_id": null,
+      "merged_crm_ids": null,
+      "updated_at": "2026-05-26T09:42:26.511Z",
+      "queued_for_crm_push": false,
+      "suggested_from_rule_engine_config_id": null,
+      "email_unsubscribed": null,
+      "person_deleted": null,
+      "call_opted_out": null,
+      "godmode_apollo_creator": null,
+      "sanitized_phone": null,
+      "street_address": "",
+      "city": "Baramati",
+      "state": "Maharashtra",
+      "country": "India",
+      "postal_code": null,
+      "formatted_address": null,
+      "time_zone": "Asia/Kolkata",
+      "label_ids": [
+        "6a1566c5ecf1010010f7de9e"
+      ],
+      "has_pending_email_arcgate_request": false,
+      "has_email_arcgate_request": false,
+      "existence_level": "full",
+      "email": null,
+      "email_from_customer": true,
+      "typed_custom_fields": {},
+      "custom_field_errors": null,
+      "crm_record_url": null,
+      "email_status_unavailable_reason": null,
+      "email_true_status": "Unavailable",
+      "updated_email_true_status": false,
+      "source_display_name": "Added from LinkedIn",
+      "twitter_url": null,
+      "facebook_url": null,
+      "contact_emails": [],
+      "phone_numbers": [
+        {
+          "raw_number": "+91 20253 63592",
+          "sanitized_number": "+912025363592",
+          "type": "work_hq",
+          "position": 0,
+          "status": "no_status",
+          "dnc_status": null,
+          "dnc_country_supported": false,
+          "dnc_other_info": {},
+          "dialer_flags": null,
+          "source_name": "Apollo",
+          "vendor_validation_statuses": [],
+          "third_party_vendor_name": null
+        }
+      ],
+      "account_phone_note": null,
+      "free_domain": false
+    },
+    "revealed_for_current_team": true,
+    "organization": {
+      "id": "54a23dbc7468692e71685419",
+      "name": "PRIMUS Techsystems Private Limited",
+      "website_url": "http://www.primustechsys.com",
+      "angellist_url": null,
+      "linkedin_url": "http://www.linkedin.com/company/primustechsystems",
+      "twitter_url": "https://twitter.com/primustech",
+      "facebook_url": "https://facebook.com/PrimusTechSys",
+      "primary_phone": {
+        "number": "+91 20253 63592",
+        "source": "Owler",
+        "sanitized_number": "+912025363592"
+      },
+      "languages": [
+        "English"
+      ],
+      "alexa_ranking": null,
+      "phone": "+91 20253 63592",
+      "linkedin_uid": "987819",
+      "founded_year": 2010,
+      "publicly_traded_symbol": null,
+      "publicly_traded_exchange": null,
+      "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/69a96646e5817b00017b6617/picture",
+      "crunchbase_url": null,
+      "primary_domain": "primustechsys.com",
+      "sic_codes": [
+        "7375",
+        "7373"
+      ],
+      "naics_codes": [
+        "541512"
+      ],
+      "sanitized_phone": "+912025363592",
+      "industry": "information technology & services",
+      "estimated_num_employees": 860,
+      "keywords": [
+        "sap webdynpro",
+        "sap successfactors",
+        "sap hybris c4c",
+        "sap analytics cloud",
+        "sap netweaver with enterprise portal",
+        "salesforce development",
+        "sap basis services",
+        "mysap erp allinone",
+        "scm",
+        "sap solution manager",
+        "sap testing services",
+        "s4hana migration",
+        "sap outsourcing & offshoring",
+        "siemens",
+        "crm",
+        "sap s4hana",
+        "mysap business suite with srm",
+        "sap ariba",
+        "pi & bibo",
+        "sap mcf",
+        "salesforce cloud",
+        "it services & it consulting",
+        "digital transformation",
+        "infrastructure",
+        "manufacturing erp",
+        "sap cloud services",
+        "customer engagement",
+        "sap support & maintenance",
+        "business process automation",
+        "sap support & support for pharma & healthcare",
+        "chemicals",
+        "innovation",
+        "chemical industry",
+        "sap abap development",
+        "sap c/4hana customer experience",
+        "crm integration",
+        "industry solutions",
+        "sap support & support for manufacturing",
+        "construction",
+        "enterprise applications",
+        "support services",
+        "sap grc for compliance",
+        "application modernization",
+        "consulting",
+        "business intelligence",
+        "sap dms for document management",
+        "sap btp",
+        "cloud migration",
+        "support & maintenance",
+        "ai technologies",
+        "sap implementation",
+        "sap ai",
+        "sap fiori implementations",
+        "data analytics",
+        "sap hcm for hr transformation",
+        "computer systems design and related services",
+        "automotive",
+        "sap multi-channel foundation",
+        "cloud computing",
+        "regulatory compliance",
+        "sap s/4hana",
+        "b2b",
+        "sap s/4hana public cloud",
+        "sap btp for business innovation",
+        "manufacturing",
+        "sap support & support for digital supply chain",
+        "enterprise cloud solutions",
+        "supply chain management",
+        "recruitment",
+        "sap cloud platform",
+        "engineering",
+        "sap support services",
+        "sap ariba for spend management",
+        "sap support & support for utilities & energy",
+        "process automation",
+        "sap support & support solutions",
+        "process optimization",
+        "sap support",
+        "talent management",
+        "pharmaceuticals",
+        "sap cloud analytics",
+        "sap support & support",
+        "digital ecosystem",
+        "utilities",
+        "crm customization",
+        "salesforce crm",
+        "sap support & support for industry 4.0",
+        "industry-specific erp",
+        "services",
+        "sap support & support services",
+        "system integration",
+        "implementation",
+        "migration",
+        "business analytics",
+        "application management support",
+        "sap ux",
+        "fiori design services",
+        "c/4 hana",
+        "cloud for customer",
+        "successfactors",
+        "employee central",
+        "performance management",
+        "onboarding",
+        "user enablement solutions",
+        "sap concur",
+        "travel management",
+        "expense management",
+        "multichannel foundation",
+        "public sector",
+        "pharma industry",
+        "automotive industry",
+        "industrial machinery",
+        "components solutions",
+        "business process improvements",
+        "cloud applications",
+        "digitization services",
+        "business suite",
+        "best practices",
+        "agile methodology",
+        "itsm",
+        "staff augmentation",
+        "construction projects",
+        "agro products",
+        "food products",
+        "product management",
+        "cost control",
+        "financial management",
+        "case studies",
+        "success stories",
+        "employee engagement",
+        "customer satisfaction",
+        "streamlined operations",
+        "saas",
+        "healthcare",
+        "finance",
+        "consumer_products_retail",
+        "energy_utilities",
+        "sales",
+        "enterprise software",
+        "enterprises",
+        "computer software",
+        "information technology & services",
+        "analytics",
+        "mechanical or industrial engineering",
+        "logistics & supply chain",
+        "medical",
+        "health care",
+        "health, wellness & fitness",
+        "hospital & health care",
+        "financial services"
+      ],
+      "organization_revenue_printed": "8M",
+      "organization_revenue": 8000000.0,
+      "industries": [
+        "information technology & services"
+      ],
+      "secondary_industries": [],
+      "snippets_loaded": true,
+      "industry_tag_id": "5567cd4773696439b10b0000",
+      "industry_tag_hash": {
+        "information technology & services": "5567cd4773696439b10b0000"
+      },
+      "retail_location_count": 0,
+      "raw_address": "PRIMUS HQ, Survey No 34/3, Opp. to ABIL Imperia Complex, Pancard Club Road, Baner, Pune, Maharashtra 411045, IN",
+      "street_address": "32/1A/17 Pancard Club Road",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "postal_code": "411045",
+      "country": "India",
+      "owned_by_organization_id": null,
+      "short_description": "PRIMUS Techsystems Private Limited, founded in 2010 and headquartered in Pune, India, is a technology consulting and services company. It specializes in enterprise application solutions, focusing on SAP, Salesforce, and Siemens technologies to support digital transformation for midmarket enterprises. The company employs around 638-792 people and has reported revenue of $17 million.\n\nPRIMUS offers a wide range of services, including end-to-end implementation and support for various SAP products, Salesforce consulting and integration, and Siemens PLM solutions. The company is recognized for its efficiency and innovation, having filed two patents and serving over 60 active customers across industries such as automotive, manufacturing, pharma, and utilities. PRIMUS is also noted for its partnerships as a trusted SAP partner and Salesforce AppExchange consulting partner, providing tailored solutions to enhance performance in ERP, CRM, and PLM ecosystems.",
+      "suborganizations": [],
+      "num_suborganizations": 0,
+      "annual_revenue_printed": "8M",
+      "annual_revenue": 8000000.0,
+      "total_funding": null,
+      "total_funding_printed": null,
+      "latest_funding_round_date": null,
+      "latest_funding_stage": null,
+      "funding_events": [],
+      "technology_names": [
+        "ABAP",
+        "ANGEL LMS",
+        "AWS SDK for JavaScript",
+        "Airflow",
+        "Alvaria",
+        "Amazon Managed Workflows for Apache Airflow (MWAA)",
+        "Angular",
+        "AngularJS",
+        "Apache",
+        "Apache Beam",
+        "Apex",
+        "Azure API Management",
+        "Azure Active Directory",
+        "Azure Analysis Services",
+        "Azure App Service",
+        "Azure Data Factory",
+        "Azure Data Lake Analytics",
+        "Azure Data Lake Storage",
+        "Azure Devops",
+        "Azure Event Grid",
+        "Azure Functions",
+        "Azure Key Vault",
+        "Azure Kubernetes Service (AKS)",
+        "Azure Log Analytics",
+        "Azure Resource Manager",
+        "Azure SQL",
+        "Azure Service Bus",
+        "Azure Storage Explorer",
+        "Basis",
+        "Bicep",
+        "Bing Ads",
+        "Bootstrap Framework",
+        "CPI",
+        "CRM transformation assessment service for SAP Customer Experience",
+        "CallRail",
+        "Cloudinary",
+        "DATAflow",
+        "Dash",
+        "DotNetNuke",
+        "DoubleClick",
+        "FICO Blaze Advisor",
+        "Facebook Custom Audiences",
+        "Facebook Login (Connect)",
+        "Facebook Widget",
+        "Flow",
+        "Frame",
+        "Git",
+        "GoDataFeed",
+        "Google Analytics",
+        "Google Cloud BigQuery",
+        "Google Cloud BigTable",
+        "Google Cloud Platform",
+        "Google Cloud Storage",
+        "Google Font API",
+        "Google Maps",
+        "Google Tag Manager",
+        "Gravity Forms",
+        "GrubHub for Restaurants",
+        "Gusto",
+        "HELM",
+        "Hubspot",
+        "Jenkins",
+        "Kubernetes",
+        "LinkedIn Ads",
+        "Lytics",
+        "Microsoft Application Insights",
+        "Microsoft Azure Monitor",
+        "Microsoft Azure Monitor",
+        "Mobile Friendly",
+        "MySQL",
+        "NationBuilder",
+        "Nginx",
+        "Ning",
+        "Outlook",
+        "PI",
+        "PostgreSQL",
+        "Power BI Documenter",
+        "PubSub+",
+        "Python",
+        "REST",
+        "React",
+        "Remote",
+        "SAM",
+        "SAP",
+        "SAP Ariba Sourcing",
+        "SAP Customer Care and Service (CCS)",
+        "SAP S/4HANA",
+        "SAP SuccessFactors",
+        "Salesforce",
+        "Salesforce CRM Analytics",
+        "Shopify",
+        "Slack",
+        "Soap Media",
+        "Squarespace ECommerce",
+        "Surfcam",
+        "Terraform",
+        "Ubuntu",
+        "VueJS",
+        "WellnessLiving",
+        "Woo Commerce",
+        "WordPress.org",
+        "YouTube",
+        "Zoho CRM",
+        "Zoho Recruit",
+        "eCentral",
+        "reCAPTCHA"
+      ],
+      "current_technologies": [
+        {
+          "uid": "abap",
+          "name": "ABAP",
+          "category": "ERP"
+        },
+        {
+          "uid": "angel_lms",
+          "name": "ANGEL LMS",
+          "category": "Education Management Software"
+        },
+        {
+          "uid": "aws_sdk_for_javascript",
+          "name": "AWS SDK for JavaScript",
+          "category": "CSS and JavaScript Libraries"
+        },
+        {
+          "uid": "airflow",
+          "name": "Airflow",
+          "category": "Other"
+        },
+        {
+          "uid": "alvaria",
+          "name": "Alvaria",
+          "category": "Customer Relationship Management"
+        },
+        {
+          "uid": "amazon_managed_workflows_for_apache_airflow_mwaa",
+          "name": "Amazon Managed Workflows for Apache Airflow (MWAA)",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "angular",
+          "name": "Angular",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "angularjs",
+          "name": "AngularJS",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "apache",
+          "name": "Apache",
+          "category": "Load Balancers"
+        },
+        {
+          "uid": "apache_beam",
+          "name": "Apache Beam",
+          "category": "Data Management Platform"
+        },
+        {
+          "uid": "apex",
+          "name": "Apex",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "azure_api_management",
+          "name": "Azure API Management",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_active_directory",
+          "name": "Azure Active Directory",
+          "category": "Security"
+        },
+        {
+          "uid": "azure_analysis_services",
+          "name": "Azure Analysis Services",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "azure_app_service",
+          "name": "Azure App Service",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_data_factory",
+          "name": "Azure Data Factory",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_data_lake_analytics",
+          "name": "Azure Data Lake Analytics",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "azure_data_lake_storage",
+          "name": "Azure Data Lake Storage",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure devops",
+          "name": "Azure Devops",
+          "category": "Deployment Tools"
+        },
+        {
+          "uid": "azure_event_grid",
+          "name": "Azure Event Grid",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_functions",
+          "name": "Azure Functions",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_key_vault",
+          "name": "Azure Key Vault",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_kubernetes_service_aks",
+          "name": "Azure Kubernetes Service (AKS)",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_log_analytics",
+          "name": "Azure Log Analytics",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "azure_resource_manager",
+          "name": "Azure Resource Manager",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "azure_sql",
+          "name": "Azure SQL",
+          "category": "Database"
+        },
+        {
+          "uid": "azure_service_bus",
+          "name": "Azure Service Bus",
+          "category": "ERP"
+        },
+        {
+          "uid": "azure_storage_explorer",
+          "name": "Azure Storage Explorer",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "basis",
+          "name": "Basis",
+          "category": "Advertising Networks"
+        },
+        {
+          "uid": "bicep",
+          "name": "Bicep",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "bing_ads",
+          "name": "Bing Ads",
+          "category": "Advertising Networks"
+        },
+        {
+          "uid": "bootstrap_framework",
+          "name": "Bootstrap Framework",
+          "category": "CSS and JavaScript Libraries"
+        },
+        {
+          "uid": "cpi",
+          "name": "CPI",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "crm_transformation_assessment_service_for_sap_customer_experience",
+          "name": "CRM transformation assessment service for SAP Customer Experience",
+          "category": "Customer Relationship Management"
+        },
+        {
+          "uid": "callrail",
+          "name": "CallRail",
+          "category": "Call Tracking"
+        },
+        {
+          "uid": "cloudinary",
+          "name": "Cloudinary",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "dataflow",
+          "name": "DATAflow",
+          "category": "Data Management Platform"
+        },
+        {
+          "uid": "dash",
+          "name": "Dash",
+          "category": "Business Intelligence"
+        },
+        {
+          "uid": "dotnetnuke",
+          "name": "DotNetNuke",
+          "category": "CMS"
+        },
+        {
+          "uid": "doubleclick",
+          "name": "DoubleClick",
+          "category": "Ad Servers"
+        },
+        {
+          "uid": "fico_blaze_advisor",
+          "name": "FICO Blaze Advisor",
+          "category": "Business Intelligence"
+        },
+        {
+          "uid": "facebook_web_custom_audiences",
+          "name": "Facebook Custom Audiences",
+          "category": "Retargeting"
+        },
+        {
+          "uid": "facebook_login",
+          "name": "Facebook Login (Connect)",
+          "category": "Social Login"
+        },
+        {
+          "uid": "facebook_widget",
+          "name": "Facebook Widget",
+          "category": "Widgets"
+        },
+        {
+          "uid": "flow",
+          "name": "Flow",
+          "category": "Other"
+        },
+        {
+          "uid": "frame",
+          "name": "Frame",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "git",
+          "name": "Git",
+          "category": "Deployment Tools"
+        },
+        {
+          "uid": "godatafeed",
+          "name": "GoDataFeed",
+          "category": "Data Management Platform"
+        },
+        {
+          "uid": "google_analytics",
+          "name": "Google Analytics",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "google_cloud_bigquery",
+          "name": "Google Cloud BigQuery",
+          "category": "Data Management Platform"
+        },
+        {
+          "uid": "google_cloud_bigtable",
+          "name": "Google Cloud BigTable",
+          "category": "Database"
+        },
+        {
+          "uid": "google_cloud_platform",
+          "name": "Google Cloud Platform",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "google_cloud_storage",
+          "name": "Google Cloud Storage",
+          "category": "Content Delivery Networks"
+        },
+        {
+          "uid": "google_font_api",
+          "name": "Google Font API",
+          "category": "Fonts"
+        },
+        {
+          "uid": "google_maps",
+          "name": "Google Maps",
+          "category": "Other"
+        },
+        {
+          "uid": "google_tag_manager",
+          "name": "Google Tag Manager",
+          "category": "Tag Management"
+        },
+        {
+          "uid": "gravity_forms",
+          "name": "Gravity Forms",
+          "category": "Hosted Forms"
+        },
+        {
+          "uid": "grubhub_for_restaurants",
+          "name": "GrubHub for Restaurants",
+          "category": "Food Ordering Services"
+        },
+        {
+          "uid": "gusto",
+          "name": "Gusto",
+          "category": "Human Capital Management"
+        },
+        {
+          "uid": "helm",
+          "name": "HELM",
+          "category": "Deployment Tools"
+        },
+        {
+          "uid": "hubspot",
+          "name": "Hubspot",
+          "category": "Marketing Automation"
+        },
+        {
+          "uid": "jenkins",
+          "name": "Jenkins",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "kubernetes",
+          "name": "Kubernetes",
+          "category": "Other"
+        },
+        {
+          "uid": "linkedin_ads",
+          "name": "LinkedIn Ads",
+          "category": "Advertising Networks"
+        },
+        {
+          "uid": "lytics",
+          "name": "Lytics",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "microsoft_application_insights",
+          "name": "Microsoft Application Insights",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "microsoft_azure_monitor",
+          "name": "Microsoft Azure Monitor",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "microsoft_azure_monitor",
+          "name": "Microsoft Azure Monitor",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "mobile_friendly",
+          "name": "Mobile Friendly",
+          "category": "Other"
+        },
+        {
+          "uid": "mysql",
+          "name": "MySQL",
+          "category": "Database"
+        },
+        {
+          "uid": "nationbuilder",
+          "name": "NationBuilder",
+          "category": "CMS"
+        },
+        {
+          "uid": "nginx",
+          "name": "Nginx",
+          "category": "Load Balancers"
+        },
+        {
+          "uid": "ning",
+          "name": "Ning",
+          "category": "CMS"
+        },
+        {
+          "uid": "outlook",
+          "name": "Outlook",
+          "category": "Email Providers"
+        },
+        {
+          "uid": "pi",
+          "name": "PI",
+          "category": "Data Management Platform"
+        },
+        {
+          "uid": "postgresql",
+          "name": "PostgreSQL",
+          "category": "Database"
+        },
+        {
+          "uid": "power_bi_documenter",
+          "name": "Power BI Documenter",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "pubsub",
+          "name": "PubSub+",
+          "category": "Cloud Services"
+        },
+        {
+          "uid": "python",
+          "name": "Python",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "rest",
+          "name": "REST",
+          "category": "Frameworks and Programming Languages"
+        },
+        {
+          "uid": "react",
+          "name": "React",
+          "category": "CSS and JavaScript Libraries"
+        },
+        {
+          "uid": "remote",
+          "name": "Remote",
+          "category": "Other"
+        },
+        {
+          "uid": "sam",
+          "name": "SAM",
+          "category": "Other"
+        },
+        {
+          "uid": "sap",
+          "name": "SAP",
+          "category": "Customer Relationship Management"
+        },
+        {
+          "uid": "sap_ariba_sourcing",
+          "name": "SAP Ariba Sourcing",
+          "category": "ERP"
+        },
+        {
+          "uid": "sap_customer_care_and_service_ccs",
+          "name": "SAP Customer Care and Service (CCS)",
+          "category": "Customer Relationship Management"
+        },
+        {
+          "uid": "sap_s4hana",
+          "name": "SAP S/4HANA",
+          "category": "ERP"
+        },
+        {
+          "uid": "sap_successfactors",
+          "name": "SAP SuccessFactors",
+          "category": "Human Capital Management"
+        },
+        {
+          "uid": "salesforce",
+          "name": "Salesforce",
+          "category": "Customer Relationship Management"
+        },
+        {
+          "uid": "salesforce crm analytics",
+          "name": "Salesforce CRM Analytics",
+          "category": "Analytics and Tracking"
+        },
+        {
+          "uid": "shopify",
+          "name": "Shopify",
+          "category": "E-commerce Platforms"
+        },
+        {
+          "uid": "slack",
+          "name": "Slack",
+          "category": "Chats"
+        },
+        {
+          "uid": "soap_media",
+          "name": "Soap Media",
+          "category": "Advertising Networks"
+        },
+        {
+          "uid": "squarespace_ecommerce",
+          "name": "Squarespace ECommerce",
+          "category": "E-commerce Platforms"
+        },
+        {
+          "uid": "surfcam",
+          "name": "Surfcam",
+          "category": "Other"
+        },
+        {
+          "uid": "terraform",
+          "name": "Terraform",
+          "category": "Deployment Tools"
+        },
+        {
+          "uid": "ubuntu",
+          "name": "Ubuntu",
+          "category": "Load Balancers"
+        },
+        {
+          "uid": "vue_js_library",
+          "name": "VueJS",
+          "category": "CSS and JavaScript Libraries"
+        },
+        {
+          "uid": "wellnessliving",
+          "name": "WellnessLiving",
+          "category": "Appointment Scheduling"
+        },
+        {
+          "uid": "woo_commerce",
+          "name": "Woo Commerce",
+          "category": "E-commerce Platforms"
+        },
+        {
+          "uid": "wordpress_org",
+          "name": "WordPress.org",
+          "category": "CMS"
+        },
+        {
+          "uid": "youtube",
+          "name": "YouTube",
+          "category": "Online Video Platforms"
+        },
+        {
+          "uid": "zoho_crm",
+          "name": "Zoho CRM",
+          "category": "Customer Relationship Management"
+        },
+        {
+          "uid": "zoho_recruit",
+          "name": "Zoho Recruit",
+          "category": "Recruitment"
+        },
+        {
+          "uid": "ecentral",
+          "name": "eCentral",
+          "category": "Appointment Scheduling"
+        },
+        {
+          "uid": "recaptcha",
+          "name": "reCAPTCHA",
+          "category": "Captcha"
+        }
+      ],
+      "org_chart_root_people_ids": [],
+      "org_chart_sector": "OrgChart::SectorHierarchy::Rules::IT",
+      "org_chart_removed": true,
+      "org_chart_show_department_filter": true,
+      "organization_headcount_six_month_growth": 0.0100250626566416,
+      "organization_headcount_twelve_month_growth": 0.004987531172069825,
+      "organization_headcount_twenty_four_month_growth": 0.1547277936962751
+    },
+    "intent_strength": null,
+    "show_intent": false,
+    "email_domain_catchall": false,
+    "departments": [
+      "master_information_technology"
+    ],
+    "subdepartments": [
+      "application_development"
+    ],
+    "functions": [],
+    "seniority": "vp",
+    "personal_emails": []
+  },
+  "Danish Power Limited": {
+    "id": "6664754caca3e50001a5e408",
+    "first_name": "Sourabh",
+    "last_name": "Shekhawat",
+    "name": "Sourabh Shekhawat",
+    "linkedin_url": "http://www.linkedin.com/in/sourabh-singh-shekhawat-40b18923",
+    "title": "Project Manager Sap Implementation",
+    "photo_url": "https://media.licdn.com/dms/image/v2/D5603AQHlPMP8ddCOLQ/profile-displayphoto-scale_200_200/B56Z2FhFPVKkAY-/0/1776061572119?e=2147483647&v=beta&t=ECfexflJcbJek43wezyHWPMbNomT4Etogpcad2OTuxc",
+    "twitter_url": null,
+    "github_url": null,
+    "facebook_url": null,
+    "extrapolated_email_confidence": null,
+    "headline": "SAP COORDINATOR",
+    "organization_id": "5569b6a973696425c0408000",
+    "employment_history": [
+      {
+        "_id": "69f2cde37abb410001e93024",
+        "created_at": null,
+        "current": true,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": null,
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": "5569b6a973696425c0408000",
+        "organization_name": "Danish Power Limited",
+        "raw_address": null,
+        "start_date": "2025-09-01",
+        "title": "Project Manager Sap Implementation",
+        "updated_at": null,
+        "id": "69f2cde37abb410001e93024",
+        "key": "69f2cde37abb410001e93024"
+      },
+      {
+        "_id": "69f2cde37abb410001e93025",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2025-09-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": "57c4f1cea6da986a87fc00e7",
+        "organization_name": "Novel Veritas Pvt. Ltd.",
+        "raw_address": null,
+        "start_date": "2023-04-01",
+        "title": "Sap Materials Management Consultant",
+        "updated_at": null,
+        "id": "69f2cde37abb410001e93025",
+        "key": "69f2cde37abb410001e93025"
+      },
+      {
+        "_id": "69f2cde37abb410001e93026",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2021-04-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": "65d06d643967850001c73384",
+        "organization_name": "Hilton Jaipur",
+        "raw_address": null,
+        "start_date": "2017-12-01",
+        "title": "End User Support Specialist",
+        "updated_at": null,
+        "id": "69f2cde37abb410001e93026",
+        "key": "69f2cde37abb410001e93026"
+      },
+      {
+        "_id": "69f2cde37abb410001e93027",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2017-11-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": null,
+        "organization_name": "DoubleTree by Hilton Goa",
+        "raw_address": null,
+        "start_date": "2016-11-01",
+        "title": "End User Support Specialist",
+        "updated_at": null,
+        "id": "69f2cde37abb410001e93027",
+        "key": "69f2cde37abb410001e93027"
+      },
+      {
+        "_id": "69f2cde37abb410001e93028",
+        "created_at": null,
+        "current": false,
+        "degree": null,
+        "description": null,
+        "emails": null,
+        "end_date": "2016-10-01",
+        "grade_level": null,
+        "kind": null,
+        "major": null,
+        "org_matched_by_name": false,
+        "organization_id": null,
+        "organization_name": "TREE HOUSE RESORT,JAIPUR",
+        "raw_address": null,
+        "start_date": "2015-08-01",
+        "title": "Front End Clerk",
+        "updated_at": null,
+        "id": "69f2cde37abb410001e93028",
+        "key": "69f2cde37abb410001e93028"
+      }
+    ],
+    "street_address": "",
+    "city": "Jaipur",
+    "state": "Rajasthan",
+    "country": "India",
+    "postal_code": null,
+    "formatted_address": "Jaipur, Rajasthan, India",
+    "time_zone": "Asia/Kolkata",
+    "email": null,
+    "email_status": "unavailable",
+    "contact_id": "6a156ea69b5c810014966a32",
+    "contact": {
+      "contact_roles": [],
+      "id": "6a156ea69b5c810014966a32",
+      "first_name": "Sourabh",
+      "last_name": "Shekhawat",
+      "name": "Sourabh Shekhawat",
+      "linkedin_url": "http://www.linkedin.com/in/sourabh-singh-shekhawat-40b18923",
+      "title": "Project Manager Sap Implementation",
+      "contact_stage_id": "693fa69a7ee03800195ec8a1",
+      "owner_id": "69b8e6f7032ee9001103fdb5",
+      "creator_id": "69b8e6f7032ee9001103fdb5",
+      "person_id": "6664754caca3e50001a5e408",
+      "email_needs_tickling": false,
+      "organization_name": "Danish Power Limited",
+      "source": "chrome_extension_linkedin",
+      "original_source": "chrome_extension_linkedin",
+      "organization_id": "5569b6a973696425c0408000",
+      "headline": "SAP COORDINATOR",
+      "photo_url": null,
+      "present_raw_address": "Jaipur, Rajasthan, India",
+      "linkedin_uid": null,
+      "extrapolated_email_confidence": null,
+      "salesforce_id": null,
+      "salesforce_lead_id": null,
+      "salesforce_contact_id": null,
+      "salesforce_account_id": null,
+      "crm_owner_id": null,
+      "created_at": "2026-05-26T09:57:58.407Z",
+      "emailer_campaign_ids": [],
+      "direct_dial_status": "enrichment_successful",
+      "direct_dial_enrichment_failed_at": null,
+      "email_status": "verified",
+      "email_source": null,
+      "account_id": "6a156ea69b5c810014966a34",
+      "last_activity_date": null,
+      "hubspot_vid": null,
+      "hubspot_company_id": null,
+      "crm_id": null,
+      "merged_crm_ids": null,
+      "updated_at": "2026-05-26T09:58:29.640Z",
+      "queued_for_crm_push": false,
+      "suggested_from_rule_engine_config_id": null,
+      "email_unsubscribed": null,
+      "person_deleted": null,
+      "call_opted_out": null,
+      "godmode_apollo_creator": null,
+      "sanitized_phone": "+918233324681",
+      "street_address": "",
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "country": "India",
+      "postal_code": null,
+      "formatted_address": "Jaipur, Rajasthan, India",
+      "time_zone": "Asia/Kolkata",
+      "label_ids": [
+        "69b8f90cbcaf2200217a960a"
+      ],
+      "has_pending_email_arcgate_request": false,
+      "has_email_arcgate_request": false,
+      "existence_level": "full",
+      "email": "shekhawat@danish.co.in",
+      "email_from_customer": true,
+      "typed_custom_fields": {},
+      "custom_field_errors": null,
+      "crm_record_url": null,
+      "email_status_unavailable_reason": null,
+      "email_true_status": "Verified",
+      "updated_email_true_status": false,
+      "source_display_name": "Added from LinkedIn",
+      "twitter_url": null,
+      "facebook_url": null,
+      "contact_emails": [
+        {
+          "email_md5": "f628ed95aea386071e66ea6d41118d81",
+          "email_sha256": "ca5e1a1b077c2cea34bfb2e25892e2fd98b3e915b7970f3ff06a81d3c4379c05",
+          "email_status": "verified",
+          "extrapolated_email_confidence": null,
+          "position": 0,
+          "email": "shekhawat@danish.co.in",
+          "free_domain": false,
+          "source": "LeadMagic",
+          "third_party_vendor_name": "LeadMagic",
+          "vendor_validation_statuses": [
+            {
+              "raw_status": "valid",
+              "third_party_validator_name": "ZeroBounce",
+              "timestamp": "2026-05-26T09:58:29.640Z"
+            }
+          ],
+          "email_needs_tickling": false,
+          "email_status_unavailable_reason": null
+        }
+      ],
+      "phone_numbers": [
+        {
+          "raw_number": "+91 82333 24681",
+          "sanitized_number": "+918233324681",
+          "type": "mobile",
+          "position": 0,
+          "status": "valid_number",
+          "dnc_status": null,
+          "dnc_country_supported": false,
+          "dnc_other_info": {},
+          "dialer_flags": null,
+          "source_name": "Apollo",
+          "vendor_validation_statuses": [],
+          "third_party_vendor_name": null
+        },
+        {
+          "raw_number": "+91 89478 22222",
+          "sanitized_number": "+918947822222",
+          "type": "work_hq",
+          "position": 1,
+          "status": "no_status",
+          "dnc_status": null,
+          "dnc_country_supported": false,
+          "dnc_other_info": {},
+          "dialer_flags": null,
+          "source_name": "Apollo",
+          "vendor_validation_statuses": [],
+          "third_party_vendor_name": null
+        }
+      ],
+      "account_phone_note": null,
+      "free_domain": false
+    },
+    "revealed_for_current_team": true,
+    "organization": {
+      "id": "5569b6a973696425c0408000",
+      "name": "Danish Power Limited",
+      "website_url": "http://www.danish.co.in",
+      "angellist_url": null,
+      "linkedin_url": "http://www.linkedin.com/company/danish-power-limited",
+      "twitter_url": null,
+      "facebook_url": null,
+      "primary_phone": {
+        "number": "+91 89478 22222",
+        "source": "Scraped",
+        "sanitized_number": "+918947822222"
+      },
+      "languages": [
+        "English"
+      ],
+      "alexa_ranking": null,
+      "phone": "+91 89478 22222",
+      "linkedin_uid": "4824625",
+      "founded_year": 1985,
+      "publicly_traded_symbol": null,
+      "publicly_traded_exchange": null,
+      "logo_url": "https://zenprospect-production.s3.amazonaws.com/uploads/pictures/6962a7c30a81fb0001c3cca4/picture",
+      "crunchbase_url": null,
+      "primary_domain": "danish.co.in",
+      "sic_codes": [
+        "3621"
+      ],
+      "naics_codes": [
+        "33531"
+      ],
+      "sanitized_phone": "+918947822222",
+      "industry": "electrical/electronic manufacturing",
+      "estimated_num_employees": 480,
+      "keywords": [
+        "power transformers",
+        "wind energy",
+        "dry type transformers",
+        "oil type transformers",
+        "automation",
+        "inverter duty transformers",
+        "substation automation",
+        "renewable energy",
+        "converter duty transformers",
+        "cast resin transformers",
+        "relays",
+        "control relay panels",
+        "solar energy",
+        "protection panels",
+        "transformers",
+        "appliances, electrical, & electronics manufacturing",
+        "power equipment",
+        "electrical equipment manufacturing",
+        "energy efficiency",
+        "special application transformers",
+        "power generation & transmission",
+        "substations",
+        "short-circuit resilient transformers",
+        "transformer manufacturing",
+        "automation panels",
+        "type tested 18 mva inverter duty transformer",
+        "high capacity transformers",
+        "compact substations",
+        "services",
+        "industrial equipment",
+        "compact substation solutions",
+        "high-quality transformers",
+        "government",
+        "oil-filled transformers",
+        "industrial equipment manufacturing",
+        "containerized substations",
+        "switchgear panels",
+        "solar transformers",
+        "medium voltage switchgear",
+        "scada integrated transformers",
+        "e-commerce",
+        "international standards",
+        "customized power solutions",
+        "transformer export",
+        "b2b",
+        "transformer testing",
+        "biodegradable ester transformers",
+        "low voltage switchgear",
+        "furnace transformers",
+        "bis license ester-filled transformers",
+        "power distribution panels",
+        "industrial transformers",
+        "special transformers",
+        "oil immersed transformers",
+        "distribution transformers",
+        "custom transformer design",
+        "reliable power equipment",
+        "manufacturing",
+        "distribution",
+        "clean energy & technology",
+        "environmental services",
+        "renewables & environment",
+        "electrical/electronic manufacturing",
+        "mechanical or industrial engineering",
+        "consumer internet",
+        "consumers",
+        "internet",
+        "information technology & services"
+      ],
+      "organization_revenue_printed": "50M",
+      "organization_revenue": 50000000.0,
+      "industries": [
+        "electrical/electronic manufacturing"
+      ],
+      "secondary_industries": [],
+      "snippets_loaded": true,
+      "industry_tag_id": "5567cd4c73696439c9030000",
+      "industry_tag_hash": {
+        "electrical/electronic manufacturing": "5567cd4c73696439c9030000"
+      },
+      "retail_location_count": 0,
+      "raw_address": "f-680, sitapura industrial area, jaipur rj 302011, jaipur, rajasthan, india",
+      "street_address": "Sitapura Industrial Area Road",
+      "city": "Jaipur",
+      "state": "Rajasthan",
+      "postal_code": "302022",
+      "country": "India",
+      "owned_by_organization_id": null,
+      "short_description": "Danish Power Limited is an Indian manufacturer and exporter of power equipment, established in 1985 and headquartered in Jaipur. The company specializes in transformers, control relay panels, compact substations, and substation automation services. With over 35 years of experience, Danish Power is recognized for its commitment to quality and innovation, holding multiple ISO certifications and being the first in India to obtain a BIS License for Ester-filled Transformers.\n\nThe company offers a range of products, including inverter duty transformers, distribution transformers, power transformers, and control relay panels. Their solutions are designed for applications in power transmission, distribution, and automation, supporting sectors such as renewable energy, power generation, and industrial operations. Danish Power also provides services for substation development and industrial automation, ensuring customized solutions for various projects.",
+      "suborganizations": [],
+      "num_suborganizations": 0,
+      "annual_revenue_printed": "50M",
+      "annual_revenue": 50000000.0,
+      "total_funding": null,
+      "total_funding_printed": null,
+      "latest_funding_round_date": null,
+      "latest_funding_stage": null,
+      "funding_events": [],
+      "technology_names": [
+        "Gmail",
+        "Google Apps",
+        "Google Tag Manager",
+        "Micro",
+        "Mobile Friendly",
+        "Nginx",
+        "WordPress.org"
+      ],
+      "current_technologies": [
+        {
+          "uid": "gmail",
+          "name": "Gmail",
+          "category": "Email Providers"
+        },
+        {
+          "uid": "google_apps",
+          "name": "Google Apps",
+          "category": "Other"
+        },
+        {
+          "uid": "google_tag_manager",
+          "name": "Google Tag Manager",
+          "category": "Tag Management"
+        },
+        {
+          "uid": "micro",
+          "name": "Micro",
+          "category": "Other"
+        },
+        {
+          "uid": "mobile_friendly",
+          "name": "Mobile Friendly",
+          "category": "Other"
+        },
+        {
+          "uid": "nginx",
+          "name": "Nginx",
+          "category": "Load Balancers"
+        },
+        {
+          "uid": "wordpress_org",
+          "name": "WordPress.org",
+          "category": "CMS"
+        }
+      ],
+      "org_chart_root_people_ids": [],
+      "org_chart_sector": null,
+      "org_chart_removed": null,
+      "org_chart_show_department_filter": null,
+      "organization_headcount_six_month_growth": 0.02830188679245283,
+      "organization_headcount_twelve_month_growth": 0.06862745098039216,
+      "organization_headcount_twenty_four_month_growth": 0.2111111111111111
+    },
+    "intent_strength": null,
+    "show_intent": false,
+    "email_domain_catchall": false,
+    "departments": [
+      "master_engineering_technical"
+    ],
+    "subdepartments": [
+      "project_management"
+    ],
+    "functions": [],
+    "seniority": "manager",
+    "personal_emails": []
+  }
+}

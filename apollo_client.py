@@ -140,6 +140,78 @@ def enrich_bulk(rows: list[dict]) -> list[dict]:
     return resp.get("matches", []) or []
 
 
+def enrich_organization(domain: str) -> dict | None:
+    """Single-organization firmographic enrich. CHARGED ~1 credit per call on the
+    current Apollo plan (this changed at some point — used to be free). Gated
+    through assert_can_spend_lead_credits(1) — caller MUST have called
+    get_credit_balance() in-process within the last 10 minutes."""
+    if not domain:
+        return None
+    assert_can_spend_lead_credits(1)
+    resp = _request("POST", "organizations/enrich", json={"domain": domain})
+    return resp.get("organization")
+
+
+def enrich_organizations_bulk(domains: list[str]) -> list[dict | None]:
+    """Org-enrich a list of domains. Apollo doesn't expose a true bulk endpoint
+    for organizations; we sequentially call the single-org endpoint.
+    CHARGED — gates each call through assert_can_spend_lead_credits(1)."""
+    assert_can_spend_lead_credits(len(domains))
+    out = []
+    for d in domains:
+        try:
+            out.append(enrich_organization(d))
+        except Exception as exc:
+            out.append({"_error": str(exc), "domain": d})
+    return out
+
+
+def search_people_at_org(organization_id: str, titles: list[str], per_page: int = 5) -> list[dict]:
+    """Free search via /mixed_people/api_search filtered by organization_id + titles.
+    Returns candidate list with first_name, title, organization (last_name is
+    obfuscated until /people/match is called per candidate).
+    Free (does not consume lead_credit).
+
+    NOTE: /mixed_people/search and /people/search were deprecated for API callers
+    in 2024. /mixed_people/api_search is the live endpoint."""
+    if not organization_id or not titles:
+        return []
+    payload = {
+        "person_titles": titles,
+        "organization_ids": [organization_id],
+        "page": 1,
+        "per_page": min(per_page, 25),
+    }
+    resp = _request("POST", "mixed_people/api_search", json=payload)
+    return resp.get("people", []) or []
+
+
+def match_person(*, apollo_id: str | None = None,
+                 first_name: str | None = None, last_name: str | None = None,
+                 organization_name: str | None = None, domain: str | None = None,
+                 linkedin_url: str | None = None, email: str | None = None) -> dict | None:
+    """Single /people/match call. Reveals personal email — costs 1 lead_credit on hit.
+    Phones hard-disabled. Caller MUST have called get_credit_balance() in-process
+    within the last 10 minutes — this passes through assert_can_spend_lead_credits(1).
+
+    IMPORTANT: prefer apollo_id when available (from a prior /mixed_people/api_search).
+    Passing only first_name + organization_name creates STUB records, not matches —
+    Apollo can't uniquely identify the search result without the id or the full name."""
+    assert_can_spend_lead_credits(1)
+    payload = {
+        "reveal_personal_emails": True,
+        "reveal_phone_number": False,
+    }
+    for k, v in (("id", apollo_id),
+                 ("first_name", first_name), ("last_name", last_name),
+                 ("organization_name", organization_name), ("domain", domain),
+                 ("linkedin_url", linkedin_url), ("email", email)):
+        if v:
+            payload[k] = v
+    resp = _request("POST", "people/match", json=payload)
+    return resp.get("person")
+
+
 def list_email_accounts() -> list[dict]:
     """Returns mailboxes connected to this Apollo workspace. Use this to
     discover the APOLLO_EMAIL_ACCOUNT_ID value for the tenant .env."""
@@ -154,12 +226,12 @@ def add_contacts_to_campaign(campaign_id: str, contact_ids: list[str], email_acc
     in the Apollo UI, drop its id in APOLLO_CAMPAIGN_ID, then push contacts in.
     """
     payload = {
-        "campaign_id": campaign_id,
         "contact_ids": contact_ids,
         "send_email_from_email_account_id": send_email_from_email_account_id or email_account_id,
         "emailer_campaign_id": campaign_id,
     }
-    return _request("POST", "emailer_campaigns/add_contact_ids", json=payload)
+    # Apollo requires the campaign id in the URL path, not just the body.
+    return _request("POST", f"emailer_campaigns/{campaign_id}/add_contact_ids", json=payload)
 
 
 def create_contact(person: dict) -> dict:
