@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meetings, booked on autopilot</title>
+<meta name="description" content="An AI prospector that works your pipeline end to end. It reaches out, follows up on WhatsApp like a human until people reply, sends the booking link, and books the meeting on your calendar — so you don't keep an inbound sales team on payroll. Source from website intent or your CRM." />
+
+<!-- ============================================================
+     WORDMARK / NAME = PLACEHOLDER. No product name chosen yet.
+     Find-replace "Autopilot" everywhere to rename.
+     ============================================================ -->
+
+<!-- Fonts: Perfectly Nineties (display + body, local) · Geist Mono (telemetry) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+/* ============================ PERFECTLY NINETIES (local) ============================ */
+@font-face{
+  font-family:"Perfectly Nineties";font-style:normal;font-weight:400;font-display:swap;
+  src:url("perfectly-nineties-font-family-1780968794-0/perfectlynineties-regular_fontlota647.otf") format("opentype");
+}
+@font-face{
+  font-family:"Perfectly Nineties";font-style:italic;font-weight:400;font-display:swap;
+  src:url("perfectly-nineties-font-family-1780968794-0/perfectlynineties-regularitalic_fontlot2b14.otf") format("opentype");
+}
+@font-face{
+  font-family:"Perfectly Nineties";font-style:normal;font-weight:600;font-display:swap;
+  src:url("perfectly-nineties-font-family-1780968794-0/perfectlynineties-semibold_fontlotf5ec.otf") format("opentype");
+}
+@font-face{
+  font-family:"Perfectly Nineties";font-style:normal;font-weight:700;font-display:swap;
+  src:url("perfectly-nineties-font-family-1780968794-0/perfectlynineties-bold_fontlote25a.otf") format("opentype");
+}
+@font-face{
+  font-family:"Perfectly Nineties";font-style:normal;font-weight:800;font-display:swap;
+  src:url("perfectly-nineties-font-family-1780968794-0/perfectlynineties-extrabold_fontlotf007.otf") format("opentype");
+}
+@font-face{
+  font-family:"Perfectly Nineties";font-style:normal;font-weight:900;font-display:swap;
+  src:url("perfectly-nineties-font-family-1780968794-0/perfectlynineties-black_fontlotdd34.otf") format("opentype");
+}
+/* ============================ DESIGN TOKENS ============================ */
+:root{
+  /* surfaces — bright, disciplined warm paper */
+  --bg:#FBFAF6;
+  --surface:#FFFFFF;
+  --elevated:#F3F1EA;
+  --line:#E4E0D6;
+  --line-soft:#EDEAE2;
+
+  /* text — ink */
+  --fg:#16140F;
+  --muted:#6B6658;
+  --faint:#A8A293;
+
+  /* signal — one electric accent + one support */
+  --green:#00C98A;       /* primary: alive / qualified / booked */
+  --green-dim:#009E6C;
+  --green-glow:rgba(0,201,138,.40);
+  --amber:#FF5A3C;       /* WhatsApp / replies (coral) */
+  --amber-dim:#D63C20;
+  --amber-glow:rgba(255,90,60,.34);
+
+
+  /* type */
+  --display:"Perfectly Nineties", "Times New Roman", Georgia, serif;
+  --body:"Perfectly Nineties", "Times New Roman", Georgia, serif;
+  --mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* spacing (8px base) */
+  --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:48px; --s6:64px; --s7:96px; --s8:128px;
+  --maxw:1180px;
+  --radius:14px; --radius-sm:9px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--body);
+  font-weight:400;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  font-feature-settings:"ss01","cv01";
+}
+
+/* dot-grid + grain backdrop */
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(22,20,15,.06) 1px, transparent 0) 0 0 / 38px 38px,
+    radial-gradient(ellipse 75% 55% at 50% 0%, rgba(0,201,138,.08), transparent 65%);
+  mask-image:radial-gradient(ellipse 90% 75% at 50% 0%, #000 35%, transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 90% 75% at 50% 0%, #000 35%, transparent 100%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.03;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--s3);position:relative;z-index:1}
+section{position:relative;z-index:1}
+
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+/* ============================ TYPE ============================ */
+h1,h2,h3{font-family:var(--display);font-weight:800;letter-spacing:-.02em;line-height:1.02}
+h1{font-size:clamp(40px,6.4vw,76px);font-weight:900;letter-spacing:-.035em}
+h2{font-size:clamp(30px,4.2vw,50px)}
+h3{font-size:clamp(20px,2.4vw,26px);font-weight:700;letter-spacing:-.02em}
+.eyebrow{
+  font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--green);display:inline-flex;align-items:center;gap:8px;
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green-glow)}
+.lead{font-size:clamp(17px,1.7vw,20px);color:var(--muted);max-width:54ch;line-height:1.6}
+.mono{font-family:var(--mono);font-size:13px;letter-spacing:.01em}
+.amber{color:var(--amber)} .green{color:var(--green)}
+
+/* ============================ BUTTONS ============================ */
+.btn{
+  display:inline-flex;align-items:center;gap:9px;font-family:var(--body);font-weight:500;font-size:15px;
+  padding:13px 22px;border-radius:var(--radius-sm);border:1px solid transparent;cursor:pointer;
+  transition:transform .15s var(--ease), box-shadow .25s var(--ease), background .2s, border-color .2s;
+}
+.btn-primary{background:var(--green);color:#04140C;font-weight:600;box-shadow:0 0 0 0 var(--green-glow)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 34px -12px var(--green-glow), 0 0 22px -6px var(--green-glow)}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--fg)}
+.btn-ghost:hover{border-color:var(--green);background:rgba(0,201,138,.08);transform:translateY(-2px)}
+.btn svg{width:16px;height:16px}
+
+/* ============================ NAV ============================ */
+nav{
+  position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+  background:linear-gradient(180deg, rgba(251,250,246,.90), rgba(251,250,246,.62));
+  border-bottom:1px solid var(--line-soft);
+}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:14px var(--s3);display:flex;align-items:center;gap:var(--s4)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:-.02em}
+.brand .glyph{width:26px;height:26px;flex:0 0 auto}
+.brand small{font-family:var(--mono);font-size:9px;color:var(--faint);letter-spacing:.1em;font-weight:400;align-self:flex-start;margin-top:2px}
+.nav-links{display:flex;gap:26px;margin-left:auto;font-size:14px;color:var(--muted)}
+.nav-links a{transition:color .2s} .nav-links a:hover{color:var(--fg)}
+.nav-cta{display:flex;gap:10px;align-items:center}
+@media(max-width:880px){.nav-links{display:none}.nav-cta .btn-ghost{display:none}}
+
+/* ============================ HERO ============================ */
+.hero{padding:var(--s7) 0 var(--s6);text-align:center}
+.hero .eyebrow{margin-bottom:var(--s3)}
+.hero h1{margin:0 auto;max-width:16ch}
+.hero h1 .grad{color:var(--green-dim);font-style:italic}
+.hero .lead{margin:var(--s3) auto var(--s4);text-align:center;max-width:58ch}
+.hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.trust{margin-top:var(--s3);font-family:var(--mono);font-size:12px;color:var(--faint);display:flex;gap:18px;justify-content:center;flex-wrap:wrap}
+.trust span{display:inline-flex;align-items:center;gap:6px}
+.trust span::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--green-dim)}
+
+/* ============================ FLOW DIAGRAM (signature) ============================ */
+.flow{margin:var(--s6) auto 0;max-width:1060px;position:relative}
+.flow-stages{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;position:relative}
+.stage{
+  background:var(--surface);text-align:left;min-height:148px;
+  display:flex;flex-direction:column;
+  border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;position:relative;
+  transition:border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.stage .chips{margin-top:auto}
+.stage.lit{border-color:var(--green);box-shadow:0 0 0 1px var(--green-dim), 0 14px 40px -20px var(--green-glow);transform:translateY(-4px)}
+.stage .st-k{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.12em}
+.stage .st-t{font-family:var(--display);font-weight:700;font-size:16px;margin:6px 0 12px}
+.stage.lit .st-t{color:var(--green)}
+.stage .chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{
+  font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--elevated);
+  border:1px solid var(--line);border-radius:6px;padding:4px 8px;display:inline-flex;align-items:center;gap:5px;
+  transition:.3s var(--ease);
+}
+.chip.on{color:var(--fg);border-color:var(--green-dim)}
+.chip.amberon{color:var(--amber);border-color:var(--amber-dim)}
+.chip img{width:13px;height:13px;border-radius:3px}
+/* connectors — arrow in the gap between cards */
+.flow-stages .stage:not(:last-child)::after{
+  content:"→";position:absolute;top:50%;right:-19px;transform:translateY(-50%);
+  font-family:var(--mono);font-size:15px;color:var(--faint);z-index:2;
+}
+.stage.lit:not(:last-child)::after{color:var(--green)}
+@media(max-width:760px){
+  .flow-stages{grid-template-columns:1fr 1fr;gap:12px}
+  .flow-stages .stage::after{display:none}
+  .stage{min-height:0}
+}
+
+/* loop-back note */
+.flow-return{margin-top:20px;display:flex;justify-content:center}
+.flow-return span{font-family:var(--mono);font-size:12px;color:var(--muted);
+  border:1px dashed var(--line);border-radius:20px;padding:8px 18px;display:inline-flex;align-items:center;gap:9px}
+.flow-return b{color:var(--amber-dim);font-weight:500}
+.flow-return .spin{display:inline-block;font-style:normal;color:var(--amber-dim);animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(-360deg)}}
+
+/* ============================ GENERIC SECTION HEADERS ============================ */
+.sec{padding:var(--s7) 0}
+.sec-head{max-width:60ch;margin-bottom:var(--s5)}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.sec-head .eyebrow{margin-bottom:14px}
+.sec-head h2{margin-bottom:14px}
+
+/* reveal-on-scroll */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease), transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================ LOGO MARQUEE ============================ */
+.ingest{padding:var(--s5) 0;border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+  background:linear-gradient(180deg,transparent, rgba(0,201,138,.07), transparent)}
+.ingest .label{text-align:center;font-family:var(--mono);font-size:12px;color:var(--faint);letter-spacing:.14em;text-transform:uppercase;margin-bottom:var(--s4)}
+.marquee{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+.marquee-track{display:flex;gap:16px;width:max-content;animation:slide 36s linear infinite}
+.ingest:hover .marquee-track{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+.logo{
+  display:inline-flex;align-items:center;gap:9px;height:46px;padding:0 18px;flex:0 0 auto;
+  background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--muted);
+  font-size:14px;font-weight:500;transition:.3s var(--ease);white-space:nowrap;
+}
+.logo:hover{color:var(--fg);border-color:var(--green-dim);background:var(--elevated)}
+.logo img{width:18px;height:18px;border-radius:4px}
+.logo.ph{border-style:dashed;color:var(--faint)}
+.logo.ph::before{content:"+";font-family:var(--mono);color:var(--green-dim);font-size:15px}
+
+/* ============================ THE AGENT DECIDES ============================ */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);align-items:center}
+@media(max-width:880px){.grid2{grid-template-columns:1fr;gap:var(--s4)}}
+.decide-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:6px;
+  box-shadow:0 30px 80px -40px rgba(0,0,0,.8);
+}
+.decide-head{font-family:var(--mono);font-size:11px;color:var(--faint);padding:10px 12px;display:flex;gap:8px;align-items:center;border-bottom:1px solid var(--line-soft)}
+.dot3{display:flex;gap:5px} .dot3 i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+/* live drafting + learning card */
+.learn-body{padding:14px;display:flex;flex-direction:column;gap:12px}
+.learn-draft{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:12px 13px;font-size:13.5px;line-height:1.6;color:#2B2820}
+.learn-draft .to{font-family:var(--mono);font-size:10.5px;color:var(--faint);display:block;margin-bottom:8px;padding-bottom:7px;border-bottom:1px solid var(--line-soft)}
+.learn-type{white-space:pre-wrap;min-height:96px}
+.learn-type::after{content:"▌";color:var(--green);animation:blinkc .9s steps(1) infinite}
+.learn-draft.done .learn-type::after{content:""}
+.learn-title{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.learn-feed{display:flex;flex-direction:column;gap:7px}
+.learn-feed .ln{font-family:var(--mono);font-size:11.5px;color:var(--muted);display:flex;gap:8px;
+  opacity:0;transform:translateX(-8px);transition:.45s var(--ease)}
+.learn-feed .ln.pop{opacity:1;transform:none}
+.learn-feed .ln .ok{color:var(--green);flex:0 0 auto}
+.learn-feed .ln.amb .ok{color:var(--amber)}
+
+/* ============================ CRM SYNC ============================ */
+.crm-logos{display:flex;flex-wrap:wrap;gap:10px;margin-top:var(--s3)}
+.crm-feed{padding:14px;font-family:var(--mono);font-size:12px;line-height:1.5;height:248px;overflow:hidden;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 12%,#000 82%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 12%,#000 82%,transparent)}
+.crm-line{display:flex;gap:9px;align-items:center;padding:5px 0}
+.crm-line .t{color:var(--faint);flex:0 0 auto}
+.crm-line img{width:14px;height:14px;border-radius:3px;flex:0 0 auto}
+.crm-line .what{color:var(--muted)}
+.crm-line .ok{color:var(--green-dim);margin-left:auto;flex:0 0 auto}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:18px}
+.feat-list li{display:flex;gap:14px}
+.feat-ic{flex:0 0 38px;height:38px;border-radius:9px;background:var(--elevated);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--green)}
+.feat-ic svg{width:18px;height:18px}
+.feat-list h3{font-size:18px;margin-bottom:3px}
+.feat-list p{color:var(--muted);font-size:15px}
+
+/* ============================ WIN-RATE BARS (dashboard) ============================ */
+.winrates{margin-top:18px;display:flex;flex-direction:column;gap:9px}
+.wr{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:12px}
+.wr .name{width:128px;flex:0 0 auto;color:var(--muted)}
+.wr .bar{flex:1;height:7px;background:var(--elevated);border-radius:5px;overflow:hidden}
+.wr .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-dim),var(--green));border-radius:5px;transition:width 1.2s var(--ease)}
+.wr.amb .bar i{background:linear-gradient(90deg,var(--amber-dim),var(--amber))}
+.wr .pct{width:48px;text-align:right;color:var(--fg)}
+
+/* ============================ DISCIPLINE ============================ */
+.disc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:880px){.disc-grid{grid-template-columns:1fr}}
+.disc{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:22px;transition:.3s var(--ease)}
+.disc:hover{border-color:var(--green-dim);transform:translateY(-3px)}
+.disc .ic{width:40px;height:40px;border-radius:10px;background:var(--elevated);border:1px solid var(--line);display:grid;place-items:center;color:var(--green);margin-bottom:14px}
+.disc .ic svg{width:20px;height:20px}
+.disc h3{font-size:17px;margin-bottom:6px}
+.disc p{color:var(--muted);font-size:14px}
+.disc .meta{font-family:var(--mono);font-size:11px;color:var(--green);margin-top:10px}
+
+/* ============================ DASHBOARD ============================ */
+.dash{background:linear-gradient(180deg,var(--surface),var(--elevated));border:1px solid var(--line);border-radius:18px;
+  overflow:hidden;box-shadow:0 50px 120px -50px rgba(0,0,0,.9)}
+.dash-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line-soft);font-family:var(--mono);font-size:12px;color:var(--muted)}
+.dash-bar .live{margin-left:auto;color:var(--green);display:inline-flex;align-items:center;gap:7px}
+.dash-bar .live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green-glow);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.3}}
+.dash-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:0}
+@media(max-width:880px){.dash-grid{grid-template-columns:1fr}}
+.dash-left{padding:20px;border-right:1px solid var(--line-soft)}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:14px}
+.stat .n{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:-.02em}
+.stat .l{font-family:var(--mono);font-size:10.5px;color:var(--faint);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+.stat .n.g{color:var(--green)} .stat .n.a{color:var(--amber)}
+.fw-title{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+/* activity feed */
+.feed{padding:20px;height:100%}
+.feed-title{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.feed-list{font-family:var(--mono);font-size:12px;line-height:1.45;height:280px;overflow:hidden;position:relative;
+  -webkit-mask-image:linear-gradient(180deg,transparent,#000 14%,#000 80%,transparent);
+  mask-image:linear-gradient(180deg,transparent,#000 14%,#000 80%,transparent)}
+.feed-line{display:flex;gap:9px;padding:5px 0;opacity:.92}
+.feed-line .t{color:var(--faint);flex:0 0 auto}
+.feed-line .badge{flex:0 0 auto;width:8px}
+.fe-sent{color:var(--green)} .fe-reply{color:var(--amber)} .fe-sys{color:var(--muted)} .fe-book{color:#5E6B73}
+
+/* ============================ THE WRITING ============================ */
+.write-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+@media(max-width:880px){.write-grid{grid-template-columns:1fr}}
+.email{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.email-h{padding:13px 16px;border-bottom:1px solid var(--line-soft);font-size:13px}
+.email-h .fr{color:var(--muted);font-family:var(--mono);font-size:11px}
+.email-h .su{color:var(--fg);font-weight:600;margin-top:4px}
+.email-h .badge{float:right;font-family:var(--mono);font-size:10px;color:var(--green);border:1px solid var(--green-dim);border-radius:5px;padding:2px 7px}
+.email-b{padding:16px;font-size:14.5px;line-height:1.66;color:#2C2350;white-space:pre-line}
+.rules{margin-top:24px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.rule{font-family:var(--mono);font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:7px 14px}
+.rule b{color:var(--green);font-weight:500}
+
+/* ============================ PROOF WALL ============================ */
+.proof-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:var(--s5)}
+@media(max-width:760px){.proof-metrics{grid-template-columns:1fr 1fr}}
+.pm{text-align:center}
+.pm .n{font-family:var(--display);font-weight:900;font-size:clamp(34px,5vw,52px);letter-spacing:-.03em;color:var(--green)}
+.pm .l{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.06em;margin-top:4px}
+.proof-logos{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+
+/* ============================ FAQ ============================ */
+.faq{max-width:780px;margin:0 auto}
+.qa{border-bottom:1px solid var(--line-soft)}
+.qa summary{cursor:pointer;list-style:none;padding:20px 0;display:flex;align-items:center;gap:14px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary .plus{margin-left:auto;color:var(--green);font-family:var(--mono);font-size:22px;transition:transform .3s var(--ease);flex:0 0 auto}
+.qa[open] summary .plus{transform:rotate(45deg)}
+.qa .a{padding:0 0 22px 0;color:var(--muted);font-size:15px;max-width:64ch}
+
+/* ============================ FINAL CTA ============================ */
+.final{text-align:center;padding:var(--s8) 0;position:relative}
+.final::before{content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(ellipse 46% 60% at 32% 50%, rgba(0,201,138,.14), transparent 70%),
+    radial-gradient(ellipse 46% 60% at 68% 50%, rgba(255,90,60,.12), transparent 70%)}
+.final h2{max-width:18ch;margin:0 auto 18px}
+.final .lead{margin:0 auto var(--s4)}
+
+/* ============================ FOOTER ============================ */
+footer{border-top:1px solid var(--line-soft);padding:var(--s5) 0;margin-top:var(--s6)}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);flex-wrap:wrap}
+.foot .badges{display:flex;gap:10px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+.foot .badges span{border:1px solid var(--line);border-radius:6px;padding:5px 9px}
+.foot .copy{font-family:var(--mono);font-size:11px;color:var(--faint)}
+
+/* ============================ WHATSAPP WEDGE ============================ */
+.wa-sec{position:relative;overflow:hidden}
+.wa-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:var(--s5);align-items:center}
+@media(max-width:880px){.wa-grid{grid-template-columns:1fr;gap:var(--s4)}}
+.wa-stat{font-family:var(--display);font-weight:900;letter-spacing:-.04em;line-height:.9;
+  font-size:clamp(86px,15vw,176px);color:var(--amber)}
+.wa-stat .x{font-size:.5em;vertical-align:.12em;color:var(--fg)}
+.wa-statline{font-family:var(--mono);font-size:13px;color:var(--muted);letter-spacing:.04em;margin-top:6px;max-width:38ch;margin-left:auto;margin-right:auto}
+/* email vs WhatsApp reply comparison */
+.replybars{margin-top:var(--s4);display:flex;flex-direction:column;gap:14px;max-width:470px}
+.rb{display:flex;align-items:center;gap:13px;font-family:var(--mono);font-size:12.5px}
+.rb .name{width:128px;flex:0 0 auto;color:var(--muted);display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.rb .name img{width:15px;height:15px;border-radius:3px}
+.rb .bar{flex:1;height:14px;background:var(--elevated);border-radius:7px;overflow:hidden;border:1px solid var(--line)}
+.rb .bar i{display:block;height:100%;width:0;border-radius:7px;transition:width 1.3s var(--ease)}
+.rb.email .bar i{background:linear-gradient(90deg,#D2CCBE,#B3AC9C)}
+.rb.wa .bar i{background:linear-gradient(90deg,var(--amber-dim),var(--amber))}
+.rb .pct{width:52px;text-align:right;color:var(--fg);font-weight:500}
+
+/* ============================ ORCHESTRATION STORY (horizontal, animated) ============================ */
+.orchx{max-width:1100px;margin:0 auto}
+.orchx-progress{height:3px;background:var(--line-soft);border-radius:2px;margin:0 2px 22px;overflow:hidden}
+.orchx-progress i{display:block;height:100%;width:0;background:var(--green);border-radius:2px;transition:width .6s var(--ease)}
+.orchx-track{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;align-items:stretch}
+.orchx-step{opacity:.25;filter:saturate(.3);transform:translateY(10px);transition:opacity .55s var(--ease),filter .55s var(--ease),transform .55s var(--ease);display:flex;flex-direction:column}
+.orchx-step.show{opacity:1;filter:none;transform:none}
+.orchx-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.orchx-k .num{width:21px;height:21px;flex:0 0 auto;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;color:var(--muted);font-size:10px;transition:.4s}
+.orchx-step.show .num{border-color:var(--green);color:var(--green)}
+.orchx-step.wa.show .num{border-color:var(--amber);color:var(--amber)}
+.orchx-card{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;font-size:12.5px;line-height:1.5;color:#2B2820;min-height:186px}
+.orchx-step.show .orchx-card{box-shadow:0 10px 30px -18px rgba(22,20,15,.25)}
+.orchx-co b{font-family:var(--display);font-size:16px;display:block;margin-bottom:2px}
+.orchx-co span{color:var(--muted);font-family:var(--mono);font-size:10.5px}
+.orchx-sig{margin-top:12px;font-family:var(--mono);font-size:10.5px;color:var(--green-dim);background:rgba(0,201,138,.07);border:1px solid rgba(0,201,138,.25);border-radius:7px;padding:6px 8px}
+.orchx-notes{list-style:none;display:flex;flex-direction:column;gap:8px;color:var(--muted)}
+.orchx-notes li{opacity:0;transform:translateX(-6px);transition:.4s var(--ease);padding-left:13px;position:relative}
+.orchx-notes li::before{content:"·";position:absolute;left:2px;color:var(--green)}
+.orchx-notes li.pop{opacity:1;transform:none}
+.orchx-mail{white-space:pre-wrap;min-height:108px}
+.orchx-mail::after{content:"▌";color:var(--green);animation:blinkc .9s steps(1) infinite}
+.orchx-step.sent .orchx-mail::after{content:""}
+@keyframes blinkc{50%{opacity:0}}
+.orchx-meta{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:9px}
+.orchx-meta.ok{color:var(--green-dim)}
+.bub{border-radius:10px;padding:8px 10px;font-size:12px;line-height:1.5}
+.bub.me{background:#EAF6F1;border:1px solid #C4E6D7;border-top-left-radius:3px}
+.bub.them{background:#FFF0EC;border:1px solid #F3CDC2;border-top-right-radius:3px;margin-top:9px;margin-left:14px;opacity:0;transform:translateY(6px);transition:.45s var(--ease)}
+.bub.them.pop{opacity:1;transform:none}
+.bub .meta{font-family:var(--mono);font-size:9.5px;color:var(--faint);margin-top:5px}
+.orchx-booked{margin-top:12px;font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--green-dim);
+  background:rgba(0,201,138,.08);border:1px solid rgba(0,201,138,.3);border-radius:8px;padding:8px 10px;
+  opacity:0;transform:translateY(6px);transition:.45s var(--ease)}
+.orchx-booked.pop{opacity:1;transform:none}
+@media(max-width:880px){
+  .orchx-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:12px;-webkit-overflow-scrolling:touch}
+  .orchx-step{flex:0 0 246px;scroll-snap-align:start}
+}
+
+/* ============================ REPLACE PAYROLL ============================ */
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:var(--s3);align-items:stretch;margin-top:var(--s4)}
+@media(max-width:760px){.vs{grid-template-columns:1fr;gap:16px}.vs .vs-mid{display:none}}
+.vs-card{border:1px solid var(--line);border-radius:var(--radius);padding:24px;background:var(--surface)}
+.vs-card.before{opacity:.92}
+.vs-card.after{border-color:var(--green-dim);box-shadow:0 0 0 1px var(--green-dim),0 18px 50px -28px var(--green-glow)}
+.vs-tag{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.vs-card.after .vs-tag{color:var(--green)}
+.vs-h{font-family:var(--display);font-weight:800;font-size:22px;margin:8px 0 14px;letter-spacing:-.02em}
+.vs-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.vs-list li{display:flex;gap:10px;font-size:14.5px;color:var(--muted)}
+.vs-list li::before{content:"–";color:var(--faint)}
+.vs-card.after .vs-list li{color:var(--fg)}
+.vs-card.after .vs-list li::before{content:"✓";color:var(--green)}
+.vs-mid{display:grid;place-items:center;font-family:var(--mono);font-size:12px;color:var(--faint)}
+.vs-arrow{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--green)}
+
+/* reduced motion */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .reveal{opacity:1;transform:none}
+  .orchx-step{opacity:1;filter:none;transform:none}
+  .orchx-notes li,.bub.them,.orchx-booked{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ============================ NAV ============================ -->
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#">
+      <svg class="glyph" viewBox="0 0 32 32" fill="none">
+        <path d="M16 4a12 12 0 1 0 0 24" stroke="#00C98A" stroke-width="3" stroke-linecap="round"/>
+        <path d="M16 28a12 12 0 0 0 0-24" stroke="#FF5A3C" stroke-width="3" stroke-linecap="round" stroke-opacity=".9"/>
+        <circle cx="16" cy="16" r="3.4" fill="#00C98A"/>
+      </svg>
+      Autopilot <small>SDR&nbsp;·&nbsp;placeholder&nbsp;name</small>
+    </a>
+    <div class="nav-links">
+      <a href="#whatsapp">WhatsApp</a>
+      <a href="#how">How it works</a>
+      <a href="#replace">Replace payroll</a>
+      <a href="#proof">Proof</a>
+    </div>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="#">Book a demo</a>
+      <a class="btn btn-primary" href="#">Start free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Autonomous prospecting</span>
+    <h1>Meetings, booked<br><span class="grad">on autopilot.</span></h1>
+    <p class="lead">An AI prospector that works your pipeline end to end. It reaches out,
+      follows up on WhatsApp like a human until people reply, sends the booking link, and
+      lands the meeting on your calendar. So you don't keep an inbound sales team on payroll.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#">Book a demo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#how">See it book a meeting</a>
+    </div>
+    <div class="trust">
+      <span>replies, not just sends</span>
+      <span>works inside your stack</span>
+      <span>live in days, not quarters</span>
+    </div>
+
+    <!-- SIGNATURE FLOW DIAGRAM -->
+    <div class="flow" id="flow">
+      <div class="flow-stages">
+        <div class="stage" data-stage="0">
+          <div class="st-k">01 / SOURCE</div>
+          <div class="st-t">Intent or your CRM</div>
+          <div class="chips">
+            <span class="chip" data-c="src">website intent</span>
+            <span class="chip" data-c="src"><img data-logo="zoho.com" alt="">your CRM</span>
+          </div>
+        </div>
+        <div class="stage" data-stage="1">
+          <div class="st-k">02 / RESEARCH</div>
+          <div class="st-t">Reads the company</div>
+          <div class="chips">
+            <span class="chip" data-c="brain">their website</span>
+            <span class="chip" data-c="brain"><img data-logo="linkedin.com" alt="">LinkedIn</span>
+            <span class="chip" data-c="brain">the angle</span>
+          </div>
+        </div>
+        <div class="stage" data-stage="2">
+          <div class="st-k">03 / REACH</div>
+          <div class="st-t">Email, then WhatsApp</div>
+          <div class="chips">
+            <span class="chip" data-ch="email"><img data-logo="mail.google.com" alt="">email</span>
+            <span class="chip" data-ch="wa"><img data-logo="whatsapp.com" alt="">WhatsApp follow-up</span>
+          </div>
+        </div>
+        <div class="stage" data-stage="3">
+          <div class="st-k">04 / BOOKED</div>
+          <div class="st-t">Meeting on your calendar</div>
+          <div class="chips">
+            <span class="chip" data-c="close">booking link</span>
+            <span class="chip" data-c="close"><img data-logo="calendar.google.com" alt="">✓ booked</span>
+          </div>
+        </div>
+      </div>
+      <div class="flow-return">
+        <span><i class="spin">↺</i> <b>learns from every reply</b>&nbsp;— the next touch gets sharper</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ INGEST LOGOS ============================ -->
+<section class="ingest" id="ingest">
+  <div class="wrap">
+    <div class="label">Plugs into the stack you already run</div>
+    <div class="marquee">
+      <div class="marquee-track" id="track">
+        <!-- duplicated by JS for seamless loop -->
+        <a class="logo"><img data-logo="zoho.com" alt="Zoho CRM">Zoho CRM</a>
+        <a class="logo"><img data-logo="kylas.io" alt="Kylas">Kylas</a>
+        <a class="logo"><img data-logo="freshworks.com" alt="Freshworks">Freshworks</a>
+        <a class="logo"><img data-logo="hubspot.com" alt="HubSpot">HubSpot</a>
+        <a class="logo"><img data-logo="salesforce.com" alt="Salesforce">Salesforce</a>
+        <a class="logo"><img data-logo="erpnext.com" alt="ERPNext">ERPNext</a>
+        <a class="logo"><img data-logo="whatsapp.com" alt="WhatsApp">WhatsApp</a>
+        <a class="logo"><img data-logo="mail.google.com" alt="Gmail">Gmail</a>
+        <a class="logo"><img data-logo="outlook.com" alt="Outlook">Outlook</a>
+        <a class="logo"><img data-logo="calendar.google.com" alt="Google Calendar">Calendar</a>
+        <a class="logo"><img data-logo="linkedin.com" alt="LinkedIn">LinkedIn</a>
+        <a class="logo"><img data-logo="calendly.com" alt="Calendly">Calendly</a>
+        <a class="logo ph">Your CRM</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ WHATSAPP WEDGE ============================ -->
+<section class="sec wa-sec" id="whatsapp">
+  <div class="wrap">
+    <div class="wa-grid">
+      <div class="reveal">
+        <span class="eyebrow">The channel India actually answers</span>
+        <h2 style="margin:14px 0 14px">Your buyers ignore email.<br>They reply on WhatsApp.</h2>
+        <p class="lead">So the agent doesn't stop at a cold email. It follows up on WhatsApp like
+          a real person would, in their language, casual, never a copy-paste template. That one
+          move is the difference between silence and a conversation.</p>
+        <div class="replybars" id="replybars">
+          <div class="rb email"><span class="name"><img data-logo="mail.google.com" alt="">email only</span><span class="bar"><i data-w="6"></i></span><span class="pct">~1%</span></div>
+          <div class="rb wa"><span class="name"><img data-logo="whatsapp.com" alt="">+ WhatsApp</span><span class="bar"><i data-w="100"></i></span><span class="pct">up to 50x</span></div>
+        </div>
+      </div>
+      <div class="reveal" style="text-align:center">
+        <div class="wa-stat">50<span class="x">×</span></div>
+        <div class="wa-statline">more replies when a human-style WhatsApp follow-up rides on top of email</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ORCHESTRATION STORY ============================ -->
+<section class="sec" id="how" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Cold lead to booked meeting</span>
+      <h2>Watch it land a meeting.</h2>
+      <p class="lead" style="margin:0 auto">No sequences to build, no templates to maintain.
+        Here's the agent turning one quiet lead into a meeting on the calendar.</p>
+    </div>
+    <div class="orchx" id="orch">
+      <div class="orchx-progress"><i id="orchBar"></i></div>
+      <div class="orchx-track">
+        <div class="orchx-step" data-step="0">
+          <div class="orchx-k"><span class="num">1</span>company spotted</div>
+          <div class="orchx-card">
+            <div class="orchx-co"><b>Cooper Corp</b><span>auto parts · 40+ country dealer network</span></div>
+            <div class="orchx-sig">⚡ visited /pricing twice this week</div>
+          </div>
+        </div>
+        <div class="orchx-step" data-step="1">
+          <div class="orchx-k"><span class="num">2</span>researched</div>
+          <div class="orchx-card">
+            <ul class="orchx-notes">
+              <li>dealer + service network → heavy inbound call volume</li>
+              <li>hiring 3 support roles right now</li>
+              <li>angle: cut call-handling cost</li>
+            </ul>
+          </div>
+        </div>
+        <div class="orchx-step" data-step="2">
+          <div class="orchx-k"><span class="num">3</span>email drafted &amp; sent</div>
+          <div class="orchx-card">
+            <div class="orchx-mail" id="orchMail"></div>
+            <div class="orchx-meta" id="orchMailMeta">drafting…</div>
+          </div>
+        </div>
+        <div class="orchx-step wa" data-step="3">
+          <div class="orchx-k"><span class="num">4</span>WhatsApp follow-up</div>
+          <div class="orchx-card">
+            <div class="bub me">Hey Rajesh, Dhiraj here 👋 sent you a note on dealer-call costs — worth a quick look for Cooper?<div class="meta">day 2 · delivered · read</div></div>
+            <div class="bub them" id="orchReply">"Yeah, we're drowning in parts calls. Send me a time?"</div>
+          </div>
+        </div>
+        <div class="orchx-step" data-step="4">
+          <div class="orchx-k"><span class="num">5</span>meeting booked</div>
+          <div class="orchx-card">
+            <div class="bub me">grab whatever works 🙌<br><span style="color:var(--green-dim);text-decoration:underline">cal.com/dhiraj/30min</span></div>
+            <div class="orchx-booked" id="orchBooked">✓ Meeting booked — Thu 3:00pm, on your calendar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SUGGESTS THE STRATEGY ============================ -->
+<section class="sec" id="strategy">
+  <div class="wrap">
+    <div class="grid2">
+      <div class="reveal">
+        <div class="sec-head">
+          <span class="eyebrow">Always learning</span>
+          <h2>It learns what works.<br>Then does more of it.</h2>
+          <p class="lead">Every reply teaches it. Openers that got answers, angles that booked meetings,
+            lines that got ignored — all of it feeds the next draft, in real time. Watch it write
+            with yesterday's wins baked in.</p>
+        </div>
+        <ul class="feat-list">
+          <li>
+            <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4" stroke-linecap="round"/></svg></span>
+            <div><h3>Reads your business</h3><p>Learns what you sell and who buys it from your website, your CRM and each lead's own signals.</p></div>
+          </li>
+          <li>
+            <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v3M12 18v3M3 12h3M18 12h3" stroke-linecap="round"/><circle cx="12" cy="12" r="4"/></svg></span>
+            <div><h3>Suggests the strategy</h3><p>Recommends the angle, channel order and timing per lead — based on your business, not a generic playbook.</p></div>
+          </li>
+          <li>
+            <span class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><h3>Gets sharper every day</h3><p>What got replies yesterday shapes what it drafts today. What flopped gets dropped — automatically.</p></div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="reveal decide-card" id="learnCard">
+        <div class="decide-head"><span class="dot3"><i></i><i></i><i></i></span> drafting · applying what worked before</div>
+        <div class="learn-body">
+          <div class="learn-draft" id="learnDraft">
+            <span class="to">to: rajesh@coopercorp.com · subject: dealer call costs at Cooper</span>
+            <div class="learn-type" id="learnType"></div>
+          </div>
+          <div class="learn-title">learned from past replies — applied live</div>
+          <div class="learn-feed" id="learnFeed">
+            <div class="ln"><span class="ok">✓</span>opener names their company — replied 3 of last 4 times</div>
+            <div class="ln"><span class="ok">✓</span>dealer-network hook — worked on 5 manufacturing leads</div>
+            <div class="ln"><span class="ok">✓</span>soft question close — booked Everest &amp; Nilons</div>
+            <div class="ln amb"><span class="ok">↻</span>long intros dropped — they killed replies last month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ REPLACE PAYROLL ============================ -->
+<section class="sec" id="replace" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">The economics</span>
+      <h2>A prospecting team, off your payroll.</h2>
+      <p class="lead" style="margin:0 auto">It does the grind your inbound reps do — find, research,
+        reach out, follow up, book — without the hiring, the ramp, the churn, or the monthly salaries.</p>
+    </div>
+    <div class="vs reveal">
+      <div class="vs-card before">
+        <span class="vs-tag">An inbound SDR team</span>
+        <div class="vs-h">Salaries every month</div>
+        <ul class="vs-list">
+          <li>Months to hire, weeks to ramp</li>
+          <li>Works one timezone, business hours</li>
+          <li>Burns out, churns, takes the playbook with them</li>
+          <li>A few hundred touches a week</li>
+        </ul>
+      </div>
+      <div class="vs-mid"><div class="vs-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+      <div class="vs-card after">
+        <span class="vs-tag">One agent</span>
+        <div class="vs-h">Live in days</div>
+        <ul class="vs-list">
+          <li>Runs the moment you connect a source</li>
+          <li>On all day, every day, your buyers' hours</li>
+          <li>Never quits, gets sharper with every reply</li>
+          <li>Works your whole list, one personal touch at a time</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DISCIPLINE ============================ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Built like an operator</span>
+      <h2>Aggressive on pipeline. Disciplined on everything else.</h2>
+      <p class="lead" style="margin:0 auto">It's not a spray cannon. The guardrails are the point —
+        so you can let it run while you sleep.</p>
+    </div>
+    <div class="disc-grid">
+      <div class="disc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 21l2-5.5A8.5 8.5 0 1 1 21 11.5Z"/></svg></div>
+        <h3>Reads like a person</h3>
+        <p>Short, casual, one real hook per message. No mail-merge tells, no "hope this finds you well."</p>
+        <div class="meta">human, not template</div>
+      </div>
+      <div class="disc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg></div>
+        <h3>Sends inside human hours</h3>
+        <p>Reaches out in your buyers' working hours, paced like a person, with WhatsApp warmed up gently. No 2am blasts.</p>
+        <div class="meta">paced · timezone-aware</div>
+      </div>
+      <div class="disc reveal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12" stroke-linecap="round"/></svg></div>
+        <h3>Respects every opt-out</h3>
+        <p>One "not interested" and they're never contacted again. Replies jump the queue and get handled first.</p>
+        <div class="meta">your data stays yours</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DASHBOARD ============================ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Full visibility</span>
+      <h2>Watch it work, in real time.</h2>
+    </div>
+    <div class="dash reveal" id="dash">
+      <div class="dash-bar">sdr_dashboard.html <span class="live">live</span></div>
+      <div class="dash-grid">
+        <div class="dash-left">
+          <div class="stat-row">
+            <div class="stat"><div class="n g" data-count="2811">0</div><div class="l">leads worked</div></div>
+            <div class="stat"><div class="n a" data-count="412">0</div><div class="l">conversations started</div></div>
+            <div class="stat"><div class="n" data-count="63">0</div><div class="l">meetings booked</div></div>
+          </div>
+          <div class="fw-title">where the replies come from</div>
+          <div class="winrates">
+            <div class="wr amb"><span class="name">WhatsApp follow-up</span><span class="bar"><i data-w="92"></i></span><span class="pct">most</span></div>
+            <div class="wr"><span class="name">email reply</span><span class="bar"><i data-w="14"></i></span><span class="pct">few</span></div>
+            <div class="wr"><span class="name">reply → meeting</span><span class="bar"><i data-w="38"></i></span><span class="pct">strong</span></div>
+          </div>
+        </div>
+        <div class="feed">
+          <div class="feed-title">activity feed</div>
+          <div class="feed-list" id="feed"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CRM SYNC ============================ -->
+<section class="sec" id="crm" style="padding-top:0">
+  <div class="wrap">
+    <div class="grid2">
+      <div class="reveal">
+        <div class="sec-head" style="margin-bottom:0">
+          <span class="eyebrow">No new system to adopt</span>
+          <h2>Everything logged<br>to your CRM.</h2>
+          <p class="lead">Every email, WhatsApp message, reply and meeting is written back to the CRM
+            and tools you already run — as it happens. Your pipeline stays where your team already looks.</p>
+        </div>
+        <div class="crm-logos">
+          <a class="logo"><img data-logo="zoho.com" alt="Zoho CRM">Zoho CRM</a>
+          <a class="logo"><img data-logo="kylas.io" alt="Kylas">Kylas</a>
+          <a class="logo"><img data-logo="freshworks.com" alt="Freshworks">Freshworks</a>
+          <a class="logo"><img data-logo="hubspot.com" alt="HubSpot">HubSpot</a>
+          <a class="logo"><img data-logo="salesforce.com" alt="Salesforce">Salesforce</a>
+          <a class="logo"><img data-logo="erpnext.com" alt="ERPNext">ERPNext</a>
+        </div>
+      </div>
+      <div class="reveal decide-card">
+        <div class="decide-head"><span class="dot3"><i></i><i></i><i></i></span> crm sync · live</div>
+        <div class="crm-feed" id="crmFeed"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ THE WRITING ============================ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Human, not template</span>
+      <h2>The reason people actually reply.</h2>
+      <p class="lead" style="margin:0 auto">Everyone's inbox is full of mail-merge. The agent
+        writes the opposite: short, specific, like a person who did their homework.</p>
+    </div>
+    <div class="write-grid reveal">
+      <div class="email" style="opacity:.72">
+        <div class="email-h"><span class="badge" style="color:var(--faint);border-color:var(--line)">the template everyone ignores</span><div class="fr">generic blast</div></div>
+        <div class="email-b" style="color:var(--muted)">Hi {{First_Name}},
+I hope this email finds you well. I wanted to reach out because we help companies like {{Company}} unlock synergies and drive growth.
+Would you be open to a quick 15-minute call to explore how we can add value?
+Best regards.</div>
+      </div>
+      <div class="email">
+        <div class="email-h"><span class="badge">what it actually sends</span><div class="fr">WhatsApp · follow-up</div><div class="su">reads like a real person</div></div>
+        <div class="email-b">Hey Rajesh, Dhiraj here 👋
+Saw Cooper runs a dealer network across 40+ countries — guessing the parts calls pile up fast.
+We cut that handling cost for a similar manufacturer by about a third. Worth a quick look?
+If it's not your thing, just say so and I'll disappear.</div>
+      </div>
+    </div>
+    <div class="rules">
+      <span class="rule"><b>short</b>, never a wall of text</span>
+      <span class="rule">one <b>real</b> hook, their business</span>
+      <span class="rule"><b>their</b> language &amp; timezone</span>
+      <span class="rule">an easy <b>out</b>, always</span>
+      <span class="rule">no <b>"hope this finds you well"</b></span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PROOF WALL ============================ -->
+<section class="sec" id="proof" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <span class="eyebrow">Proven in the field</span>
+      <h2>Run live across 2,800+ Indian enterprises.</h2>
+    </div>
+    <div class="proof-metrics reveal">
+      <div class="pm"><div class="n" data-count="2811">0</div><div class="l">leads worked end-to-end</div></div>
+      <div class="pm"><div class="n" data-count="412">0</div><div class="l">conversations started</div></div>
+      <div class="pm"><div class="n" data-count="63">0</div><div class="l">meetings booked</div></div>
+      <div class="pm"><div class="n" data-count="50">0</div><div class="l">× more replies on WhatsApp</div></div>
+    </div>
+    <!-- Customer logos = trademarked placeholders. Swap data-label / drop real SVGs in. -->
+    <div class="proof-logos">
+      <a class="logo ph">Tata / Nelco</a>
+      <a class="logo ph">Wow! Momo</a>
+      <a class="logo ph">Nilons</a>
+      <a class="logo ph">Everest Group</a>
+      <a class="logo ph">Best Roadways</a>
+      <a class="logo ph">+ your logo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal"><span class="eyebrow">Questions</span><h2>The skeptical operator's FAQ</h2></div>
+    <div class="faq reveal">
+      <details class="qa" open><summary>Does it really replace my inbound SDR team?<span class="plus">+</span></summary><div class="a">It takes over the grind: finding the right leads, researching them, reaching out, following up until people answer, and booking the meeting. Your closers spend their time in meetings it books, not chasing cold lists. Most teams stop hiring for the top of the funnel.</div></details>
+      <details class="qa"><summary>Where do the leads come from?<span class="plus">+</span></summary><div class="a">Two ways. It can work intent signals from your website — people showing they're in-market — or prospect straight from the records already in your CRM. Either way, no list-buying required.</div></details>
+      <details class="qa"><summary>Do I have to build sequences or templates?<span class="plus">+</span></summary><div class="a">No. Point it at your site and your CRM and it works out who buys from you and recommends the angle, the channel order and the timing per lead. You approve the strategy; it runs it.</div></details>
+      <details class="qa"><summary>Why is WhatsApp such a big deal?<span class="plus">+</span></summary><div class="a">In India, cold email mostly gets ignored and WhatsApp gets answered. A human-style WhatsApp follow-up riding on top of email is the single biggest lift in reply rate we see. It's paced and warmed up like a person, used as a follow-up to people you've already emailed, never cold spray.</div></details>
+      <details class="qa"><summary>Does it use my own domain, number and tools?<span class="plus">+</span></summary><div class="a">Yes. It runs inside your stack — your CRM, your email sender, your WhatsApp number, your calendar. It's your prospector, not a third-party blaster. Opt-outs are permanent and your data stays yours.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FINAL CTA ============================ -->
+<section class="final">
+  <div class="wrap">
+    <span class="eyebrow" style="justify-content:center;display:inline-flex">Ready when you are</span>
+    <h2 style="margin-top:18px">Connect a source.<br>Get meetings booked.</h2>
+    <p class="lead">Point it at your website or your CRM, tell it what you sell, and let it book
+      its first meeting this week.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#">Book a demo
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="#how">See it book a meeting</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap foot">
+    <a class="brand" href="#">
+      <svg class="glyph" viewBox="0 0 32 32" fill="none">
+        <path d="M16 4a12 12 0 1 0 0 24" stroke="#00C98A" stroke-width="3" stroke-linecap="round"/>
+        <path d="M16 28a12 12 0 0 0 0-24" stroke="#FF5A3C" stroke-width="3" stroke-linecap="round" stroke-opacity=".9"/>
+        <circle cx="16" cy="16" r="3.4" fill="#00C98A"/>
+      </svg>
+      Autopilot
+    </a>
+    <div class="badges"><span>SOC 2 ready</span><span>data stays yours</span><span>India-first</span></div>
+    <div class="copy">© 2026 · wordmark + customer logos are placeholders</div>
+  </div>
+</footer>
+
+<script>
+/* ============================ BRAND LOGOS (real, colored — Google favicon service) ============================
+   <img data-logo="domain.com">  →  https://www.google.com/s2/favicons?domain=<domain>&sz=64
+   Real brand logos by domain; degrades to a clean dot if one ever fails. */
+(function(){
+  document.querySelectorAll("img[data-logo]").forEach(function(img){
+    img.referrerPolicy="no-referrer";
+    img.loading="lazy";
+    img.src="https://www.google.com/s2/favicons?domain="+img.dataset.logo+"&sz=64";
+    img.onerror=function(){ img.replaceWith(Object.assign(document.createElement("span"),{textContent:"●",style:"color:var(--green-dim);font-size:11px"})); };
+  });
+})();
+
+/* ============================ seamless logo marquee ============================ */
+(function(){
+  var track=document.getElementById("track");
+  if(track) track.innerHTML += track.innerHTML; // duplicate for -50% loop
+})();
+
+/* ============================ scroll reveal ============================ */
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+  },{threshold:.16});
+  document.querySelectorAll(".reveal").forEach(function(el){io.observe(el)});
+})();
+
+/* ============================ count-up stats ============================ */
+(function(){
+  function run(el){
+    var target=+el.dataset.count, dur=1400, t0=null;
+    function step(ts){ if(!t0)t0=ts; var p=Math.min((ts-t0)/dur,1);
+      el.textContent=Math.round(target*(1-Math.pow(1-p,3))).toLocaleString();
+      if(p<1)requestAnimationFrame(step);}
+    requestAnimationFrame(step);
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ run(e.target); io.unobserve(e.target);} });
+  },{threshold:.6});
+  document.querySelectorAll("[data-count]").forEach(function(el){io.observe(el)});
+})();
+
+/* ============================ win-rate bars ============================ */
+(function(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      e.target.querySelectorAll("i[data-w]").forEach(function(i){ i.style.width=i.dataset.w+"%"; });
+      io.unobserve(e.target);} });
+  },{threshold:.4});
+  document.querySelectorAll(".winrates, #replybars").forEach(function(el){io.observe(el)});
+})();
+
+/* ============================ orchestration: horizontal sequence with live email draft ============================ */
+(function(){
+  var orch=document.getElementById("orch"); if(!orch) return;
+  var steps=[].slice.call(orch.querySelectorAll(".orchx-step"));
+  var bar=document.getElementById("orchBar");
+  var mail=document.getElementById("orchMail");
+  var mailMeta=document.getElementById("orchMailMeta");
+  var reply=document.getElementById("orchReply");
+  var booked=document.getElementById("orchBooked");
+  var notes=[].slice.call(orch.querySelectorAll(".orchx-notes li"));
+  var MAIL="Hey Rajesh — noticed Cooper's dealer network spans 40+ countries. Betting parts calls pile up at that scale. Worth a quick look?";
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function finishState(){
+    steps.forEach(function(s){s.classList.add("show","sent")});
+    notes.forEach(function(n){n.classList.add("pop")});
+    mail.textContent=MAIL; mailMeta.textContent="sent ✓ · 10:42"; mailMeta.classList.add("ok");
+    reply.classList.add("pop"); booked.classList.add("pop");
+    if(bar) bar.style.width="100%";
+  }
+  if(reduce){ finishState(); return; }
+
+  var timers=[];
+  function at(t,fn){ timers.push(setTimeout(fn,t)); }
+  function typeMail(){
+    var i=0;
+    (function step(){
+      if(i<=MAIL.length){
+        mail.textContent=MAIL.slice(0,i); i+=2;
+        timers.push(setTimeout(step,24));
+      } else {
+        mailMeta.textContent="sent ✓ · 10:42"; mailMeta.classList.add("ok");
+        steps[2].classList.add("sent");
+      }
+    })();
+  }
+  function play(){
+    timers.forEach(clearTimeout); timers=[];
+    steps.forEach(function(s){s.classList.remove("show","sent")});
+    notes.forEach(function(n){n.classList.remove("pop")});
+    mail.textContent=""; mailMeta.textContent="drafting…"; mailMeta.classList.remove("ok");
+    reply.classList.remove("pop"); booked.classList.remove("pop");
+    if(bar) bar.style.width="0%";
+
+    at(300,function(){ steps[0].classList.add("show"); bar.style.width="12%"; });
+    at(1500,function(){ steps[1].classList.add("show"); bar.style.width="33%";
+      notes.forEach(function(n,k){ at(1700+330*k,function(){n.classList.add("pop")}); });
+    });
+    at(3100,function(){ steps[2].classList.add("show"); bar.style.width="56%"; typeMail(); });
+    at(5600,function(){ steps[3].classList.add("show"); bar.style.width="80%"; });
+    at(6700,function(){ reply.classList.add("pop"); });
+    at(7600,function(){ steps[4].classList.add("show"); bar.style.width="100%"; });
+    at(8300,function(){ booked.classList.add("pop"); });
+    at(12500,play); // hold on booked, then replay
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ play(); }
+      else { timers.forEach(clearTimeout); timers=[]; }
+    });
+  },{threshold:.3});
+  io.observe(orch);
+})();
+
+/* ============================ hero flow: lit stages cycle left → right ============================ */
+(function(){
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var stages=[].slice.call(document.querySelectorAll(".stage"));
+  if(!stages.length) return;
+  var chEmail=document.querySelector('[data-ch="email"]');
+  var chWa=document.querySelector('[data-ch="wa"]');
+  var i=0;
+  function tick(){
+    stages.forEach(function(s){s.classList.remove("lit")});
+    stages[i].classList.add("lit");
+    if(i===2){ // reach stage: email lights first, WhatsApp follows
+      if(chEmail) chEmail.classList.add("on");
+      if(chWa) setTimeout(function(){ chWa.classList.add("amberon"); },420);
+    } else {
+      if(chEmail) chEmail.classList.remove("on");
+      if(chWa) chWa.classList.remove("amberon");
+    }
+    i=(i+1)%stages.length;
+  }
+  tick(); setInterval(tick,1800);
+})();
+
+/* ============================ live drafting + learning card ============================ */
+(function(){
+  var card=document.getElementById("learnCard"); if(!card) return;
+  var draft=document.getElementById("learnDraft");
+  var type=document.getElementById("learnType");
+  var lines=[].slice.call(document.querySelectorAll("#learnFeed .ln"));
+  var TEXT="Hey Rajesh — noticed Cooper's dealer network spans 40+ countries. Betting parts calls pile up at that scale. We cut that cost ~30% for a similar manufacturer. Worth a quick look?";
+  // pop each learned line as the phrase it influenced gets typed
+  var CUES=[0.04, 0.22, 0.78, 0.95];
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function finishState(){
+    type.textContent=TEXT; draft.classList.add("done");
+    lines.forEach(function(l){l.classList.add("pop")});
+  }
+  if(reduce){ finishState(); return; }
+
+  var timers=[];
+  function play(){
+    timers.forEach(clearTimeout); timers=[];
+    type.textContent=""; draft.classList.remove("done");
+    lines.forEach(function(l){l.classList.remove("pop")});
+    var i=0, fired=[false,false,false,false];
+    (function step(){
+      if(i<=TEXT.length){
+        type.textContent=TEXT.slice(0,i);
+        var p=i/TEXT.length;
+        CUES.forEach(function(c,k){ if(!fired[k] && p>=c && lines[k]){ fired[k]=true; lines[k].classList.add("pop"); } });
+        i+=2; timers.push(setTimeout(step,26));
+      } else {
+        draft.classList.add("done");
+        lines.forEach(function(l){l.classList.add("pop")});
+        timers.push(setTimeout(play,6000)); // hold, then redraft
+      }
+    })();
+  }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ play(); }
+      else { timers.forEach(clearTimeout); timers=[]; }
+    });
+  },{threshold:.4});
+  io.observe(card);
+})();
+
+/* ============================ live activity feed ============================ */
+(function(){
+  var feed=document.getElementById("feed"); if(!feed) return;
+  var samples=[
+    ["fe-sys","new intent signal · Nilons visited pricing"],
+    ["fe-sent","email sent → Nilons"],
+    ["fe-sent","email sent → Chemco"],
+    ["fe-sent","whatsapp follow-up → Everest Group"],
+    ["fe-reply","reply ↩ Wow! Momo — interested"],
+    ["fe-sent","booking link sent → Wow! Momo"],
+    ["fe-book","✓ meeting booked · Nelco / Tata"],
+    ["fe-reply","reply ↩ Best Roadways — send a time?"],
+    ["fe-sent","whatsapp follow-up → Cooper Corp"],
+    ["fe-reply","reply ↩ Cooper — drowning in parts calls"],
+    ["fe-sys","not interested · opt-out honored"],
+    ["fe-book","✓ meeting booked · Thu 3:00pm"]
+  ];
+  var H=11,M=42,idx=0;
+  function line(cls,txt){
+    M+=Math.floor(Math.random()*4)+1; if(M>=60){M-=60;H++;} if(H>19){H=11;}
+    var t=("0"+H).slice(-2)+":"+("0"+M).slice(-2);
+    var el=document.createElement("div"); el.className="feed-line";
+    el.innerHTML='<span class="t">'+t+'</span><span class="'+cls+'">'+txt+'</span>';
+    feed.appendChild(el);
+    while(feed.children.length>14) feed.removeChild(feed.firstChild);
+  }
+  for(var k=0;k<10;k++){ var s=samples[k%samples.length]; line(s[0],s[1]); }
+  setInterval(function(){ var s=samples[idx%samples.length]; idx++; line(s[0],s[1]); },2100);
+})();
+
+/* ============================ crm sync feed ============================ */
+(function(){
+  var feed=document.getElementById("crmFeed"); if(!feed) return;
+  function fav(d){ return "https://www.google.com/s2/favicons?domain="+d+"&sz=64"; }
+  var rows=[
+    ["email sent · Rajesh M.","zoho.com","Zoho"],
+    ["whatsapp follow-up · Cooper","zoho.com","Zoho"],
+    ["reply ↩ Wow! Momo","hubspot.com","HubSpot"],
+    ["meeting booked · Nelco","kylas.io","Kylas"],
+    ["email opened · Nilons","freshworks.com","Freshworks"],
+    ["booking link sent · Everest","salesforce.com","Salesforce"],
+    ["reply ↩ Best Roadways","erpnext.com","ERPNext"],
+    ["whatsapp read · Chemco","zoho.com","Zoho"],
+    ["meeting booked · Thu 3pm","hubspot.com","HubSpot"],
+    ["opt-out honored · contact closed","kylas.io","Kylas"]
+  ];
+  var H=11,M=37,idx=0;
+  function line(r){
+    M+=Math.floor(Math.random()*5)+1; if(M>=60){M-=60;H++;} if(H>19){H=11;}
+    var t=("0"+H).slice(-2)+":"+("0"+M).slice(-2);
+    var el=document.createElement("div"); el.className="crm-line";
+    el.innerHTML='<span class="t">'+t+'</span><span class="what">'+r[0]+'</span>'+
+      '<span class="ok">→ <img src="'+fav(r[1])+'" alt="" style="width:13px;height:13px;border-radius:3px;display:inline-block;vertical-align:-2px"> '+r[2]+' ✓</span>';
+    feed.appendChild(el);
+    while(feed.children.length>11) feed.removeChild(feed.firstChild);
+  }
+  for(var k=0;k<8;k++) line(rows[k%rows.length]);
+  setInterval(function(){ line(rows[idx%rows.length]); idx++; },2400);
+})();
+</script>
+</body>
+</html>

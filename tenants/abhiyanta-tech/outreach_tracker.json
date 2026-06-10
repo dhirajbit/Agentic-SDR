@@ -104,7 +104,11 @@
       "framework": "A",
       "subject": "SAP tenant strategy at MANAS Agro",
       "apollo_status": "pushed_to_sequence",
-      "note": "T1-India batch push (canary clean). Manual-email task queued in Apollo."
+      "note": "T1-India batch push (canary clean). Manual-email task queued in Apollo.",
+      "zoho_account_id": "1040055000003171007",
+      "zoho_contact_id": "1040055000003175005",
+      "zoho_pushed_at": "2026-06-06 13:14 IST",
+      "zoho_note": "Account + Contact created retroactively (missed during batch push)"
     },
     {
       "at": "2026-06-02 16:20 IST",
