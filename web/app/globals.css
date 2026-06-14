@@ -1,0 +1,227 @@
+/* Design tokens ported from /DESIGN.md — "Operator's Console" aesthetic. */
+
+@font-face {
+  font-family: "Perfectly Nineties";
+  src: url("/fonts/PerfectlyNineties-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Perfectly Nineties";
+  src: url("/fonts/PerfectlyNineties-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Perfectly Nineties";
+  src: url("/fonts/PerfectlyNineties-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Perfectly Nineties";
+  src: url("/fonts/PerfectlyNineties-Black.otf") format("opentype");
+  font-weight: 900;
+  font-display: swap;
+}
+
+:root {
+  --bg: #fbfaf6;
+  --surface: #ffffff;
+  --elevated: #f3f1ea;
+  --line: #e4e0d6;
+  --ink: #16140f;
+  --muted: #6b6658;
+  --faint: #a8a293;
+  --green: #00c98a;
+  --green-dim: #009e6c;
+  --coral: #ff5a3c;
+  --coral-dim: #d63c20;
+  --slate: #5e6b73;
+
+  --r-sm: 9px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-pill: 20px;
+
+  --s1: 8px;
+  --s2: 16px;
+  --s3: 24px;
+  --s4: 32px;
+  --s6: 48px;
+  --maxw: 1180px;
+
+  --font-display: "Perfectly Nineties", Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+a {
+  color: inherit;
+}
+
+.mono {
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+/* layout primitives */
+.wrap {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: var(--s3);
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--s3);
+}
+.grid {
+  display: grid;
+  gap: var(--s2);
+}
+@media (min-width: 760px) {
+  .grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* status pills */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+}
+.pill .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--faint);
+}
+.pill.ok {
+  color: var(--green-dim);
+  border-color: color-mix(in srgb, var(--green) 35%, var(--line));
+}
+.pill.ok .dot {
+  background: var(--green);
+}
+.pill.warn {
+  color: var(--coral-dim);
+  border-color: color-mix(in srgb, var(--coral) 35%, var(--line));
+}
+.pill.warn .dot {
+  background: var(--coral);
+}
+
+.muted {
+  color: var(--muted);
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 1;
+}
+.stat-label {
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+table.feed {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+table.feed th {
+  text-align: left;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+table.feed td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--elevated);
+  vertical-align: top;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  cursor: pointer;
+  transition: transform 150ms var(--ease), background 150ms var(--ease);
+}
+.btn:hover {
+  transform: translateY(-1px);
+}
+.btn.primary {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.logbox {
+  background: var(--ink);
+  color: #d7f5e8;
+  font-family: var(--font-mono, "Geist Mono", ui-monospace, monospace);
+  font-size: 12px;
+  line-height: 1.6;
+  padding: var(--s2);
+  border-radius: var(--r-md);
+  max-height: 420px;
+  overflow: auto;
+  white-space: pre-wrap;
+}

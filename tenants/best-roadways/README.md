@@ -29,7 +29,7 @@ WhatsApp + Gemini** (not Apollo). Best Roadways configures all of its own keys.
    AGENTIC_SDR_TENANT=best-roadways python tenants/best-roadways/qualify_leads.py
    AGENTIC_SDR_TENANT=best-roadways python tenants/best-roadways/merge_verdicts.py
    ```
-6. **WhatsApp follow-ups** — start the bridge under repo `whatsapp-mcp/whatsapp-bridge/` and scan the QR (re-auth ~every 20 days).
+6. **WhatsApp follow-ups** — run OpenWA (`../OpenWA`), QR-authorise a session, and set `OPENWA_API_KEY` + `OPENWA_SESSION_ID` in `.env` (re-auth ~every 20 days).
 7. **Start the SDR + Observer loops** (see `SDR_GUIDE.md`).
 
 ## What's in this folder

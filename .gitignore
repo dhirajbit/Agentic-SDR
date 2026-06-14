@@ -7,15 +7,17 @@ reference_*
 *.pem
 *.key
 
+# Per-tenant worker private keys for the sealed-box secret channel (NEVER commit)
+tenants/*/.worker_key
+
 # Tenant MCP configs (URLs embed session tokens — never commit) + active symlink at repo root
 tenants/*/.mcp.json
 /.mcp.json
 
-# WhatsApp bridge — session DB and messages (never commit)
+# WhatsApp — session DB / runtime state (never commit). WhatsApp now goes through
+# the OpenWA gateway (../OpenWA); the old in-repo whatsapp-mcp bridge was removed.
 *.db
-whatsapp-mcp/whatsapp-bridge/whatsapp-bridge
-whatsapp-mcp/whatsapp.log
-whatsapp-mcp/claude_desktop_config.json
+tenants/*/whatsapp_sync_state.json
 
 # Best Roadways control-panel runtime + uploaded lead data (PII — never commit)
 tenants/best-roadways/cycle.log

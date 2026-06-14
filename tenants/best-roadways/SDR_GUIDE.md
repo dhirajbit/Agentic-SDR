@@ -11,7 +11,7 @@
 | Lead / account source | **ERPNext** (`erpnext_client.py`) and/or operator-supplied **`leads.csv`** |
 | AI drafting agent | **Gemini** (`gemini_client.py`, key supplied by operator) |
 | Email send + events | **Brevo** (`brevo_client.py`) |
-| Follow-up channel | **WhatsApp** (local Go bridge under repo `whatsapp-mcp/`, MCP server in `.mcp.json`) |
+| Follow-up channel | **WhatsApp** (OpenWA gateway at `../OpenWA`, via repo-root `openwa_client.py`) |
 | System of record | `outreach_tracker.json` (local) + ERPNext lead notes |
 | Dashboard | `generate_dashboard.py` → Cloudflare Pages (`deploy_dashboard.sh`) |
 
@@ -23,8 +23,8 @@ No Apollo. No credit gate. No phone reveals.
    `ERPNEXT_*`, `BREVO_*`, `GEMINI_API_KEY`. (`CLOUDFLARE_*` are pre-filled.)
 2. Verify the sending domain/sender in Brevo; set `BREVO_SENDER_NAME` / `BREVO_SENDER_EMAIL`.
 3. Drop the real account list at `tenants/best-roadways/leads.csv` (keep the header), or rely on ERPNext.
-4. For WhatsApp follow-ups: start the bridge (`cd whatsapp-mcp/whatsapp-bridge && go run main.go`), scan the QR. Re-auth ~every 20 days.
-5. Activate the tenant: `bin/tenant best-roadways` then `export AGENTIC_SDR_TENANT=best-roadways`, and **restart Claude Code** so the WhatsApp MCP loads.
+4. For WhatsApp follow-ups: run OpenWA (`cd ../OpenWA && docker compose up -d`), mint an operator API key, create + QR-authorise a session, then set `OPENWA_API_KEY` + `OPENWA_SESSION_ID` in `.env`. Verify with `AGENTIC_SDR_TENANT=best-roadways python openwa_client.py`. Re-auth ~every 20 days.
+5. Activate the tenant: `bin/tenant best-roadways` then `export AGENTIC_SDR_TENANT=best-roadways`, and **restart Claude Code**.
 6. Build the queue:
    ```
    AGENTIC_SDR_TENANT=best-roadways python tenants/best-roadways/sync_leads.py
