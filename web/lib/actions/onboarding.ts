@@ -34,10 +34,26 @@ export async function provisionTenant() {
   const org = await client.organizations.getOrganization({ organizationId: orgId });
   const slug = toSlug(org.slug || org.name || orgId);
 
-  const [tenant] = await db
-    .insert(tenants)
-    .values({ clerkOrgId: orgId, slug, name: org.name })
-    .returning();
+  // The local worker may have already seeded this tenant (clerk_org_id =
+  // 'pending:<slug>'). Adopt that row — and its synced data — by linking it to
+  // this Clerk org. Otherwise create a fresh row.
+  const seeded = await db.query.tenants.findFirst({ where: eq(tenants.slug, slug) });
+  let tenant;
+  if (seeded && seeded.clerkOrgId.startsWith("pending:")) {
+    [tenant] = await db
+      .update(tenants)
+      .set({ clerkOrgId: orgId, name: org.name })
+      .where(eq(tenants.id, seeded.id))
+      .returning();
+  } else if (seeded) {
+    // Already linked to another org — refuse to hijack.
+    redirect("/dashboard");
+  } else {
+    [tenant] = await db
+      .insert(tenants)
+      .values({ clerkOrgId: orgId, slug, name: org.name })
+      .returning();
+  }
 
   await db
     .insert(integrations)

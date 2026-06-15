@@ -34,10 +34,21 @@ load_dotenv(TENANT_DIR / ".env")
 
 LOOP_SECONDS = int(os.getenv("CLOUD_AGENT_LOOP_SECONDS", "10"))
 PUSH_EVERY = int(os.getenv("CLOUD_AGENT_PUSH_EVERY", "6"))  # loops between passive pushes
+DRIVER = os.getenv("SDR_DRIVER", "sdr_cycle")
 
 
 def log(msg: str) -> None:
     print(f"[cloud-agent:{SLUG}] {msg}", flush=True)
+
+
+def tenant_name() -> str:
+    cfg = TENANT_DIR / "company_config.json"
+    if cfg.exists():
+        try:
+            return json.loads(cfg.read_text()).get("company_name") or SLUG
+        except Exception:  # noqa: BLE001
+            pass
+    return SLUG
 
 
 # --------------------------------------------------------------------------- #
@@ -193,7 +204,8 @@ def dispatch(cmd: dict) -> None:
 
 
 def main() -> None:
-    log(f"starting (loop={LOOP_SECONDS}s, db={'set' if cloud_sync.DB_URL else 'MISSING'})")
+    log(f"starting (loop={LOOP_SECONDS}s, driver={DRIVER}, db={'set' if cloud_sync.DB_URL else 'MISSING'})")
+    cloud_sync.ensure_tenant(SLUG, tenant_name(), DRIVER)
     published = False
     i = 0
     while True:

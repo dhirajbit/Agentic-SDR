@@ -54,6 +54,39 @@ def get_tenant_id(slug: str) -> str | None:
         return str(row[0]) if row else None
 
 
+# Providers seeded as empty integration rows so the dashboard renders them.
+_PROVIDERS = ("apollo", "brevo", "zoho", "whatsapp", "gemini", "erpnext")
+
+
+def ensure_tenant(slug: str, name: str, driver: str = "sdr_cycle") -> str:
+    """Self-provision a tenant row (and empty integration/settings rows) if the
+    web hasn't onboarded it yet. Uses a 'pending:<slug>' sentinel for
+    clerk_org_id; web onboarding adopts the row by slug on first login. Never
+    overwrites a real (already-adopted) clerk_org_id."""
+    with conn().cursor() as cur:
+        cur.execute(
+            """
+            INSERT INTO tenants (clerk_org_id, slug, name, driver)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name, driver = EXCLUDED.driver
+            RETURNING id
+            """,
+            (f"pending:{slug}", slug, name, driver),
+        )
+        tid = str(cur.fetchone()[0])
+        for provider in _PROVIDERS:
+            cur.execute(
+                "INSERT INTO integrations (tenant_id, provider) VALUES (%s, %s) "
+                "ON CONFLICT (tenant_id, provider) DO NOTHING",
+                (tid, provider),
+            )
+        cur.execute(
+            "INSERT INTO settings (tenant_id) VALUES (%s) ON CONFLICT (tenant_id) DO NOTHING",
+            (tid,),
+        )
+        return tid
+
+
 # --------------------------------------------------------------------------- #
 # Keys + heartbeat
 # --------------------------------------------------------------------------- #
