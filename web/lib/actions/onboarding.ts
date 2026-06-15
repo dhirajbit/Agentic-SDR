@@ -1,12 +1,55 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { and, eq, like } from "drizzle-orm";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
 import { integrations, settings, tenants } from "@/lib/db/schema";
 import { PROVIDERS } from "@/lib/db/queries";
+
+/** Unclaimed (worker-seeded, not yet linked) tenants the operator can adopt. */
+export async function getUnclaimedTenants() {
+  return db
+    .select({ slug: tenants.slug, name: tenants.name })
+    .from(tenants)
+    .where(like(tenants.clerkOrgId, "pending:%"))
+    .orderBy(tenants.slug);
+}
+
+async function seedTenantChildren(tenantId: string) {
+  await db
+    .insert(integrations)
+    .values(PROVIDERS.map((provider) => ({ tenantId, provider })))
+    .onConflictDoNothing();
+  await db.insert(settings).values({ tenantId }).onConflictDoNothing();
+}
+
+/**
+ * Link the active Clerk org to a specific worker-seeded tenant chosen by the
+ * operator (robust to Clerk's auto-suffixed slugs). Only adopts a row still in
+ * the 'pending:' state.
+ */
+export async function linkTenant(formData: FormData) {
+  const { userId, orgId } = await auth();
+  if (!userId || !orgId) redirect("/onboarding");
+  const slug = String(formData.get("slug") || "");
+  if (!slug) redirect("/onboarding");
+
+  const row = await db.query.tenants.findFirst({ where: eq(tenants.slug, slug) });
+  if (!row) redirect("/onboarding");
+  if (!row.clerkOrgId.startsWith("pending:")) redirect("/dashboard"); // already claimed
+
+  const client = await clerkClient();
+  const org = await client.organizations.getOrganization({ organizationId: orgId });
+  const [tenant] = await db
+    .update(tenants)
+    .set({ clerkOrgId: orgId, name: org.name })
+    .where(and(eq(tenants.id, row.id), like(tenants.clerkOrgId, "pending:%")))
+    .returning();
+  if (tenant) await seedTenantChildren(tenant.id);
+  redirect("/dashboard");
+}
 
 /** Slugify a Clerk org slug/name into a tenant slug matching tenants/<slug>/. */
 function toSlug(input: string): string {
