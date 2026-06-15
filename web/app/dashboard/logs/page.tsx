@@ -7,18 +7,23 @@ import { StatusPill } from "@/components/ui";
 export default async function LogsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ channel?: string }>;
+  searchParams: Promise<{ channel?: string; view?: string }>;
 }) {
-  const { channel } = await searchParams;
+  const { channel, view } = await searchParams;
   const tenant = await resolveTenant();
   const ch = channel === "email" || channel === "whatsapp" ? channel : undefined;
-  const rows = await getRecentActions(tenant.id, { channel: ch, limit: 200 });
+  const scheduled = view === "scheduled";
+  const rows = await getRecentActions(tenant.id, {
+    channel: ch,
+    status: scheduled ? "scheduled" : undefined,
+    limit: 300,
+  });
 
-  const tab = (key: string, label: string) => (
+  const tab = (params: string, label: string, active: boolean) => (
     <Link
-      href={key ? `/dashboard/logs?channel=${key}` : "/dashboard/logs"}
+      href={params ? `/dashboard/logs?${params}` : "/dashboard/logs"}
       className="pill"
-      style={{ background: (ch ?? "") === key ? "var(--elevated)" : "transparent" }}
+      style={{ background: active ? "var(--elevated)" : "transparent" }}
     >
       {label}
     </Link>
@@ -27,10 +32,11 @@ export default async function LogsPage({
   return (
     <div style={{ paddingTop: 24 }}>
       <h1 style={{ fontSize: 30 }}>Logs</h1>
-      <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
-        {tab("", "All")}
-        {tab("email", "Email")}
-        {tab("whatsapp", "WhatsApp")}
+      <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
+        {tab("", "All", !ch && !scheduled)}
+        {tab("channel=email", "Email", ch === "email" && !scheduled)}
+        {tab("channel=whatsapp", "WhatsApp", ch === "whatsapp" && !scheduled)}
+        {tab("view=scheduled", "Scheduled queue", scheduled)}
       </div>
 
       <div className="panel" style={{ marginTop: 16, overflowX: "auto" }}>

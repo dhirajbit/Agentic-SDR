@@ -32,8 +32,12 @@ export default async function OverviewPage() {
       </div>
 
       <div className="grid grid-4" style={{ marginTop: 20 }}>
-        <StatTile label="Emails sent" value={stats.emails} sub={`${stats.sent} delivered`} />
-        <StatTile label="WhatsApp touches" value={stats.whatsapp} />
+        <StatTile label="Emails sent" value={stats.emails} sub={`${stats.sent} actioned`} />
+        <StatTile
+          label="Scheduled"
+          value={stats.scheduled ?? 0}
+          sub={stats.drafted ? `${stats.drafted} drafts` : "in queue"}
+        />
         <StatTile label="Open rate" value={`${openRate}%`} sub={`${stats.opened} opened`} />
         <StatTile label="Reply rate" value={`${replyRate}%`} sub={`${stats.replied} replies`} />
       </div>
