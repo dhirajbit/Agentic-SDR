@@ -151,7 +151,11 @@ def whatsapp_link() -> dict:
     Triggered by the 'whatsapp_link' command from the web."""
     wa = _reload("openwa_client")  # requires OPENWA_API_KEY locally
     sid = _wa_ensure_session(wa)
-    wa.start_session(sid)
+    try:
+        wa.start_session(sid)
+    except Exception as exc:  # noqa: BLE001 — already-started is fine
+        if "already started" not in str(exc).lower():
+            raise
     qr = None
     for _ in range(12):
         st = wa.get_session_status(sid)
@@ -329,6 +333,10 @@ def main() -> None:
             while cmd:
                 dispatch(cmd)
                 cmd = cloud_sync.claim_command(SLUG)
+
+            # Keep the WhatsApp QR fresh every loop while linking (it rotates ~20s).
+            if os.getenv("OPENWA_SESSION_ID"):
+                refresh_health(only="whatsapp")
 
             if i % PUSH_EVERY == 0:
                 cloud_sync.push_tracker(SLUG)
