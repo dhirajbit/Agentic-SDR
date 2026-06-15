@@ -57,7 +57,9 @@ def normalize_action(slug: str, raw: dict) -> dict:
     recipient = raw.get("email") or raw.get("mobile") or raw.get("recipient")
     if lead_ref is None:
         lead_ref = recipient or "?"
-    source_key = f"{slug}:{lead_ref}:{occurred.isoformat()}"
+    # A producer can supply a stable source_key (e.g. scheduled campaigns that get
+    # re-stamped) so re-pushes update in place instead of creating duplicate rows.
+    source_key = raw.get("source_key") or f"{slug}:{lead_ref}:{occurred.isoformat()}"
 
     return {
         "source_key": source_key,

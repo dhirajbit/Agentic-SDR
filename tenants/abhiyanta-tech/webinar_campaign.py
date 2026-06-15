@@ -38,15 +38,18 @@ PLAYBOOK = TENANT_DIR / "strategy_playbook.md"
 CAMPAIGN = "webinar_pipo_sunset_v1"
 SENDER = os.getenv("WEBINAR_SENDER", "Saurabh")
 
-# Placeholder session dates (confirm + re-run). Each touch is sent ~6 days before.
-_default_dates = ["2026-07-01", "2026-07-15", "2026-07-29"]
+# Default schedule anchors at TODAY: touch sends today / +14 / +28 (sessions are
+# 6 days after each send). Override with WEBINAR_DATES once real dates are set.
+LEAD_TIME_DAYS = 6  # send each touch this many days before its session
+_today = date.today()
+_default_dates = [(_today + timedelta(days=LEAD_TIME_DAYS + 14 * k)).strftime("%Y-%m-%d")
+                  for k in range(3)]
 SESSION_DATES = json.loads(os.getenv("WEBINAR_DATES", json.dumps(_default_dates)))
 SESSIONS = [
     {"n": 1, "label": "Main launch", "date": SESSION_DATES[0]},
     {"n": 2, "label": "Additional session (by popular demand)", "date": SESSION_DATES[1]},
     {"n": 3, "label": "Final session", "date": SESSION_DATES[2]},
 ]
-LEAD_TIME_DAYS = 6  # send each touch this many days before its session
 
 WEBINAR_AGENDA = (
     "What the SAP PI/PO sunset means for your business; common migration "
@@ -198,9 +201,10 @@ def main():
             wdate_h = wdate.strftime("%A, %d %b %Y")
             subj, body = _fill(templates[(s["n"], bucket)], first, company, wdate_h)
             action = {
-                "at": f"{sched} 11:00 IST",          # occurred_at = scheduled send time
+                "at": sched,                          # occurred_at = scheduled send date (no time)
                 "created_at": now,
                 "scheduled_for": sched,
+                "source_key": f"{CAMPAIGN}:{email}:{s['n']}",  # stable -> idempotent re-stamps
                 "lead_row_id": f"{CAMPAIGN}:{email}:{s['n']}",
                 "company": company,
                 "contact": f"{first} {lead.get('Last_Name','')}".strip(),

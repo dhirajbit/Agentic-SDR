@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { resolveTenant } from "@/lib/auth/tenant";
 import { getRecentActions } from "@/lib/db/queries";
-import { StatusPill } from "@/components/ui";
+import { LogTable } from "@/components/log-table";
 
 export default async function LogsPage({
   searchParams,
@@ -40,46 +40,19 @@ export default async function LogsPage({
       </div>
 
       <div className="panel" style={{ marginTop: 16, overflowX: "auto" }}>
-        <table className="feed">
-          <thead>
-            <tr>
-              <th>When</th>
-              <th>Channel</th>
-              <th>Company</th>
-              <th>Recipient</th>
-              <th>Framework</th>
-              <th>Subject / message</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.length === 0 ? (
-              <tr>
-                <td colSpan={7} className="muted">
-                  No actions logged yet.
-                </td>
-              </tr>
-            ) : (
-              rows.map((a) => (
-                <tr key={a.id}>
-                  <td className="mono" style={{ whiteSpace: "nowrap" }}>
-                    {new Date(a.occurredAt).toLocaleString()}
-                  </td>
-                  <td>
-                    <span className={a.channel === "whatsapp" ? "pill warn" : "pill"}>
-                      {a.channel}
-                    </span>
-                  </td>
-                  <td>{a.company}</td>
-                  <td className="mono">{a.recipient}</td>
-                  <td>{a.framework}</td>
-                  <td style={{ maxWidth: 320 }}>{a.subject || a.body?.slice(0, 80)}</td>
-                  <td>{a.status ? <StatusPill status={a.status} /> : null}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+        <LogTable
+          rows={rows.map((a) => ({
+            id: a.id,
+            occurredAt: new Date(a.occurredAt).toISOString(),
+            channel: a.channel,
+            company: a.company,
+            recipient: a.recipient,
+            framework: a.framework,
+            subject: a.subject,
+            body: a.body,
+            status: a.status,
+          }))}
+        />
       </div>
     </div>
   );
