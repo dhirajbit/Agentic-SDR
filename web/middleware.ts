@@ -7,6 +7,7 @@ const isPublic = createRouteMatcher([
   "/sign-in(.*)",
   "/sign-up(.*)",
   "/api/cron(.*)",
+  "/api/whatsapp/webhook", // OpenWA posts here; authed by its own token
 ]);
 
 export default clerkMiddleware(async (auth, req) => {

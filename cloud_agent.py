@@ -35,6 +35,10 @@ load_dotenv(TENANT_DIR / ".env")
 LOOP_SECONDS = int(os.getenv("CLOUD_AGENT_LOOP_SECONDS", "10"))
 PUSH_EVERY = int(os.getenv("CLOUD_AGENT_PUSH_EVERY", "6"))  # loops between passive pushes
 DRIVER = os.getenv("SDR_DRIVER", "sdr_cycle")
+# Public base of the Vercel app + shared secret, so OpenWA can POST inbound
+# replies to it. The worker registers this webhook once the session is linked.
+WEBHOOK_BASE = os.getenv("WHATSAPP_WEBHOOK_BASE", "").rstrip("/")
+WEBHOOK_SECRET = os.getenv("WHATSAPP_WEBHOOK_SECRET")
 
 
 def log(msg: str) -> None:
@@ -70,11 +74,105 @@ def check_apollo():
     return "connected", {"credits_left": bal["lead_credit"]["left_over"]}
 
 
+def _wa_webhook_url() -> str | None:
+    if not WEBHOOK_BASE or not WEBHOOK_SECRET:
+        return None
+    return f"{WEBHOOK_BASE}/api/whatsapp/webhook?tenant={SLUG}&token={WEBHOOK_SECRET}"
+
+
+def _register_wa_webhook(wa, sid: str) -> None:
+    url = _wa_webhook_url()
+    if not url:
+        log("WHATSAPP_WEBHOOK_BASE/SECRET not set — skipping webhook registration")
+        return
+    try:
+        wa.ensure_webhook(url, secret=WEBHOOK_SECRET, session_id=sid)
+    except Exception as exc:  # noqa: BLE001
+        log(f"webhook register failed: {exc}")
+
+
+def _persist_session_id(sid: str) -> None:
+    """Write OPENWA_SESSION_ID into the tenant .env so future runs reuse it."""
+    env = TENANT_DIR / ".env"
+    lines = env.read_text().splitlines() if env.exists() else []
+    out, seen = [], False
+    for line in lines:
+        if line.startswith("OPENWA_SESSION_ID="):
+            out.append(f"OPENWA_SESSION_ID={sid}")
+            seen = True
+        else:
+            out.append(line)
+    if not seen:
+        out.append(f"OPENWA_SESSION_ID={sid}")
+    env.write_text("\n".join(out) + "\n")
+    os.environ["OPENWA_SESSION_ID"] = sid
+
+
+def _wa_ensure_session(wa) -> str:
+    """Return a session id, creating + persisting one if needed."""
+    sid = os.getenv("OPENWA_SESSION_ID")
+    if sid:
+        try:
+            if any(s.get("id") == sid for s in wa.list_sessions()):
+                return sid
+        except Exception:  # noqa: BLE001
+            return sid  # gateway list failed; assume the configured id is fine
+    created = wa.create_session(SLUG)
+    sid = created.get("id")
+    if not sid:
+        raise RuntimeError("OpenWA create_session returned no id")
+    _persist_session_id(sid)
+    log(f"created WhatsApp session {sid}")
+    return sid
+
+
 def check_whatsapp():
     m = _reload("openwa_client")
-    s = m.get_session_status()
-    status = "connected" if s.get("status") == "ready" else "error"
-    return status, {"session_status": s.get("status"), "phone": s.get("phone")}
+    sid = os.getenv("OPENWA_SESSION_ID")
+    if not sid:
+        return "unconfigured", {}
+    s = m.get_session_status(sid)
+    if s.get("status") == "ready":
+        _register_wa_webhook(m, sid)
+        return "connected", {"session_status": "ready", "phone": s.get("phone")}
+    # Not linked yet — surface the QR so the dashboard can render it.
+    detail = {"session_status": s.get("status")}
+    try:
+        qr = m.get_qr(sid).get("qrCode")
+        if qr:
+            detail["qr"] = qr
+    except Exception:  # noqa: BLE001
+        pass
+    return "pending_test", detail
+
+
+def whatsapp_link() -> dict:
+    """Create/start a session and surface a QR for the dashboard to display.
+    Triggered by the 'whatsapp_link' command from the web."""
+    wa = _reload("openwa_client")  # requires OPENWA_API_KEY locally
+    sid = _wa_ensure_session(wa)
+    wa.start_session(sid)
+    qr = None
+    for _ in range(12):
+        st = wa.get_session_status(sid)
+        if st.get("status") == "ready":
+            break
+        try:
+            qr = wa.get_qr(sid).get("qrCode") or qr
+        except Exception:  # noqa: BLE001
+            pass
+        if qr:
+            break
+        time.sleep(1)
+    st = wa.get_session_status(sid)
+    ready = st.get("status") == "ready"
+    detail = {"session_status": st.get("status"), "phone": st.get("phone")}
+    if qr and not ready:
+        detail["qr"] = qr
+    cloud_sync.push_integration_status(SLUG, "whatsapp", "connected" if ready else "pending_test", detail)
+    if ready:
+        _register_wa_webhook(wa, sid)
+    return {"session_status": st.get("status"), "has_qr": bool(qr)}
 
 
 def check_brevo():
@@ -123,8 +221,15 @@ def refresh_health(only: str | None = None) -> None:
             continue
         try:
             status, detail = checker()
+        except ModuleNotFoundError:
+            # tenant doesn't use this provider (no local client module) -> not an error
+            status, detail = "unconfigured", {}
         except Exception as exc:  # noqa: BLE001
-            status, detail = "error", {"last_error": str(exc)[:200]}
+            msg = str(exc)
+            if any(s in msg for s in ("not set", "not configured", "NEON_DATABASE_URL")):
+                status, detail = "unconfigured", {}
+            else:
+                status, detail = "error", {"last_error": msg[:200]}
         cloud_sync.push_integration_status(SLUG, provider, status, detail)
 
 
@@ -192,6 +297,8 @@ def dispatch(cmd: dict) -> None:
                 )
             )
             cloud_sync.complete_command(cid, "done")
+        elif ctype == "whatsapp_link":
+            cloud_sync.complete_command(cid, "done", whatsapp_link())
         elif ctype == "run_sdr":
             cloud_sync.complete_command(cid, "done", run_cycle("sdr", args, cid))
         elif ctype == "run_observer":

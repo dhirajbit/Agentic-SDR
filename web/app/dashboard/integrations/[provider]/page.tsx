@@ -5,6 +5,7 @@ import { getIntegration, PROVIDERS, type Provider } from "@/lib/db/queries";
 import { CONFIG_FIELDS, SECRET_FIELDS } from "@/lib/crypto/seal";
 import { Crumb, StatusPill } from "@/components/ui";
 import { IntegrationForm } from "@/components/integration-form";
+import { WhatsappLinker } from "@/components/whatsapp-linker";
 
 export default async function ProviderPage({
   params,
@@ -26,22 +27,29 @@ export default async function ProviderPage({
         <StatusPill status={integration?.status ?? "unconfigured"} />
       </div>
 
-      {integration?.statusDetail && Object.keys(integration.statusDetail).length > 0 ? (
+      {p !== "whatsapp" && integration?.statusDetail && Object.keys(integration.statusDetail).length > 0 ? (
         <pre className="logbox" style={{ marginTop: 16, maxHeight: 160 }}>
           {JSON.stringify(integration.statusDetail, null, 2)}
         </pre>
       ) : null}
 
-      <IntegrationForm
-        provider={p}
-        configFields={CONFIG_FIELDS[p] ?? []}
-        secretFields={SECRET_FIELDS[p] ?? []}
-        config={(integration?.config ?? {}) as Record<string, string>}
-        hasSecret={Object.fromEntries(
-          (SECRET_FIELDS[p] ?? []).map((f) => [f, Boolean(integration?.secretsCiphertext?.[f])]),
-        )}
-        workerReady={Boolean(tenant.workerPublicKey)}
-      />
+      {p === "whatsapp" ? (
+        <WhatsappLinker
+          initialStatus={integration?.status ?? "unconfigured"}
+          initialDetail={(integration?.statusDetail ?? {}) as Record<string, string>}
+        />
+      ) : (
+        <IntegrationForm
+          provider={p}
+          configFields={CONFIG_FIELDS[p] ?? []}
+          secretFields={SECRET_FIELDS[p] ?? []}
+          config={(integration?.config ?? {}) as Record<string, string>}
+          hasSecret={Object.fromEntries(
+            (SECRET_FIELDS[p] ?? []).map((f) => [f, Boolean(integration?.secretsCiphertext?.[f])]),
+          )}
+          workerReady={Boolean(tenant.workerPublicKey)}
+        />
+      )}
     </div>
   );
 }

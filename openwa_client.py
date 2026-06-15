@@ -56,16 +56,22 @@ if not API_KEY:
         "tenants/<slug>/.env contains OPENWA_API_KEY (the operator-role API key "
         "minted by the OpenWA gateway)."
     )
-if not SESSION_ID:
-    raise RuntimeError(
-        "OPENWA_SESSION_ID not set. Create + QR-authorise a session in OpenWA, "
-        "then put its id in tenants/<slug>/.env as OPENWA_SESSION_ID."
-    )
+# OPENWA_SESSION_ID is optional: the QR-link flow creates a session on demand.
+# Send/status helpers require one (passed explicitly or via OPENWA_SESSION_ID).
 
 HEADERS = {
     "Content-Type": "application/json",
     "X-API-Key": API_KEY,
 }
+
+
+def _sid(session_id: str | None = None) -> str:
+    sid = session_id or SESSION_ID
+    if not sid:
+        raise WhatsAppError(
+            "No WhatsApp session id. Pass session_id or set OPENWA_SESSION_ID."
+        )
+    return sid
 
 
 class WhatsAppError(RuntimeError):
@@ -137,7 +143,18 @@ def is_placeholder_number(phone: str) -> bool:
 # Session
 # --------------------------------------------------------------------------- #
 
-def get_session_status() -> dict:
+def list_sessions() -> list[dict]:
+    """All sessions on the gateway."""
+    resp = _request("GET", "sessions")
+    return resp if isinstance(resp, list) else resp.get("sessions", resp.get("data", [])) or []
+
+
+def create_session(name: str) -> dict:
+    """Create a new WhatsApp session. Returns the session record (with `id`)."""
+    return _request("POST", "sessions", json={"name": name})
+
+
+def get_session_status(session_id: str | None = None) -> dict:
     """Fetch the live session record. Must be called before any send.
 
     Returns a dict like:
@@ -147,7 +164,7 @@ def get_session_status() -> dict:
     disconnected | failed.
     """
     global _last_session
-    raw = _request("GET", f"sessions/{SESSION_ID}")
+    raw = _request("GET", f"sessions/{_sid(session_id)}")
     raw["fetched_at"] = time.time()
     _last_session = raw
     return raw
@@ -176,15 +193,15 @@ def assert_session_ready() -> None:
         )
 
 
-def start_session() -> dict:
+def start_session(session_id: str | None = None) -> dict:
     """Start (initialise) the session so it can produce a QR / connect."""
-    return _request("POST", f"sessions/{SESSION_ID}/start")
+    return _request("POST", f"sessions/{_sid(session_id)}/start")
 
 
-def get_qr() -> dict:
+def get_qr(session_id: str | None = None) -> dict:
     """Return the current QR payload ({'qrCode': 'data:image/png;base64,...'})
     for authorising the WhatsApp number. Only valid while status is qr_ready."""
-    return _request("GET", f"sessions/{SESSION_ID}/qr")
+    return _request("GET", f"sessions/{_sid(session_id)}/qr")
 
 
 # --------------------------------------------------------------------------- #
@@ -286,14 +303,33 @@ def fetch_replies_since(since_epoch: float, scan_limit: int = 200) -> list[dict]
     return out
 
 
-def register_webhook(url: str, events: list[str] | None = None, secret: str | None = None) -> dict:
+def list_webhooks(session_id: str | None = None) -> list[dict]:
+    """All webhooks registered on the session."""
+    resp = _request("GET", f"sessions/{_sid(session_id)}/webhooks")
+    return resp if isinstance(resp, list) else resp.get("webhooks", resp.get("data", [])) or []
+
+
+def register_webhook(url: str, events: list[str] | None = None, secret: str | None = None,
+                     session_id: str | None = None) -> dict:
     """Register an OpenWA webhook so the gateway POSTs events to `url`.
     Default events: ['message.received', 'session.status']. Use this instead of
     polling fetch_replies_since() if you run an always-on receiver."""
     payload = {"url": url, "events": events or ["message.received", "session.status"]}
     if secret:
         payload["secret"] = secret
-    return _request("POST", f"sessions/{SESSION_ID}/webhooks", json=payload)
+    return _request("POST", f"sessions/{_sid(session_id)}/webhooks", json=payload)
+
+
+def ensure_webhook(url: str, secret: str | None = None, session_id: str | None = None) -> dict:
+    """Register the webhook only if one with the same URL isn't already present
+    (idempotent — avoids piling up duplicate webhooks each worker loop)."""
+    try:
+        for w in list_webhooks(session_id):
+            if w.get("url") == url:
+                return w
+    except WhatsAppError:
+        pass
+    return register_webhook(url, ["message.received"], secret, session_id)
 
 
 def smoke_test() -> None:
