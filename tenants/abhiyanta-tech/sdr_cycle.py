@@ -200,15 +200,25 @@ def run_sdr_cycle(live_send: bool = False, limit: int | None = None) -> dict:
 
 
 def run_observer_cycle() -> dict:
-    """Recompute aggregate stats from the tracker. (Apollo open/reply events can
-    be pulled here once a campaign is live.)"""
+    """Pull live email status from Apollo, then recompute aggregate stats."""
+    # First fold Apollo delivery/reply status onto each action (writes the tracker).
+    apollo = {}
+    try:
+        import apollo_status_sync
+        apollo = apollo_status_sync.sync_tracker_statuses(TENANT_DIR.name)
+        log(f"Apollo status sync: {apollo}")
+    except Exception as exc:  # noqa: BLE001 — observer must survive Apollo hiccups
+        log(f"Apollo status sync skipped: {exc}")
+
     tracker = _load(TRACKER, {"actions": [], "aggregate_stats": {}})
     actions = tracker.get("actions", [])
     agg = tracker.setdefault("aggregate_stats", {})
     agg["sends"] = sum(1 for a in actions if a.get("status") == "sent")
+    agg["replied"] = sum(1 for a in actions if a.get("status") == "replied")
+    agg["bounced"] = sum(1 for a in actions if a.get("status") in ("bounced", "spam_blocked"))
     agg["drafted"] = sum(1 for a in actions if a.get("status") == "drafted")
     _save(TRACKER, tracker)
-    summary = {"actions": len(actions), **agg}
+    summary = {"actions": len(actions), "apollo": apollo, **agg}
     log(f"Observer cycle: {summary}")
     return summary
 

@@ -18,8 +18,8 @@ export function StatTile({ label, value, sub }: { label: string; value: React.Re
 }
 
 export function StatusPill({ status }: { status: string }) {
-  const ok = status === "connected" || status === "ready" || status === "done";
-  const warn = status === "error" || status === "failed" || status === "send_failed";
+  const ok = ["connected", "ready", "done", "sent", "completed", "replied", "received"].includes(status);
+  const warn = ["error", "failed", "send_failed", "bounced", "spam_blocked"].includes(status);
   const cls = ok ? "pill ok" : warn ? "pill warn" : "pill";
   return (
     <span className={cls}>

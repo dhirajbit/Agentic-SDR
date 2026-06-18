@@ -8,9 +8,42 @@ abhiyanta action:     at, lead_row_id, company, contact, email, apollo_contact_i
                       channel?, campaign_id, framework, subject, apollo_status, note
 """
 
+import re
 from datetime import datetime, timezone, timedelta
 
 IST = timezone(timedelta(hours=5, minutes=30))
+
+# Friendly campaign labels for the dashboard's per-campaign grouping. Known Apollo
+# campaign ids / internal campaign keys map to readable names; anything else falls
+# back to a cleaned version of whatever the tracker recorded.
+_APOLLO_CAMPAIGN_NAMES = {
+    "6a1eb142c4e6ea00202e3f45": "SAP Integration Suite – T1 India",
+    "6a33a048d5fe68001c3e7e34": "PI/PO Sunset Webinar",
+}
+_CAMPAIGN_KEY_NAMES = {
+    "webinar_pipo_sunset_v1": "PI/PO Sunset Webinar",
+}
+
+
+def campaign_label(raw: dict) -> str | None:
+    """Resolve a stable, human-readable campaign label for an action so the
+    dashboard can separate logs by campaign. Canonical id/key mappings win first
+    so one logical campaign reaching the tracker via different identifiers (Apollo
+    id vs internal key) still collapses to a single label."""
+    cid = raw.get("apollo_campaign_id") or raw.get("campaign_id")
+    if cid and cid in _APOLLO_CAMPAIGN_NAMES:
+        return _APOLLO_CAMPAIGN_NAMES[cid]
+    key = raw.get("campaign")
+    if key and key in _CAMPAIGN_KEY_NAMES:
+        return _CAMPAIGN_KEY_NAMES[key]
+    name = raw.get("apollo_campaign_name")
+    if name:
+        return re.sub(r"^\[[^\]]*\]\s*", "", name).strip()  # drop a leading "[owner]" tag
+    if key:
+        return key
+    if cid:
+        return cid
+    return None
 
 
 def parse_timestamp(value: str | None) -> datetime:
@@ -61,6 +94,13 @@ def normalize_action(slug: str, raw: dict) -> dict:
     # re-stamped) so re-pushes update in place instead of creating duplicate rows.
     source_key = raw.get("source_key") or f"{slug}:{lead_ref}:{occurred.isoformat()}"
 
+    # Carry a campaign label into events JSONB so the dashboard can group/filter
+    # by campaign without a schema migration (events already passes through).
+    events = dict(raw.get("events") or {})
+    label = campaign_label(raw)
+    if label:
+        events["campaign"] = label
+
     return {
         "source_key": source_key,
         "channel": (raw.get("channel") or "email"),
@@ -73,7 +113,7 @@ def normalize_action(slug: str, raw: dict) -> dict:
         "chat_id": raw.get("chat_id"),
         "status": raw.get("status") or raw.get("apollo_status"),
         "dry_run": raw.get("dry_run"),
-        "events": raw.get("events") or {},
+        "events": events,
         "occurred_at": occurred,
     }
 

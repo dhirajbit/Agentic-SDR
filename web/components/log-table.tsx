@@ -8,6 +8,7 @@ export type LogRow = {
   id: string;
   occurredAt: string;
   channel: string;
+  campaign: string | null;
   company: string | null;
   recipient: string | null;
   framework: string | null;
@@ -29,6 +30,7 @@ export function LogTable({ rows }: { rows: LogRow[] }) {
         <tr>
           <th>When</th>
           <th>Channel</th>
+          <th>Campaign</th>
           <th>Company</th>
           <th>Recipient</th>
           <th>Framework</th>
@@ -57,6 +59,9 @@ export function LogTable({ rows }: { rows: LogRow[] }) {
                     {a.channel} {isOpen ? "▾" : "▸"}
                   </button>
                 </td>
+                <td style={{ whiteSpace: "nowrap" }}>
+                  {a.campaign ? <span className="pill">{a.campaign}</span> : <span className="muted">—</span>}
+                </td>
                 <td>{a.company}</td>
                 <td className="mono">{a.recipient}</td>
                 <td>{a.framework}</td>
@@ -65,7 +70,7 @@ export function LogTable({ rows }: { rows: LogRow[] }) {
               </tr>
               {isOpen ? (
                 <tr key={`${a.id}-detail`}>
-                  <td colSpan={7} style={{ background: "var(--elevated)" }}>
+                  <td colSpan={8} style={{ background: "var(--elevated)" }}>
                     <div style={{ padding: "8px 4px", maxWidth: 760 }}>
                       <div className="stat-label">To</div>
                       <div className="mono" style={{ marginBottom: 8 }}>

@@ -234,6 +234,39 @@ def add_contacts_to_campaign(campaign_id: str, contact_ids: list[str], email_acc
     return _request("POST", f"emailer_campaigns/{campaign_id}/add_contact_ids", json=payload)
 
 
+def search_emailer_messages(campaign_ids: list[str], page: int = 1,
+                            per_page: int = 100) -> list[dict]:
+    """Return emailer_messages (one per contact-step) for the given campaigns.
+    Each carries `contact_id`, `to_email`, `status` (drafted|completed|failed),
+    `replied`, `bounce`, `spam_blocked`, `failure_reason` — the raw material for
+    pulling delivery/reply status back into the tracker."""
+    resp = _request("POST", "emailer_messages/search",
+                    json={"emailer_campaign_ids": campaign_ids,
+                          "page": page, "per_page": per_page})
+    return resp.get("emailer_messages", []) if isinstance(resp, dict) else []
+
+
+def fetch_message_status_by_campaign(campaign_ids: list[str]) -> dict[str, dict[str, dict]]:
+    """Page through every message per campaign and return
+    {campaign_id: {apollo_contact_id: raw_message}}. Keyed by campaign so a
+    contact enrolled in several sequences keeps a distinct status per campaign."""
+    out: dict[str, dict[str, dict]] = {}
+    for cid in campaign_ids:
+        per_contact: dict[str, dict] = {}
+        page = 1
+        while True:
+            msgs = search_emailer_messages([cid], page=page, per_page=100)
+            for m in msgs:
+                c = m.get("contact_id")
+                if c:
+                    per_contact[c] = m
+            if len(msgs) < 100:
+                break
+            page += 1
+        out[cid] = per_contact
+    return out
+
+
 def create_contact(person: dict) -> dict:
     """Create an Apollo contact from an enriched person payload. Returns the
     created contact (with `id`) which can then be pushed into a campaign."""

@@ -38,17 +38,29 @@ export async function getIntegration(tenantId: string, provider: Provider) {
 
 export async function getRecentActions(
   tenantId: string,
-  opts: { channel?: "email" | "whatsapp"; status?: string; limit?: number } = {},
+  opts: { channel?: "email" | "whatsapp"; status?: string; campaign?: string; limit?: number } = {},
 ) {
   const filters = [eq(actions.tenantId, tenantId)];
   if (opts.channel) filters.push(eq(actions.channel, opts.channel));
   if (opts.status) filters.push(eq(actions.status, opts.status));
+  if (opts.campaign) filters.push(sql`(${actions.events} ->> 'campaign') = ${opts.campaign}`);
   return db
     .select()
     .from(actions)
     .where(and(...filters))
     .orderBy(desc(actions.occurredAt))
     .limit(opts.limit ?? 50);
+}
+
+/** Distinct campaign labels (from events.campaign) for the Logs campaign filter. */
+export async function getCampaigns(tenantId: string): Promise<string[]> {
+  const rows = await db
+    .select({ campaign: sql<string>`${actions.events} ->> 'campaign'` })
+    .from(actions)
+    .where(and(eq(actions.tenantId, tenantId), sql`(${actions.events} ->> 'campaign') is not null`))
+    .groupBy(sql`${actions.events} ->> 'campaign'`)
+    .orderBy(sql`count(*) desc`);
+  return rows.map((r) => r.campaign).filter(Boolean);
 }
 
 export async function getCycleRuns(tenantId: string, limit = 25) {

@@ -34,6 +34,9 @@ load_dotenv(TENANT_DIR / ".env")
 
 LOOP_SECONDS = int(os.getenv("CLOUD_AGENT_LOOP_SECONDS", "10"))
 PUSH_EVERY = int(os.getenv("CLOUD_AGENT_PUSH_EVERY", "6"))  # loops between passive pushes
+# Loops between Apollo email-status syncs (must be a multiple of PUSH_EVERY so the
+# refreshed tracker gets pushed in the same pass). 30 loops x 10s = ~5 min.
+STATUS_SYNC_EVERY = int(os.getenv("CLOUD_AGENT_STATUS_SYNC_EVERY", "30"))
 DRIVER = os.getenv("SDR_DRIVER", "sdr_cycle")
 # Public base of the Vercel app + shared secret, so OpenWA can POST inbound
 # replies to it. The worker registers this webhook once the session is linked.
@@ -339,6 +342,13 @@ def main() -> None:
                 refresh_health(only="whatsapp")
 
             if i % PUSH_EVERY == 0:
+                # Fold live Apollo email status onto actions before pushing (Apollo tenants only).
+                if os.getenv("APOLLO_API_KEY") and i % STATUS_SYNC_EVERY == 0:
+                    try:
+                        s = _reload("apollo_status_sync").sync_tracker_statuses(SLUG)
+                        log(f"apollo status sync: {s}")
+                    except Exception as exc:  # noqa: BLE001 — never kill the loop
+                        log(f"apollo status sync skipped: {exc}")
                 cloud_sync.push_tracker(SLUG)
                 cloud_sync.push_leads_counts(SLUG)
                 refresh_health()
